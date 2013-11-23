@@ -25,6 +25,7 @@ setup(
       "Django==1.5",
       "simplejson==2.6.2",
       "django-compressor==1.3",
+      "pyparsing",
     ),
     dependency_links = ["https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",],
   #  test_suite='test_project.tests.runtests',

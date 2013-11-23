@@ -5,13 +5,12 @@ from django.conf.urls import patterns, include, url
 #admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^rules_by_table/(\w+)?/?', "pypelibgui.views_policy_rule.rules_by_table", name="policy_rules_by_table"),
-    url(r'^del_rule/(\d+)?/?', "pypelibgui.views_policy_rule.del_rule", name="policy_del_rule"),
-    url(r'^add_rule/(\w+)?/?', "pypelibgui.views_policy_rule.add_rule", name="policy_add_rule"),
-
-
-    url(r'^rule_table/(\w+)?/?', "pypelibgui.views_policy_rule_table.edit", name="policy_rule_table"),
-
-
+    url(r'^$', "django_thermostat.views.home", name="home"),
+    url(r'^js/context.js$', "django_thermostat.views.context_js", name="context_js"),
+    url(r'^read_heat_status$', "django_thermostat.views.read_heat_status", name="read_heat_status"),
+    url(r'^toggle_heat_status$', "django_thermostat.views.toggle_heat_status", name="toggle_heat_status"),
+    url(r'^bri_temp/(\w+)?$', "django_thermostat.views.bri_temp", name="bri_temp"),
+    url(r'^dim_temp/(\w+)?$', "django_thermostat.views.dim_temp", name="dim_temp"),
+    url(r'^toggle_heat_manual', "django_thermostat.views.toggle_heat_manual", name="toggle_heat_manual"),
 
 )

@@ -1,39 +1,74 @@
 import requests
-from pypelibgui import settings
+from django_thermostat import settings
 from hautomation_restclient.cmds import pl_switch
+from django_thermostat.models import Context
 
 
-def current_temperature(mo=None):
-    return requests.get(settings.TEMPERATURE_URI).json()["temperature"]
-    #return 18
+def current_internal_temperature(mo=None):
+    return "30"
+    return requests.get(settings.INTERNAL_TEMPERATURE_URI).json()["temperature"]
 
 
 def confort_temperature(mo=None):
-    return 22
+    ctxt = Context.objects.get()
+    if ctxt.flame:
+        return ctxt.confort_temperature + settings.HEATER_MARGIN
+    return ctxt.confort_temperature
 
 
 def economic_temperature(mo=None):
-    return 18
+    ctxt = Context.objects.get()
+    if ctxt.flame:
+        return ctxt.economic_temperature + settings.HEATER_MARGIN
+    return ctxt.economic_temperature
 
 
-def start_heater():
+def heater_manual(mo=None):
+    return 1 if Context.objects.get().manual else 0
+
+
+def heater_on(mo=None):
+    return 1 if Context.objects.get().heat_on else 0
+
+
+def flame_on():
+    return 1 if Context.objects.get().flame else 0
+
+
+def start_flame():
+
     pl_switch(
         settings.HEATER_PROTOCOL,
         settings.HEATER_DID,
         "on",
-        HEATER_URL, HA_USERNAME, HA_PASSWORD)
+        settings.HEATER_API,
+        settings.HEATER_USERNAME,
+        settings.HEATER_PASSWORD)
+
+    ctxt = Context.objects.get()
+    ctxt.flame = True
+    ctxt.save()
 
 
-def stop_heater():
+def stop_flame():
     pl_switch(
         settings.HEATER_PROTOCOL,
         settings.HEATER_DID,
         "off",
-        HEATER_URL, HA_USERNAME, HA_PASSWORD)
+        settings.HEATER_API,
+        settings.HEATER_USERNAME,
+        settings.HEATER_PASSWORD)
+    ctxt = Context.objects.get()
+    ctxt.flame = False
+    ctxt.save()
+
 
 mappings = [
-    current_temperature,
+    current_internal_temperature,
     confort_temperature,
     economic_temperature,
-    start_heater,
-    stop_heater, ]
+    start_flame,
+    stop_flame,
+    heater_manual,
+    heater_on,
+    flame_on, ]
