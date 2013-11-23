@@ -24,10 +24,11 @@ setup(
     install_requires = (
       "Django==1.5",
       "simplejson==2.6.2",
-      "-e git+https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",
+
       "pypelib",
       "django-compressor==1.3",
     ),
+    dependency_links = ["https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",]
     test_suite='test_project.tests.runtests',
     tests_require=("selenium", "requests"),
     classifiers = [
