@@ -24,8 +24,6 @@ setup(
     install_requires = (
       "Django==1.5",
       "simplejson==2.6.2",
-
-      "pypelib",
       "django-compressor==1.3",
     ),
     dependency_links = ["https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",],
