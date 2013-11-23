@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name = 'django-thermostat',
     version = '0.1',
-    packages = ['hautomation_restclient', ],
+    packages = [],
     include_package_data = True,
     license = 'BSD License',
     description = 'A Django app cronothermostat. It is a Python Home Automation component',
@@ -24,7 +24,7 @@ setup(
     install_requires = (
       "Django==1.5",
       "simplejson==2.6.2",
-      "hautomation_restclient",
+      "-e git+https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",
       "pypelib",
       "django-compressor==1.3",
     ),
