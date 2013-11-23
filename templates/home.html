@@ -1,0 +1,14 @@
+{%extends 'base.html'%}
+{%block content%}
+<button id="heat_on" onclick="toggle_heat_on()">Heat</button>
+{%endblock%}
+
+{%block document_ready%}
+
+dom_load_once("{%url 'context_js'%}")
+
+
+{%endblock%}
+{%block script%}
+
+{%endblock%}
