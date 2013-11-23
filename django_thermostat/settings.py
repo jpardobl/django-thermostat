@@ -8,4 +8,4 @@ HEATER_PASSWORD = "soportep"
 HEATER_MARGIN = 0.5
 HEATER_INCREMENT = 0.5
 
-INTERNAL_TEMPERATURE_URI = "%s/rest/temperature" % HEATER_API
+INTERNAL_TEMPERATURE_URI = "http://raspberry/rest/temperature"

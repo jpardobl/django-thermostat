@@ -1,7 +1,7 @@
 from django_thermostat.models import Context
 from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse
-from settings import HEATER_INCREMENT
+from settings import HEATER_INCREMENT, INTERNAL_TEMPERATURE_URI
 from django.core.urlresolvers import reverse
 
 
@@ -60,4 +60,4 @@ def read_heat_status(request):
 
 
 def context_js(request):
-    return render_to_response("context.js", {}, conte)
+    return render_to_response("context.js", {"temp_url": INTERNAL_TEMPERATURE_URI, }, conte)

@@ -43,6 +43,7 @@ function read_heat_status() {
             $("#heat_manual_btn").removeClass("btn-warning")
             }
         })
+    //load_url("#temperature", "{{temp_url}}")
 }
 
 function dim(temp) {

@@ -5,7 +5,6 @@ from django_thermostat.models import Context
 
 
 def current_internal_temperature(mo=None):
-    return "30"
     return requests.get(settings.INTERNAL_TEMPERATURE_URI).json()["temperature"]
 
 
