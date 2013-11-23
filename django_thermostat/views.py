@@ -9,7 +9,7 @@ def home(request):
     context = Context.objects.get_or_create(pk=1)
 
     return render_to_response(
-        "home.html",
+        "therm/home.html",
         {"context": context, },
     )
 
@@ -51,7 +51,7 @@ def toggle_heat_status(request):
 
 def read_heat_status(request):
     response = render_to_response(
-        "context.json",
+        "therm/context.json",
         {"data": Context.objects.get().to_json()},
         content_type="application/json",
     )
