@@ -1,3 +1,2 @@
 include LICENSE
-recursive-include harest/templates *
-recursive-include docs *
+

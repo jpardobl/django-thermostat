@@ -1,17 +1,17 @@
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'django_thermostat.views.home', name='home'),
-    # url(r'^django_thermostat/', include('django_thermostat.foo.urls')),
+    url(r'^rules_by_table/(\w+)?/?', "pypelibgui.views_policy_rule.rules_by_table", name="policy_rules_by_table"),
+    url(r'^del_rule/(\d+)?/?', "pypelibgui.views_policy_rule.del_rule", name="policy_del_rule"),
+    url(r'^add_rule/(\w+)?/?', "pypelibgui.views_policy_rule.add_rule", name="policy_add_rule"),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^rule_table/(\w+)?/?', "pypelibgui.views_policy_rule_table.edit", name="policy_rule_table"),
+
+
+
 )
