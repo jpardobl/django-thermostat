@@ -2,7 +2,7 @@
 
 HEATER_DID = "C1"
 HEATER_PROTOCOL = "X10"
-HEATER_API = "http://raspberry"
+HEATER_API = "http://raspberry:8000"
 HEATER_USERNAME = "raton"
 HEATER_PASSWORD = "soportep"
 HEATER_MARGIN = 0.5
