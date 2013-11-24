@@ -3,7 +3,9 @@ from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse
 from settings import HEATER_INCREMENT, INTERNAL_TEMPERATURE_URI
 from django.core.urlresolvers import reverse
-
+from django_thermostat.mappings import get_mappings
+from django_thermostat.temperature import read_temp
+import simplejson
 
 def home(request):
     context = Context.objects.get_or_create(pk=1)
@@ -12,6 +14,14 @@ def home(request):
         "therm/home.html",
         {"context": context, },
     )
+
+
+def temperature(request):
+    response = HttpResponse(
+        content=simplejson.dumps({"internal": read_temp()}),
+        content_type="application/json")
+    response['Cache-Control'] = 'no-cache'
+    return response
 
 
 def dim_temp(request, temp):
@@ -60,4 +70,7 @@ def read_heat_status(request):
 
 
 def context_js(request):
-    return render_to_response("context.js", {"temp_url": INTERNAL_TEMPERATURE_URI, }, conte)
+    return render_to_response(
+        "context.js",
+        {"temp_url": INTERNAL_TEMPERATURE_URI, },
+        content_type="application/javascript")

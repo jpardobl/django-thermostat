@@ -2,10 +2,16 @@ import requests
 from django_thermostat import settings
 from hautomation_restclient.cmds import pl_switch
 from django_thermostat.models import Context
+from django.core.urlresolvers import reverse
 
 
 def current_internal_temperature(mo=None):
-    return requests.get(settings.INTERNAL_TEMPERATURE_URI).json()["temperature"]
+    try:
+        ret = requests.get(reverse("temperature"))
+        return ret.json()["internal"]
+    except Exception, ex:
+        print "Ex eption %s" % ex
+        return None
 
 
 def confort_temperature(mo=None):

@@ -17,33 +17,45 @@ function toggle_manual() {
 }
 
 function read_heat_status() {
-    send_url("{%url 'read_heat_status'%}", function(data){
-        if (data.status == "ON") {
-            $("#heat_on_btn").removeClass("btn-danger")
-            $("#heat_on_btn").addClass("btn-success")
-        }
-        if (data.status == "OFF") {
-            $("#heat_on_btn").removeClass("btn-success")
-            $("#heat_on_btn").addClass("btn-danger")
-        }
-        $("#economic").val(data.economic)
-        $("#confort").val(data.confort)
-        if (data.flame == true) {
-            $("#flame").removeClass("label-default")
-            $("#flame").addClass("label-danger")
-        }else{
-            $("#flame").removeClass("label-danger")
-            $("#flame").addClass("label-default")
-        }
-        if(data.manual){
-            $("#heat_manual_btn").html("Manual")
-            $("#heat_manual_btn").addClass("btn-warning")
-        }else{
-            $("#heat_manual_btn").html("Program")
-            $("#heat_manual_btn").removeClass("btn-warning")
+    $.ajax({
+        url: "{%url 'read_heat_status'%}",
+
+
+        success: function(data){
+            if (data.status == "ON") {
+                $("#heat_on_btn").removeClass("btn-danger")
+                $("#heat_on_btn").addClass("btn-success")
             }
-        })
-    //load_url("#temperature", "{{temp_url}}")
+            if (data.status == "OFF") {
+                $("#heat_on_btn").removeClass("btn-success")
+                $("#heat_on_btn").addClass("btn-danger")
+            }
+            $("#economic").val(data.economic)
+            $("#confort").val(data.confort)
+            if (data.flame == true) {
+                $("#flame").removeClass("label-default")
+                $("#flame").addClass("label-danger")
+            }else{
+                $("#flame").removeClass("label-danger")
+                $("#flame").addClass("label-default")
+            }
+            if(data.manual){
+                $("#heat_manual_btn").html("Manual")
+                $("#heat_manual_btn").addClass("btn-warning")
+            }else{
+                $("#heat_manual_btn").html("Program")
+                $("#heat_manual_btn").removeClass("btn-warning")
+                }
+
+            },
+
+        error: function(ob){show_msg(ob.responseText)}
+        });
+
+    $.ajax({
+        url: "{%url 'temperature'%}",
+
+        success: function(data){window.console.log(data);$("#internal_temp").html(data.internal)}})
 }
 
 function dim(temp) {

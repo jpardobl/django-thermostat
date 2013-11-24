@@ -1,11 +1,11 @@
-{%extends 'base.html'%}
+{%extends 'therm/base.html'%}
 {%block middle_col%}
 <div class="btn-group-vertical">
     <button id="heat_on_btn" class="btn" onclick="toggle_heat_status()">Heat</button>
     <button id="heat_manual_btn" class="btn" onclick="toggle_manual()"></button>
 </div>
 <span id="flame" class="label label-default"><span class="glyphicon glyphicon-fire"></span></span>
-<div id="temperature"></div>
+<div id="internal_temp"></div>
 <h5>Confort Temperature</h5>
 <div class="btn-group-vertical">
     <button class="btn" onclick="bri('confort')">+</button>
