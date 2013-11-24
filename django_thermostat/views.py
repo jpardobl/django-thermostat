@@ -7,6 +7,7 @@ from django_thermostat.mappings import get_mappings
 from django_thermostat.temperature import read_temp
 import simplejson
 
+
 def home(request):
     context = Context.objects.get_or_create(pk=1)
 
@@ -18,7 +19,7 @@ def home(request):
 
 def temperature(request):
     response = HttpResponse(
-        content=simplejson.dumps({"internal": read_temp()}),
+        content=simplejson.dumps({"internal": "{0:.2f}".format(read_temp())}),
         content_type="application/json")
     response['Cache-Control'] = 'no-cache'
     return response
