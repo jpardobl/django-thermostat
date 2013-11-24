@@ -13,3 +13,4 @@ class Command(BaseCommand):
             evaluate()
             self.stdout.write("Ended at %s" % strftime("%d.%m.%Y %h:%m:%s", localtime()))
         except Exception, ex:
+            self.stderr.write("ERROR: %s" % err)
