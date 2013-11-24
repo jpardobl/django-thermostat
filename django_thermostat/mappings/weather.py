@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse
 
 def current_internal_temperature(mo=None):
     try:
-        ret = requests.get(reverse("temperature"))
-        return ret.json()["internal"]
+        ret = requests.get("http://raspberry/therm/temperature")
+        return float(ret.json()["internal"])
     except Exception, ex:
         print "Ex eption %s" % ex
         return None
