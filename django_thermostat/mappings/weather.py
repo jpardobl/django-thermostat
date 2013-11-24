@@ -53,7 +53,7 @@ def start_flame():
     ctxt = Context.objects.get()
     ctxt.flame = True
     ctxt.save()
-
+    print "Flame started"
 
 def stop_flame():
     pl_switch(
@@ -66,6 +66,7 @@ def stop_flame():
     ctxt = Context.objects.get()
     ctxt.flame = False
     ctxt.save()
+    print "Flame stopped"
 
 
 mappings = [
