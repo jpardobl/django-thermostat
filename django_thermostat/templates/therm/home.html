@@ -1,28 +1,45 @@
 {%extends 'therm/base.html'%}
 {%block middle_col%}
-<div class="btn-group-vertical">
-    <button id="heat_on_btn" class="btn" onclick="toggle_heat_status()">Heat</button>
-    <button id="heat_manual_btn" class="btn" onclick="toggle_manual()"></button>
-</div>
-<span id="flame" class="label label-default"><span class="glyphicon glyphicon-fire"></span></span>
-<div id="internal_temp"></div>
-<h5>Confort Temperature</h5>
-<div class="btn-group-vertical">
-    <button class="btn" onclick="bri('confort')">+</button>
-    <input type="text" id="confort">
-    <button class="btn" onclick="dim('confort')">-</button>
-</div>
-<h5>Economic Temperature</h5>
+    <div class="row">
+        <div class="col-md-6 col-xs-6 col-md-6 col-lg-6">
+            <div class="btn-group-vertical">
+                <button id="heat_on_btn" class="btn" onclick="toggle_heat_status()">Heat</button>
+                <button id="heat_manual_btn" class="btn" onclick="toggle_manual()"></button>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-6 col-md-6 col-lg-6">
+            <span id="flame" class="label label-default"><span class="glyphicon glyphicon-fire"></span></span>
+            <span class="label label-default"><span id="internal_temp"></span></span>
+        </div>
 
-<div class="btn-group-vertical">
-    <button class="btn" onclick="bri('economic')">+</button>
-    <input type="text" id="economic">
-    <button class="btn" onclick="dim('economic')">-</button>
-</div>
+    </div>
+    <div class="row"><div class="col-md-12 col-xs-12 col-md-12 col-lg-12"><strong>Settings</strong></div></div>
+    <div class="row">
+        <div class="col-md-6 col-xs-12 col-md-6 col-lg-6">
+            <strong>Confort</strong>
+            <div class="btn-group-vertical">
+                <button class="btn" onclick="bri('confort')"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                <span id="confort" class="center-block"></span>
+                <button class="btn" onclick="dim('confort')"><span class="glyphicon glyphicon-chevron-down"></span></button>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12 col-md-6 col-lg-6">
+            <div class="row">
+                <div class="col-md-6 col-xs-6 col-md-6 col-lg-6">
+                    <div class="visible-xs"><strong>Economic</strong></div>
+                </div>
+                <div class="col-md-6 col-xs-6 col-md-6 col-lg-6">
+                    <div class="btn-group-vertical">
+                        <button class="btn" onclick="bri('economic')"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                        <span id="economic"></span>
+                        <button class="btn" onclick="dim('economic')"><span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {%endblock%}
 {%block document_ready%}
-
-
 read_heat_status()
 window.setInterval(read_heat_status, 1000)
 {%endblock%}

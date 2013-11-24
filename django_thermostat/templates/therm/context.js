@@ -30,8 +30,8 @@ function read_heat_status() {
                 $("#heat_on_btn").removeClass("btn-success")
                 $("#heat_on_btn").addClass("btn-danger")
             }
-            $("#economic").val(data.economic)
-            $("#confort").val(data.confort)
+            $("#economic").html(data.economic + " º")
+            $("#confort").html(data.confort + " º")
             if (data.flame == true) {
                 $("#flame").removeClass("label-default")
                 $("#flame").addClass("label-danger")
@@ -55,7 +55,7 @@ function read_heat_status() {
     $.ajax({
         url: "{%url 'temperature'%}",
 
-        success: function(data){window.console.log(data);$("#internal_temp").html(data.internal)}})
+        success: function(data){window.console.log(data);$("#internal_temp").html(data.internal + " º")}})
 }
 
 function dim(temp) {
