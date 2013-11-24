@@ -3,6 +3,7 @@ from django_thermostat import settings
 from hautomation_restclient.cmds import pl_switch
 from django_thermostat.models import Context
 from django.core.urlresolvers import reverse
+from time import strftime, localtime
 
 
 def current_internal_temperature(mo=None):
@@ -53,7 +54,8 @@ def start_flame():
     ctxt = Context.objects.get()
     ctxt.flame = True
     ctxt.save()
-    print "Flame started"
+
+    print "%s flame started" % strftime("%d.%m.%Y %H:%M:%S", localtime())
 
 def stop_flame():
     pl_switch(
@@ -66,7 +68,7 @@ def stop_flame():
     ctxt = Context.objects.get()
     ctxt.flame = False
     ctxt.save()
-    print "Flame stopped"
+    print "%s flame stopped" % strftime("%d.%m.%Y %H:%M:%S", localtime())
 
 
 mappings = [
