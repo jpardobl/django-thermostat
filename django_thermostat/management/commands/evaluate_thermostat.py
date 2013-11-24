@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %h:%m:%s", localtime())
+            self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %h:%m:%s", localtime()))
             evaluate()
-            self.stdout.write("Ended at %s" % strftime("%d.%m.%Y %h:%m:%s", localtime())
+            self.stdout.write("Ended at %s" % strftime("%d.%m.%Y %h:%m:%s", localtime()))
         except Exception, ex:
