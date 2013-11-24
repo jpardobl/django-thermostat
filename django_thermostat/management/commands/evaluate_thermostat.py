@@ -9,8 +9,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %h:%m:%s", localtime()))
+            self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
             evaluate()
-            self.stdout.write("Ended at %s" % strftime("%d.%m.%Y %h:%m:%s", localtime()))
+            self.stdout.write("Ended at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
         except Exception, ex:
             self.stderr.write("ERROR: %s" % ex)
