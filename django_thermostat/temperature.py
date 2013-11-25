@@ -17,7 +17,7 @@ def read_temp_raw():
 
 
 def read_temp():
- #   return 4.5
+    #return 19.9
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
         time.sleep(0.2)

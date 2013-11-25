@@ -6,8 +6,19 @@ def current_day_of_week(mo=None):
     return strftime("%a", localtime())
 
 
-def current_hour(mo=None):
-    return "%f" % mktime(localtime())
+def current_time(mo=None):
+    lt = localtime()
+    st = "%s %s %s %s:%s:%s" %(
+        strftime("%d", lt),
+        strftime("%m", lt),
+        strftime("%Y", lt),
+        strftime("%H", lt),
+        strftime("%M", lt),
+        strftime("%S", lt))
+    print "tiempo intermedio: %s " % st
+    t = strptime(st, "%d %m %Y %H:%M:%S")
+    
+    return mktime(t)
 
 
 def is_weekend(mo=None):
@@ -18,12 +29,17 @@ def is_weekend(mo=None):
 
 
 def gen_comparing_time(hour, minute, second):
-    return mktime(strptime("%s %s %s %d:%d:%d" %(
-        strftime("%d", localtime()),
-        strftime("%m", localtime()),
-        strftime("%Y", localtime()),
+    lt = localtime()
+    st = "%s %s %s %d:%d:%d" %(
+        strftime("%d", lt),
+        strftime("%m", lt),
+        strftime("%Y", lt),
         hour,
         minute,
-        second), "%d %m %Y %H:%M:%S"))
+        second)
+    print "tiempo intermedio: %s " % st
+    t = strptime(st, "%d %m %Y %H:%M:%S")
+    print "Con %s:%s:%s, generamos: %s" % (hour, minute, second, t)
+    return mktime(t)
 
-mappings = [current_day_of_week, current_hour, is_weekend, ]
+mappings = [current_day_of_week, current_time, is_weekend, ]
