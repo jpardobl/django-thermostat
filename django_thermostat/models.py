@@ -1,7 +1,7 @@
 from django.db import models
 import simplejson
 from time import localtime, strftime
-from django_thermostat.mappings.timings import gen_comparing_time
+
 
 class Context(models.Model):
     confort_temperature = models.DecimalField(default=22, decimal_places=2, max_digits=4)
@@ -37,16 +37,14 @@ class Day(models.Model):
         return u"(current_day_of_week = %s)" % self.value
 
 
-class TimeRange(object):
+class TimeRange(models.Model):
     start = models.TimeField()
     end = models.TimeField()
 
+
     def to_pypelib(self, ):
-
-        return u"(%s > current_time && current_time < %s)" % (
-            gen_comparing_time(self.start, self.end,
-        )
-
+        pass
+        #return u"(%s > current_time && current_time < %s)" % (gen_comparing_time(self.start, self.end,
 
 
 TEMP_CHOICES = (
@@ -55,7 +53,7 @@ TEMP_CHOICES = (
 )
 
 
-class Rule(object):
+class Rule(models.Model):
 
     days = models.ManyToManyField(Day)
     ranges = models.ManyToManyField(TimeRange)
@@ -72,6 +70,3 @@ class Rule(object):
             for trang in ranges:
                 out = trang.to_pypelib()
             out = "%s ) " % out
-
-
-
