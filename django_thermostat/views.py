@@ -28,9 +28,9 @@ def temperature(request):
 def dim_temp(request, temp):
     context = Context.objects.get()
     if temp == "confort":
-        context.confort_temperature = context.confort_temperature - float(HEATER_INCREMENT)
+        context.confort_temperature = float(context.confort_temperature) - float(HEATER_INCREMENT)
     if temp == "economic":
-        context.economic_temperature = context.economic_temperature - float(HEATER_INCREMENT)
+        context.economic_temperature = float(context.economic_temperature) - float(HEATER_INCREMENT)
     context.save()
     return redirect(reverse("read_heat_status"))
 
@@ -38,9 +38,9 @@ def dim_temp(request, temp):
 def bri_temp(request, temp):
     context = Context.objects.get()
     if temp == "confort":
-        context.confort_temperature = context.confort_temperature + float(HEATER_INCREMENT)
+        context.confort_temperature = float(context.confort_temperature) + float(HEATER_INCREMENT)
     if temp == "economic":
-        context.economic_temperature = context.economic_temperature + float(HEATER_INCREMENT)
+        context.economic_temperature = float(context.economic_temperature) + float(HEATER_INCREMENT)
     context.save()
     return redirect(reverse("read_heat_status"))
 

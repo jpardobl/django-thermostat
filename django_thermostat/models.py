@@ -1,7 +1,7 @@
 from django.db import models
 import simplejson
 from time import localtime, strftime
-
+from django_thermostat.mappings.timings import gen_comparing_time
 
 class Context(models.Model):
     confort_temperature = models.DecimalField(default=22, decimal_places=2, max_digits=4)
@@ -22,5 +22,56 @@ class Context(models.Model):
             "manual": self.manual,
             "flame": self.flame,
             "tuned": self.tuned_temperature,
-            "time": "%s" % strftime("%I:%M:%S", localtime()),
+            "time": "%s" % strftime("%H:%M:%S", localtime()),
         })
+
+
+class Day(models.Model):
+    name = models.CharField(max_length=10)
+    value = models.CharField(max_length=3)
+
+    def __unicode__(self, ):
+        return u"%s" % self.name
+
+    def to_pypelib(self, ):
+        return u"(current_day_of_week = %s)" % self.value
+
+
+class TimeRange(object):
+    start = models.TimeField()
+    end = models.TimeField()
+
+    def to_pypelib(self, ):
+
+        return u"(%s > current_time && current_time < %s)" % (
+            gen_comparing_time(self.start, self.end,
+        )
+
+
+
+TEMP_CHOICES = (
+    ("confort_temperature", "Confort"),
+    ("economic_temperature", "Economic"),
+)
+
+
+class Rule(object):
+
+    days = models.ManyToManyField(Day)
+    ranges = models.ManyToManyField(TimeRange)
+    action = models.CharField(max_length=15, choices=TEMP_CHOICES)
+    active = models.BooleanField(default=True)
+
+    def to_pypelib(self, ):
+        out = "if ("
+        for day in self.days:
+            out = "%s || %s" % (out, day.to_pypelib())
+        out = "%s)" % out
+        if self.ranges.all().count():
+            out = "%s && ("
+            for trang in ranges:
+                out = trang.to_pypelib()
+            out = "%s ) " % out
+
+
+
