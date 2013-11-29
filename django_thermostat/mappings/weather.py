@@ -37,14 +37,15 @@ def tuned_temperature(mo=None):
 
 
 def tune_to_confort(mo=None):
-    print "Tunning to confort"
+    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Tunning to confort"
+
     ctxt = Context.objects.get()
     ctxt.tuned_temperature = ctxt.confort_temperature
     ctxt.save()
 
 
 def tune_to_economic(mo=None):
-    print "Tuning to economic"
+    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Tuning to economic"
     ctxt = Context.objects.get()
     ctxt.tuned_temperature = ctxt.economic_temperature
     ctxt.save()

@@ -9,15 +9,15 @@ from threading import Thread, Lock
 	@organization: i2CAT, OFELIA FP7
 
 	Resolver class
-	Attemps to resolve keywords agains values/actions through mappings	
+	Attemps to resolve keywords agains values/actions through mappings
 '''
 
 #Resolvers dictionary
-_resolvers = {}	
+_resolvers = {}
 
 '''Resolver class'''
 class Resolver():
-	
+
 	#Class attributes
 	_mappings = None
 	_mutex = None
@@ -30,53 +30,54 @@ class Resolver():
 	#set mappings
 	#@mappings: dictionary containing name <-> mapping (object...)
 	def setMappings(self,mappings):
-		with self._mutex:	
+		with self._mutex:
 			self._mappings = mappings
 
-	#Get or generate the resolver	
+	#Get or generate the resolver
 	@staticmethod
 	def getOrGenerateResolver(theId,mappings=None):
 		if theId in _resolvers:
 			return _resolvers[theId]
-		
+
 		if mappings == None:
-			raise Exception("Could not find the resolver with id:"+theId)		
+			raise Exception("Could not find the resolver with id:"+theId)
 
 		instance = Resolver(mappings)
 		#Save instance
-		_resolvers[theId] = instance	
-		
-		return instance		
-	
+		_resolvers[theId] = instance
+
+		return instance
+
 	#Try to parse as a number
 	def _getNumericValue(self,string):
 		try:
 			#Try to parse integer
-			return int(string)	
+			return int(string)
 		except:
 			#Try a floating point
 			try:
-				return float(string)	
+				return float(string)
 			except:
 				return string
-	
+
 	#Resolve a key
 	def resolve(self, key, metaObj):
 		with self._mutex:
+			#print "mappings: %s\n mmmmmmmmmmmmmmmmmmmmmmmm" % self._mappings
 			if not (isinstance(key,str) or  isinstance(key,unicode)):
 				raise Exception("Only string keys are able to be resolved")
 
 			if key not in self._mappings:
 				#print "[DEBUG] "+str(self._getNumericValue(key))
 				return self._getNumericValue(key)
-			
+
 			if isinstance(self._mappings[key],str):
-				#print "[DEBUG] resolved"+str(eval(self._mappings[key]))
+				#print "aaaaaaaaaaaaaaaaaa[DEBUG] resolved"+str(eval(self._mappings[key]))
 				return eval(self._mappings[key])
 			else:
-				#print "[DEBUG] Action" 
+				#print "[DEBUG] Action: %s" % self._mappings[key]
 				return self._mappings[key](metaObj)
-				
+
 
 #resolver = Resolver.getOrGenerateResolver("hola",{"test":"metaObj","test2":2})
 #metaObj = 3

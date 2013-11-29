@@ -1,6 +1,8 @@
 from django.db import models
 import simplejson
 from time import localtime, strftime
+import re
+from django_thermostat.utils import gen_comparing_time
 
 
 class Context(models.Model):
@@ -11,7 +13,6 @@ class Context(models.Model):
     heat_on = models.BooleanField(default=False)
     manual = models.BooleanField(default=True)
     flame = models.BooleanField(default=False)
-
 
     def to_json(self, ):
 
@@ -41,15 +42,45 @@ class TimeRange(models.Model):
     start = models.TimeField()
     end = models.TimeField()
 
+    def __unicode__(self, ):
+        return u"%s - %s" % (self.start, self.end)
+
+    def start_to_comparing(self, ):
+        return u"%s" % gen_comparing_time(
+            self.start.hour,
+            self.start.minute,
+            self.start.second,
+        )
+
+    def end_to_comparing(self, ):
+        return u"%s" % gen_comparing_time(
+            self.end.hour,
+            self.end.minute,
+            self.end.second,
+        )
 
     def to_pypelib(self, ):
-        pass
-        #return u"(%s > current_time && current_time < %s)" % (gen_comparing_time(self.start, self.end,
+        #((current_time > %f) && (current_time < %f))
+        return u"((current_time > %s ) && (current_time < %s))" % (
+            self.start_to_comparing(),
+            self.end_to_comparing())
 
 
 TEMP_CHOICES = (
-    ("confort_temperature", "Confort"),
-    ("economic_temperature", "Economic"),
+    ("tune_to_confort", "Confort"),
+    ("tune_to_economic", "Economic"),
+
+    ("salon_on", "Subir salon"),
+    ("salon_off", "Bajar salon"),
+
+    ("pasillo_off", "Bajar pasillo"),
+    ("pasillo_on", "Subir pasillo"),
+
+    ("cuarto_oeste_off", "Bajar pasillo oeste"),
+    ("cuarto_oeste_on", "Subir pasillo oeste"),
+
+    ("cuarto_este_off", "Bajar pasillo este"),
+    ("cuarto_este_on", "Bajar pasillo este"),
 )
 
 
@@ -57,16 +88,40 @@ class Rule(models.Model):
 
     days = models.ManyToManyField(Day)
     ranges = models.ManyToManyField(TimeRange)
-    action = models.CharField(max_length=15, choices=TEMP_CHOICES)
+    action = models.CharField(max_length=25, choices=TEMP_CHOICES, default="economic_temperature")
     active = models.BooleanField(default=True)
+    thermostat = models.BooleanField(default=False)
+
+    def __unicode__(self, ):
+        return "[%s] therm: %s; days: %s; time ranges: %s; action: %s" % (
+            self.active,
+            self.thermostat,
+            self.days.all(),
+            self.ranges.all(),
+            self.action,
+        )
 
     def to_pypelib(self, ):
-        out = "if ("
-        for day in self.days:
-            out = "%s || %s" % (out, day.to_pypelib())
-        out = "%s)" % out
-        if self.ranges.all().count():
-            out = "%s && ("
-            for trang in ranges:
-                out = trang.to_pypelib()
-            out = "%s ) " % out
+        if self.thermostat:
+            out = "if (heater_manual = 0 ) && "
+        else:
+            out = "if "
+        days = self.days.all()
+        ranges = self.ranges.all()
+
+        if days.count():
+            out = "%s (" % out
+            for day in days:
+                out = "%s %s || " % (out, day.to_pypelib())
+            out = re.sub("\|\|\s$", " ) &&", out)
+
+        if ranges.count():
+            out = "%s (" % out
+            for trang in self.ranges.all():
+                out = "%s %s || " % (out,  trang.to_pypelib())
+
+            out = re.sub("\|\|\s$", ") ", out)
+        if ranges.count() == 0 and days.count() == 0:
+            out = "%s 1 = 1 " % out
+
+        return "%s then accept do %s" % (out, self.action)

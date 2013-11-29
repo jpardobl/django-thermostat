@@ -2,7 +2,8 @@
 from django_thermostat.mappings import get_mappings
 from pypelib.RuleTable import RuleTable
 from django_thermostat.mappings import get_mappings
-from django_thermostat.mappings.timings import gen_comparing_time
+from django_thermostat.utils import gen_comparing_time
+from django_thermostat.models import Rule
 
 
 def evaluate():
@@ -29,14 +30,26 @@ def evaluate():
     print " ############################## tuned %s" % mappings["tuned_temperature"]()
     print " ############################## flame %s" % mappings["flame_on"]()
     print " ############################## heat on %s" % mappings["heater_on"]()
-    table.setPolicy(False)
+    table.setPolicy(True)
 
-    table.addRule("if heater_manual = 1  then accept")
-    table.addRule("if (heater_manual = 0 ) && (0 = is_weekend) && ((current_time > %f) && (current_time < %f)) then accept" % (start_time, end_time))
-    #table.addRule("if 1 = 1 then accept do tune_to_economic")
+    table.addRule("if heater_manual = 1  then accept do tune_to_confort")
+#    table.addRule("if (heater_manual = 0 ) && (0 = is_weekend) && ((current_time > %f) && (current_time < %f)) then accept" % (start_time, end_time))
+
+    for rule in Rule.objects.filter(active=True).order_by("pk"):
+        table.addRule(rule.to_pypelib())
+
+ #   print "DUMP *******************************"
+ #   table.dump()
+ #   print "END DUMP *******************************"
+
+    metaObj = {}
+
+    #Create the metaObj
+
+    table.evaluate(metaObj)
 
     table1 = RuleTable(
-        "Calecfaccion Invierno laborables 11",
+        "Calecfaccion",
         mappings,
         "RegexParser",
         #rawfile,
@@ -44,21 +57,6 @@ def evaluate():
         None)
     table1.addRule("if heater_on = 0 then deny")
     table1.addRule("if current_internal_temperature < tuned_temperature then accept")
-#   table1.addRule("if 1 = 1 then deny")
-
-    print "DUMP *******************************"
-    table.dump()
-    print "END DUMP *******************************"
-
-
-    metaObj = {}
-
-    #Create the metaObj
-    try:
-        table.evaluate(metaObj)
-        mappings["tune_to_confort"]()
-    except Exception:
-        mappings["tune_to_economic"]()
 
     print "DUMP *******************************"
     table1.dump()

@@ -1,35 +1,68 @@
 #This file mainly exists to allow python setup.py test to work.
 import unittest
-from pypelibgui.models import RuleTableModel, RuleModel
+from django_thermostat.models import *
 
 
 class TestRules(unittest.TestCase):
-    def test_creation(self):
-        rt = RuleTableModel()
-        rt.name = "tabla1"
-        rt.type = "nonterminal"
-        rt.save()
-        
-        r1 = RuleTableModel.objects.get(name="Tabla1")
+    def setup(self, ):
+        Day(name="Mon", value="Mon").save()
+        Day(name="Tue", value="Tue").save()
+        Day(name="Wed", value="Wed").save()
+        Day(name="Thu", value="Thu").save()
+        Day(name="Fri", value="Fri").save()
+
+    def test_to_pyplib(self, ):
+        self.setup()
+        d = Day.objects.get(name="Mon")
+
+        tr = TimeRange(start="6:00:00", end="7:00:00")
+        tr.save()
+        r = Rule()
+
+        r.active = True
+        r.action = "confort_temperature"
+        r.save()
+        r.days.add(d)
+        r.ranges.add(tr)
 
         self.assertEquals(
-            r1.inner.name,
-            rtm.name,
-            "Not properly creating Rule Tables")
+            r.to_pypelib(),
 
-    def test_deletion(self, ):
-        RuleTableModel.objects.all().delete()
-        rtm = RuleTableModel()
-        rtm.name = "Tabla1"
-        rtm.save()
+            "if ( (current_day_of_week = Mon)  ) && ( (1385528400.0 > current_time && current_time < 1385532000.0) )  then do confort_temperature",
+            "Not properly trasnsforming to pypelib, got: %s" % r.to_pypelib()
+        )
 
-        r1 = RuleTableModel.objects.get(name="Tabla1")
+        r.days.add(Day.objects.get(name="Tue"))
 
-        r1.delete()
+        self.assertEquals(
+            r.to_pypelib(),
+            "if ( (current_day_of_week = Mon) ||  (current_day_of_week = Tue)  ) && ( (1385528400.0 > current_time && current_time < 1385532000.0) )  then do confort_temperature",
+            "Not properly trasnsforming to pypelib, got: %s" % r.to_pypelib()
+        )
 
-        self.asset
-        r1 = RuleTableModel.objects.get(name="Tabla1")
+        r.days.add(Day.objects.get(name="Fri"))
 
+        self.assertEquals(
+            r.to_pypelib(),
+            "if ( (current_day_of_week = Mon) ||  (current_day_of_week = Tue) ||  (current_day_of_week = Fri)  ) && ( (1385528400.0 > current_time && current_time < 1385532000.0) )  then do confort_temperature",
+            "Not properly trasnsforming to pypelib, got: %s" % r.to_pypelib()
+        )
+
+        r.days.all().delete()
+
+        self.assertEquals(
+            r.to_pypelib(),
+            "if ( (1385528400.0 > current_time && current_time < 1385532000.0) )  then do confort_temperature",
+            "Not properly trasnsforming to pypelib, got: %s" % r.to_pypelib()
+        )
+
+        r.ranges.all().delete()
+
+        self.assertEquals(
+            r.to_pypelib(),
+            "if 1 = 1  then do confort_temperature",
+            "Not properly trasnsforming to pypelib, got: %s" % r.to_pypelib()
+        )
 
 
 

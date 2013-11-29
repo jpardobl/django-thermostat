@@ -28,3 +28,10 @@ def read_temp():
         temp_c = float(temp_string) / 1000.0
         temp_f = temp_c * 9.0 / 5.0 + 32.0
         return float(temp_c)
+
+if __name__ == "__main__":
+    #import django_thermostat.rules import evaluate
+
+    while(True):
+        evaluate()
+        time.sleep(10)
