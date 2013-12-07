@@ -86,8 +86,8 @@ TEMP_CHOICES = (
 
 class Rule(models.Model):
 
-    days = models.ManyToManyField(Day)
-    ranges = models.ManyToManyField(TimeRange)
+    days = models.ManyToManyField(Day, null=True, blank=True)
+    ranges = models.ManyToManyField(TimeRange, null=True, blank=True)
     action = models.CharField(max_length=25, choices=TEMP_CHOICES, default="economic_temperature")
     active = models.BooleanField(default=True)
     thermostat = models.BooleanField(default=False)

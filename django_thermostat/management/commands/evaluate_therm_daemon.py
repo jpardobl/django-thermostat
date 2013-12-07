@@ -15,7 +15,7 @@ class Command(BaseCommand):
             while(True):
                 self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
                 evaluate()
-                sleep(args[0])
+                sleep(float(args[0]))
 
         except Exception, ex:
             self.stderr.write("ERROR: %s" % ex)

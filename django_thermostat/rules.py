@@ -6,6 +6,26 @@ from django_thermostat.utils import gen_comparing_time
 from django_thermostat.models import Rule
 
 
+def evaluate_non_themp():
+    mappings = get_mappings()
+    table = RuleTable(
+        "Non thermostat rules",
+        mappings,
+        "RegexParser",
+        #rawfile,
+        "RAWFile",
+        None)
+    table.setPolicy(False)
+    for rule in Rule.objects.filter(active=True, thermostat=True).order_by("pk"):
+        table.addRule(rule.to_pypelib())
+    table.dump()
+    try:
+        table.evaluate({})
+    except Exception:
+        pass
+
+
+
 def evaluate():
 
     mappings = get_mappings()
@@ -17,11 +37,11 @@ def evaluate():
         "RAWFile",
         None)
 
-    start_time = gen_comparing_time(10, 0, 0)
+    #start_time = gen_comparing_time(10, 0, 0)
 
-    end_time = gen_comparing_time(13, 0, 0)
-    print " ############################## estar time: %s" % start_time
-    print " ############################## end time: %s " % end_time
+    #end_time = gen_comparing_time(13, 0, 0)
+    #print " ############################## estar time: %s" % start_time
+    #print " ############################## end time: %s " % end_time
     print " ############################## current time: %s " % mappings["current_time"]()
     print " ############################## current day of week: %s" % mappings["current_day_of_week"]()
     print " ############################## current temp %s" % mappings["current_internal_temperature"]()
@@ -30,23 +50,26 @@ def evaluate():
     print " ############################## tuned %s" % mappings["tuned_temperature"]()
     print " ############################## flame %s" % mappings["flame_on"]()
     print " ############################## heat on %s" % mappings["heater_on"]()
-    table.setPolicy(True)
+    table.setPolicy(False)
 
     table.addRule("if heater_manual = 1  then accept do tune_to_confort")
 #    table.addRule("if (heater_manual = 0 ) && (0 = is_weekend) && ((current_time > %f) && (current_time < %f)) then accept" % (start_time, end_time))
 
-    for rule in Rule.objects.filter(active=True).order_by("pk"):
+    for rule in Rule.objects.filter(active=True, thermostat=True).order_by("pk"):
         table.addRule(rule.to_pypelib())
 
  #   print "DUMP *******************************"
- #   table.dump()
+    table.dump()
  #   print "END DUMP *******************************"
 
     metaObj = {}
 
     #Create the metaObj
+    try:
+        table.evaluate(metaObj)
 
-    table.evaluate(metaObj)
+    except Exception:
+        mappings["tune_to_economic"]()
 
     table1 = RuleTable(
         "Calecfaccion",

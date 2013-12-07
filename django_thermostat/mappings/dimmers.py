@@ -4,14 +4,15 @@ from hautomation_restclient.cmds import pl_switch
 
 
 def salon_on(mo=None):
-    pl_switch(
+    print "subir salon"
+    print pl_switch(
         settings.HEATER_PROTOCOL,
         settings.SALON_DID,
         "on",
         settings.HEATER_API,
         settings.HEATER_USERNAME,
         settings.HEATER_PASSWORD)
-
+    print "ya hemos subido salon"
 
 def salon_off(mo=None):
     print "bajar ***********************************"
