@@ -4,12 +4,13 @@ from hautomation_restclient.cmds import pl_switch
 from django_thermostat.models import Context
 from django.core.urlresolvers import reverse
 from time import strftime, localtime
+import os
 
 
 def current_internal_temperature(mo=None):
     try:
-        ret = requests.get(settings.INTERNAL_TEMPERATURE_URI)
-        return float(ret.json()["internal"])
+        ret = requests.get(os.path.join(settings.INTERNAL_TEMPERATURE_URI, "in"))
+        return float(ret.json()["celsius"])
     except Exception, ex:
         print "Ex eption %s" % ex
         return None

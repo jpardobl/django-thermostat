@@ -1,6 +1,6 @@
 from django_thermostat.models import Context
 from django.shortcuts import render_to_response, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from settings import HEATER_INCREMENT, INTERNAL_TEMPERATURE_URI
 from django.core.urlresolvers import reverse
 from django_thermostat.mappings import get_mappings
@@ -18,10 +18,10 @@ def home(request):
 
 
 def temperature(request, thermometer):
-    if thermometer no in ("in", "out"):
+    if thermometer not in ("in", "out"):
         response = HttpResponseBadRequest(
             content=simplejson.dumps({"error": "Thermometer must be 'in' or 'out'"}),
-            content_type="application/json"))
+            content_type="application/json")
         response['Cache-Control'] = 'no-cache'
         return response
 

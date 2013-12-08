@@ -36,7 +36,7 @@ def read_temp(thermometer):
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
         temp_f = temp_c * 9.0 / 5.0 + 32.0
-        return temp_c, temp_f
+        return float(temp_c)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Read temperatures')
