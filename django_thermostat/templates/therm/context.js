@@ -57,7 +57,7 @@ function read_heat_status() {
     $.ajax({
         url: "{%url 'temperature' 'in'%}",
 
-        success: function(data){window.console.log(data);$("#internal_temp").html("Current... " + data.internal + " º")}})
+        success: function(data){window.console.log(data);$("#internal_temp").html("Current... " + data.celsius + " º")}})
 }
 
 function dim(temp) {
