@@ -81,6 +81,8 @@ TEMP_CHOICES = (
 
     ("cuarto_este_off", "Bajar pasillo este"),
     ("cuarto_este_on", "Bajar pasillo este"),
+    ("a_lights_on", "Subir grupo A"),
+    ("a_lights_off", "Bajar grupo A"),
 )
 
 

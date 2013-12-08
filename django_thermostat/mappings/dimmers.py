@@ -1,6 +1,9 @@
 
 from django_thermostat import settings
-from hautomation_restclient.cmds import pl_switch
+from hautomation_restclient.cmds import (
+    pl_switch,
+    pl_all_lights_off,
+    pl_all_lights_on)
 
 
 def salon_on(mo=None):
@@ -85,6 +88,24 @@ def cuarto_este_on(mo=None):
         settings.HEATER_PASSWORD)
 
 
+def a_lights_off(mo=None):
+    pl_all_lights_off(
+        settings.HEATER_PROTOCOL,
+        "A",
+        SERVER_URL,
+        USERNAME,
+        PASSWORD)
+
+
+def a_lights_on(mo=None):
+    pl_all_lights_on(
+        settings.HEATER_PROTOCOL,
+        "A",
+        SERVER_URL,
+        USERNAME,
+        PASSWORD)
+
+
 mappings = [
     salon_off,
     salon_on,
@@ -94,4 +115,6 @@ mappings = [
     cuarto_oeste_on,
     pasillo_on,
     pasillo_off,
+    a_lights_off,
+    a_lights_on,
     ]

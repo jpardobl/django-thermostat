@@ -16,7 +16,7 @@ def evaluate_non_themp():
         "RAWFile",
         None)
     table.setPolicy(False)
-    for rule in Rule.objects.filter(active=True, thermostat=True).order_by("pk"):
+    for rule in Rule.objects.filter(active=True, thermostat=False).order_by("pk"):
         table.addRule(rule.to_pypelib())
     table.dump()
     try:
