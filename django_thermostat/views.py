@@ -17,7 +17,7 @@ def home(request):
     )
 
 
-def temperature(request, thermometer):
+def temperature(request):
     if thermometer not in ("in", "out"):
         response = HttpResponseBadRequest(
             content=simplejson.dumps({"error": "Thermometer must be 'in' or 'out'"}),
@@ -26,7 +26,11 @@ def temperature(request, thermometer):
         return response
 
     response = HttpResponse(
-        content=simplejson.dumps({"celsius": "{0:.2f}".format(read_temp(thermometer))}),
+        content=simplejson.dumps(
+            {
+                "internal": "{0:.2f}".format(read_temp("in"),
+                "external": "{0:.2f}".format(read_temp("out"),
+            }),
         content_type="application/json")
     response['Cache-Control'] = 'no-cache'
     return response

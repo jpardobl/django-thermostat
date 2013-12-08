@@ -9,8 +9,8 @@ import os
 
 def current_internal_temperature(mo=None):
     try:
-        ret = requests.get(os.path.join(settings.INTERNAL_TEMPERATURE_URI, "in"))
-        return float(ret.json()["celsius"])
+        ret = requests.get(os.path.join(settings.INTERNAL_TEMPERATURE_URI))
+        return float(ret.json()["internal"])
     except Exception, ex:
         print "Ex eption %s" % ex
         return None

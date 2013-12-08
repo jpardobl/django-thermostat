@@ -55,9 +55,11 @@ function read_heat_status() {
         });
 
     $.ajax({
-        url: "{%url 'temperature' 'in'%}",
-
-        success: function(data){window.console.log(data);$("#internal_temp").html("Current... " + data.celsius + " º")}})
+        url: "{%url 'temperature'%}",
+        success: function(data){
+            $("#internal_temp").html("Inside... " + data.internal + " º")
+            $("#external_temp").html("Outside... " + data.external + " º")
+        }})
 }
 
 function dim(temp) {
