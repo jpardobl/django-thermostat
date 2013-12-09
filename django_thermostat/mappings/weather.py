@@ -60,6 +60,18 @@ def heater_on(mo=None):
     return 1 if Context.objects.get().heat_on else 0
 
 
+def set_heater_on(no=None):
+    ctxt = Context.objects.get()
+    ctxt.heat_on = True
+    ctxt.save()
+
+
+def set_heater_off(no=None):
+    ctxt = Context.objects.get()
+    ctxt.heat_on = False
+    ctxt.save()
+
+
 def flame_on():
     return 1 if Context.objects.get().flame else 0
 
@@ -111,4 +123,6 @@ mappings = [
     tune_to_confort,
     tune_to_economic,
     tuned_temperature,
+    set_heater_off,
+    set_heater_on,
     ]
