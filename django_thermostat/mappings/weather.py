@@ -38,7 +38,7 @@ def tuned_temperature(mo=None):
 
 
 def tune_to_confort(mo=None):
-    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Tunning to confort"
+    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Tunning to confort"
 
     ctxt = Context.objects.get()
     ctxt.tuned_temperature = ctxt.confort_temperature
@@ -46,7 +46,7 @@ def tune_to_confort(mo=None):
 
 
 def tune_to_economic(mo=None):
-    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Tuning to economic"
+    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Tuning to economic"
     ctxt = Context.objects.get()
     ctxt.tuned_temperature = ctxt.economic_temperature
     ctxt.save()
@@ -77,7 +77,7 @@ def flame_on():
 
 
 def start_flame():
-    print "Starting flame"
+    #print "Starting flame"
 
     pl_switch(
         settings.HEATER_PROTOCOL,
@@ -91,11 +91,11 @@ def start_flame():
     ctxt.flame = True
     ctxt.save()
 
-    print "%s flame started" % strftime("%d.%m.%Y %H:%M:%S", localtime())
+    #print "%s flame started" % strftime("%d.%m.%Y %H:%M:%S", localtime())
 
 
 def stop_flame():
-    print "stoping flame"
+    #print "stoping flame"
 
     pl_switch(
         settings.HEATER_PROTOCOL,
@@ -108,7 +108,7 @@ def stop_flame():
     ctxt = Context.objects.get()
     ctxt.flame = False
     ctxt.save()
-    print "%s flame stopped" % strftime("%d.%m.%Y %H:%M:%S", localtime())
+    #print "%s flame stopped" % strftime("%d.%m.%Y %H:%M:%S", localtime())
 
 
 mappings = [

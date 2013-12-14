@@ -89,21 +89,27 @@ def cuarto_este_on(mo=None):
 
 
 def a_lights_off(mo=None):
+    print "bajamos todo"
     pl_all_lights_off(
         settings.HEATER_PROTOCOL,
         "A",
-        SERVER_URL,
-        USERNAME,
-        PASSWORD)
+        settings.HEATER_API,
+        settings.HEATER_USERNAME,
+        settings.HEATER_PASSWORD)
+
+    print "todo bajado"
 
 
 def a_lights_on(mo=None):
+    print "subimos todo"
     pl_all_lights_on(
         settings.HEATER_PROTOCOL,
         "A",
-        SERVER_URL,
-        USERNAME,
-        PASSWORD)
+        settings.HEATER_API,
+        settings.HEATER_USERNAME,
+        settings.HEATER_PASSWORD)
+
+    print "todo subido"
 
 
 mappings = [
