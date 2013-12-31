@@ -1,10 +1,10 @@
 from django_thermostat.models import Context
 from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
-from settings import HEATER_INCREMENT, INTERNAL_TEMPERATURE_URI
+from settings import HEATER_INCREMENT, LIST_THERMOMETERS_API
 from django.core.urlresolvers import reverse
 from django_thermostat.mappings import get_mappings
-from django_thermostat.temperature import read_temp
+from django_thermometer.temperature import read_temperatures
 import simplejson
 
 
@@ -17,13 +17,20 @@ def home(request):
     )
 
 
-def temperature(request):
+def temperatures(request):
+    therms = read_temperatures()
+    known_therms = {}
+    for x in Thermometer.objects.all():
+        known_therms[x.tid] = x.caption
+    out = {}
+    for tid, data in thems:
+        try:
+            out[known_therms[tid]] = data
+        except KeyError:
+            out[tid] = data
+
     response = HttpResponse(
-        content=simplejson.dumps(
-            {
-                "internal": "{0:.2f}".format(read_temp("in")),
-                "external": "{0:.2f}".format(read_temp("out")),
-            }),
+        content=simplejson.dumps(out),
         content_type="application/json")
     response['Cache-Control'] = 'no-cache'
     return response
@@ -77,5 +84,5 @@ def read_heat_status(request):
 def context_js(request):
     return render_to_response(
         "context.js",
-        {"temp_url": INTERNAL_TEMPERATURE_URI, },
+        {"temperatures_uri": LIST_THERMOMETERS_API, },
         content_type="application/javascript")

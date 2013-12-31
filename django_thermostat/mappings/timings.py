@@ -1,9 +1,25 @@
 from time import strftime, localtime, mktime, strptime
+from astral import Location#, AstralGeocoder
+import datetime
+from django.conf import settings
+from pytz import timezone
 
 
 def current_day_of_week(mo=None):
 
     return strftime("%a", localtime())
+
+
+def current_month(mo=None):
+    return strftime("%m", localtime())
+
+
+def current_year(mo=None):
+    return strftime("%Y", localtime())
+
+
+def current_day_of_month(mo=None):
+    return strftime("%d", localtime())
 
 
 def current_time(mo=None):
@@ -25,4 +41,24 @@ def is_weekend(mo=None):
         return 1
     return 0
 
-mappings = [current_day_of_week, current_time, is_weekend, ]
+
+def is_at_night(mo=None):
+    a = Location()
+    a.timezone = settings.TIME_ZONE
+    print a
+    #sunrise = mktime(strptime(a.sunrise(), "%Y-%m-%d %H:%M:%S")) #2013-12-13 22:57:02
+    sunset = mktime(strptime(str(a.sunset()), "%Y-%m-%d %H:%M:%S+"))
+
+    if current_time > sunset:
+        return True
+    return False
+
+
+mappings = [
+    current_day_of_week,
+    current_time,
+    is_weekend,
+    current_month,
+    current_day_of_month,
+    current_year,
+    ]

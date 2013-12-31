@@ -5,6 +5,16 @@ import re
 from django_thermostat.utils import gen_comparing_time
 
 
+class Thermometer(models.Model):
+
+    tid = models.CharField(max_length=30)
+    caption = models.CharField(max_length=30, null=True, blank=True)
+    is_internal_reference = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return u"%s" % self.caption if self.caption is not None else self.tid
+
+
 class Context(models.Model):
     confort_temperature = models.DecimalField(default=22, decimal_places=2, max_digits=4)
     economic_temperature = models.DecimalField(default=18, decimal_places=2, max_digits=4)

@@ -1,5 +1,5 @@
-django-thermometer
-==================
+django-thermostat
+=================
 
 Cronotherostat developed as a Django app. It belongs to the Python Home Automation Project
 

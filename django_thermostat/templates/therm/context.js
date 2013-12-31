@@ -55,7 +55,8 @@ function read_heat_status() {
         });
 
     $.ajax({
-        url: "{%url 'temperature'%}",
+        url: "{%url 'temperatures_uri'%}",
+        data: "temperatures=True",
         success: function(data){
             $("#internal_temp").html("Inside... " + data.internal + " º")
             $("#external_temp").html("Outside... " + data.external + " º")
