@@ -23,11 +23,12 @@ setup(
         },
     install_requires = (
       "Django==1.5",
-      "simplejson==2.6.2",
+      "simplejson",
       "django-compressor==1.3",
       "pyparsing",
       'django_thermometer',
       'hautomation_restclient',
+      "requests",
     ),
     dependency_links = [
         "https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",
