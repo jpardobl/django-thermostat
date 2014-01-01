@@ -1,5 +1,6 @@
 LICENSE
 MANIFEST.in
+setup.py
 django_thermostat.egg-info/PKG-INFO
 django_thermostat.egg-info/SOURCES.txt
 django_thermostat.egg-info/dependency_links.txt

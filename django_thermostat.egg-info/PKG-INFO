@@ -1,13 +1,13 @@
 Metadata-Version: 1.1
 Name: django-thermostat
-Version: 0.1
+Version: 0.2
 Summary: A Django app cronothermostat. It is a Python Home Automation component
 Home-page: http://jpardobl.com
 Author: Javier Pardo Blasco(jpardobl)
 Author-email: jpardo@digitalhigh.es
 License: BSD License
-Description: django-thermometer
-        ==================
+Description: django-thermostat
+        =================
         
         Cronotherostat developed as a Django app. It belongs to the Python Home Automation Project
         

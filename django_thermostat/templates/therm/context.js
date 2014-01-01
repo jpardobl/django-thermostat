@@ -55,11 +55,15 @@ function read_heat_status() {
         });
 
     $.ajax({
-        url: "{%url 'temperatures_uri'%}",
+        url: "{%url 'temperatures'%}",
+        dataType: "json",
         data: "temperatures=True",
         success: function(data){
-            $("#internal_temp").html("Inside... " + data.internal + " º")
-            $("#external_temp").html("Outside... " + data.external + " º")
+		$("#temperatures").html("")
+		$.each(data, function(key, val) {
+			$("#temperatures").append("<span class='label label-"+(val[1]? 'success':'default')+"'>" + key + "... " + val[0]['celsius'] +"º</span><br>")
+			console.log("key: " + key + "; val: " + val);
+  		});
         }})
 }
 
