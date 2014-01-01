@@ -60,7 +60,7 @@ read_heat_status()
 refresh_on()
 {%endblock%}
 {%block script%}
-val ti
+var ti
 function refresh_on(){
     ti = window.setInterval(read_heat_status, 2000)
 }

@@ -1,11 +1,11 @@
-from django_thermostat.models import Context
+from django_thermostat.models import Context, Thermometer
 from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from settings import HEATER_INCREMENT, LIST_THERMOMETERS_API
 from django.core.urlresolvers import reverse
 from django_thermostat.mappings import get_mappings
 from django_thermometer.temperature import read_temperatures
-import simplejson
+import simplejson, logging
 from django.db.models import Q
 
 
@@ -16,7 +16,7 @@ def set_internal_reference(request, tid):
         if therm.tid == tid or therm.caption == tid:
             return HttpResponse("")
         therm.is_internal_reference = False
-        therm.false()
+        therm.save()
     except Exception, err:
         logging.error("set_internal_reference: %s" % err)
         pass
@@ -24,6 +24,7 @@ def set_internal_reference(request, tid):
         therm = Thermometer.objects.get(Q(tid=tid) | Q(caption=tid))
         therm.is_internal_reference = True
         therm.save()
+	return HttpResponse("")
     except Exception, ex:
         logging.error("set_internal_reference: %s" % ex)
         return HttpResponseServerError(ex)
@@ -42,13 +43,13 @@ def temperatures(request):
     therms = read_temperatures()
     known_therms = {}
     for x in Thermometer.objects.all():
-        known_therms[x.tid] = x.caption
+        known_therms[x.tid] = [x.caption, x.is_internal_reference]
     out = {}
-    for tid, data in thems:
+    for tid, data in therms.items():
         try:
-            out[known_therms[tid]] = data
+            out[known_therms[tid][0]] = [data, known_therms[tid][1]] 
         except KeyError:
-            out[tid] = data
+            out[tid] = [data, False]
 
     response = HttpResponse(
         content=simplejson.dumps(out),
