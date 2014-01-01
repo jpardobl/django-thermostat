@@ -61,7 +61,7 @@ function read_heat_status() {
         success: function(data){
 		$("#temperatures").html("")
 		$.each(data, function(key, val) {
-			$("#temperatures").append("<span class='label label-"+(val[1]? 'success':'default')+"'>" + key + "... " + val[0]['celsius'] +"º</span><br>")
+			$("#temperatures").append("<span onclick='set_int_ref("+key+")' class='label label-"+(val[1]? 'success':'default')+"'>" + key + "... " + val[0]['celsius'] +"º</span><br>")
 			console.log("key: " + key + "; val: " + val);
   		});
         }})
@@ -87,4 +87,9 @@ function bri(temp) {
             $("#economic").val(data.economic)
         }
         })
+}
+
+function set_int_ref(id) {
+    refresh_off()
+    send_url("{%url 'set_internal_reference'%}" + id, function(d){refresh_on()})
 }

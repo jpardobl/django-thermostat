@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'^dim_temp/(\w+)?$', "django_thermostat.views.dim_temp", name="dim_temp"),
     url(r'^toggle_heat_manual', "django_thermostat.views.toggle_heat_manual", name="toggle_heat_manual"),
     url(r'^temperatures', "django_thermostat.views.temperatures", name="temperatures"),
+    url(r'^set_internal_reference/([\d\w\-]+)?/?$', "django_thermostat.views.set_internal_reference", name="set_internal_reference"),
 
 )

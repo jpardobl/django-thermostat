@@ -57,8 +57,14 @@
 {%endblock%}
 {%block document_ready%}
 read_heat_status()
-window.setInterval(read_heat_status, 1000)
+refresh_on()
 {%endblock%}
 {%block script%}
-
+val ti
+function refresh_on(){
+    ti = window.setInterval(read_heat_status, 2000)
+}
+function refresh_off(){
+    clearInterval(ti)
+}
 {%endblock%}

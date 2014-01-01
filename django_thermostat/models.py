@@ -8,9 +8,9 @@ from django_thermometer.temperature import read_temperatures
 
 class Thermometer(models.Model):
 
-    tid = models.CharField(max_length=30)
-    caption = models.CharField(max_length=30, null=True, blank=True)
-    is_internal_reference = models.BooleanField(default=False)
+    tid = models.CharField(max_length=30, unique=True)
+    caption = models.CharField(max_length=30, null=True, blank=True, unique=True)
+    is_internal_reference = models.NullBooleanField(unique=True)
 
     def __unicode__(self):
         return u"%s" % self.caption if self.caption is not None else self.tid
