@@ -3,6 +3,7 @@ import simplejson
 from time import localtime, strftime
 import re
 from django_thermostat.utils import gen_comparing_time
+from django_thermometer.temperature import read_temperatures
 
 
 class Thermometer(models.Model):
@@ -13,6 +14,9 @@ class Thermometer(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.caption if self.caption is not None else self.tid
+
+    def read(self, ):
+        return read_temperatures(self.tid)[self.tid]["celsius"]
 
 
 class Context(models.Model):

@@ -83,5 +83,5 @@ def evaluate():
         try:
             mappings["stop_flame"]()
         except Exception, ex:
-            logging.error("ERROR: Cant stop flame: %s" % ex)s
+            logging.error("ERROR: Cant stop flame: %s" % ex)
 

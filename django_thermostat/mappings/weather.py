@@ -9,7 +9,6 @@ import os, logging
 
 def current_internal_temperature(mo=None):
     try:
-
         return float(Thermometer.objects.get(is_internal_reference=True).read())
     except Exception, ex:
         logging.error(ex)
