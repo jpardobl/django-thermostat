@@ -3,10 +3,11 @@ import unittest
 from django_thermostat.models import *
 
 
-class TestAstral(unittest.TestCase):
+class TestMappings(unittest.TestCase):
     def test_is_at_night(self, ):
         from mappings.timings import is_at_night
-        is_at_night()
+        self.assertTrue(is_at_night() == 1,
+            "Not properly calculating is_at_night")
 
 
 class TestRules(unittest.TestCase):

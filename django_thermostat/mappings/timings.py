@@ -35,6 +35,7 @@ def current_time(mo=None):
     return mktime(t)
 
 
+
 def is_weekend(mo=None):
     today = current_day_of_week()
     if today == "Sat" or today == "Sun":
@@ -45,11 +46,14 @@ def is_weekend(mo=None):
 def is_at_night(mo=None):
     a = Location()
     a.timezone = settings.TIME_ZONE
-    print a
-    #sunrise = mktime(strptime(a.sunrise(), "%Y-%m-%d %H:%M:%S")) #2013-12-13 22:57:02
-    sunset = mktime(strptime(str(a.sunset()), "%Y-%m-%d %H:%M:%S+"))
 
-    if current_time > sunset:
+    #sunrise = mktime(strptime(a.sunrise(), "%Y-%m-%d %H:%M:%S")) #2013-12-13 22:57:02
+    sunset = mktime(strptime(a.sunset().strftime("%a %b %d %H:%M:%S %Y", )))
+    sunrise = mktime(strptime(a.sunrise().strftime("%a %b %d %H:%M:%S %Y", )))
+
+    lt = localtime()
+
+    if localtime() > sunset and localtime() < sunrise:
         return True
     return False
 
@@ -61,4 +65,5 @@ mappings = [
     current_month,
     current_day_of_month,
     current_year,
+    is_at_night,
     ]
