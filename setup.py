@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name = 'django-thermostat',
-    version = '2.0.1-alpha',
+    version = '2.0.2-alpha',
     packages = [],
     include_package_data = True,
     license = 'BSD License',
@@ -29,6 +29,7 @@ setup(
       'django_thermometer',
       'hautomation_restclient',
       "requests",
+      "astral",
     ),
     dependency_links = [
         "https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",
