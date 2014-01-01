@@ -1,4 +1,4 @@
-from django_thermostat.models import Context
+from django_thermostat.models import Context, Thermometer
 from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from settings import HEATER_INCREMENT, LIST_THERMOMETERS_API
@@ -42,13 +42,13 @@ def temperatures(request):
     therms = read_temperatures()
     known_therms = {}
     for x in Thermometer.objects.all():
-        known_therms[x.tid] = x.caption
+        known_therms[x.tid] = [x.caption, x.is_internal_reference]
     out = {}
-    for tid, data in thems:
+    for tid, data in therms.items():
         try:
-            out[known_therms[tid]] = data
+            out[known_therms[tid][0]] = [data, known_therms[tid][1]]
         except KeyError:
-            out[tid] = data
+            out[tid] = [data, False]
 
     response = HttpResponse(
         content=simplejson.dumps(out),
