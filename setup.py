@@ -30,6 +30,7 @@ setup(
       'hautomation_restclient',
       "requests",
       "astral",
+      "pytz",
     ),
     dependency_links = [
         "https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",
