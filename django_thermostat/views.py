@@ -7,6 +7,7 @@ from django_thermostat.mappings import get_mappings
 from django_thermometer.temperature import read_temperatures
 import simplejson, logging
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def set_internal_reference(request, tid):
@@ -17,13 +18,19 @@ def set_internal_reference(request, tid):
             return HttpResponse("")
         therm.is_internal_reference = None
         therm.save()
+    except ObjectDoesNotExist:
+	#no previously selected thermostat
+	pass
     except Exception, err:
         logging.error("set_internal_reference: %s" % err)
-        pass
+
     try:
         therm = Thermometer.objects.get(Q(tid=tid) | Q(caption=tid))
         therm.is_internal_reference = True
         therm.save()
+        return HttpResponse("OK")
+    except ObjectDoesNotExist:
+        return HttpResponseBadRequest("Thermostats %s not found" % tid)
     except Exception, ex:
         logging.error("set_internal_reference: %s" % ex)
         return HttpResponseServerError(ex)
