@@ -16,7 +16,7 @@ def set_internal_reference(request, tid):
         if therm.tid == tid or therm.caption == tid:
             return HttpResponse("")
         therm.is_internal_reference = None
-        therm.false()
+        therm.save()
     except Exception, err:
         logging.error("set_internal_reference: %s" % err)
         pass
