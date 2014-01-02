@@ -5,7 +5,7 @@ from settings import HEATER_INCREMENT, LIST_THERMOMETERS_API
 from django.core.urlresolvers import reverse
 from django_thermostat.mappings import get_mappings
 from django_thermometer.temperature import read_temperatures
-import simplejson
+import simplejson, logging
 from django.db.models import Q
 
 
