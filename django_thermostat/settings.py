@@ -9,7 +9,7 @@ HEATER_API = "http://raspberry:8000"
 
 HEATER_USERNAME = "raton"
 HEATER_PASSWORD = "soportep"
-HEATER_MARGIN = 0.1
+HEATER_MARGIN = 0.0
 HEATER_INCREMENT = 0.5
 
 #INTERNAL_TEMPERATURE_URI = "http://raspberry/therm/temperature"
