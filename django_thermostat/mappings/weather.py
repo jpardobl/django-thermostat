@@ -117,7 +117,6 @@ def stop_flame():
         settings.HEATER_USERNAME,
         settings.HEATER_PASSWORD)
 
-    ctxt = Context.objects.get()
     ctxt.flame = False
     ctxt.save()
 
