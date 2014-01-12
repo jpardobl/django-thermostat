@@ -5,7 +5,7 @@ from time import localtime, time, mktime
 
 class Command(BaseCommand):
     args = ''
-    help = 'Parse de date stats file to retrieve the statistics aggregation for the last N minutes'
+    help = 'Parse de date stats file to retrieve the statistics aggregation for the last N minutes.'
 
     def _time_range(self, length):
         current = time()
@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 continue
             action = m.groups(0)[0]
             data.append([action, time])
-        print("data parsed")
+
         last_start = None
         last_heating_period = None
         total_heating_period = 0
@@ -59,7 +59,7 @@ class Command(BaseCommand):
                 last_start = None
                 
             total_heating_period = total_heating_period + (last_heating_period if last_heating_period is not None else 0)
-            print("action: %s time: %d; %d %d %d" % (
+            logging.debug("action: %s time: %d; %d %d %d" % (
                         action, 
                         time,
                         last_heating_period if last_heating_period is not None else 0,
@@ -77,4 +77,4 @@ class Command(BaseCommand):
         if len(data) and data[len(data)-1][0] == "ON":
             total_heating_period = total_heating_period + (t_range[1] - data[0][1])
             
-        print "total_heating_period: %d " % total_heating_period
+        print "total_heating_period:%d " % total_heating_period
