@@ -5,6 +5,8 @@ pyparsing
 django_thermometer
 hautomation_restclient
 requests
+astral
+pytz
 
 [json]
 simplejson

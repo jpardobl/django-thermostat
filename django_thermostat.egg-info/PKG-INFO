@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: django-thermostat
-Version: 0.2
+Version: 2.0.3-alpha
 Summary: A Django app cronothermostat. It is a Python Home Automation component
 Home-page: http://jpardobl.com
 Author: Javier Pardo Blasco(jpardobl)

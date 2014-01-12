@@ -78,7 +78,12 @@ def flame_on():
 
 def start_flame():
     #print "Starting flame"
-
+    
+    ctxt = Context.objects.get()
+    if ctxt.flame:
+        logging.debug("Not starting flame, because its already started")
+        return
+ 
     pl_switch(
         settings.HEATER_PROTOCOL,
         settings.HEATER_DID,
@@ -87,18 +92,23 @@ def start_flame():
         settings.HEATER_USERNAME,
         settings.HEATER_PASSWORD)
 
-    ctxt = Context.objects.get()
     ctxt.flame = True
     ctxt.save()
+
     logging.debug("Flame started")
     if settings.FLAME_STATS: 
         with open(settings.FLAME_STATS_PATH, "a") as stats:
             t = localtime()      
             st = strftime(settings.FLAME_STATS_DATE_FORMAT, t)
-            stats.write("ON - %s - %d\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
+            stats.write("ON - %s - %f\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
 
 
 def stop_flame():
+    ctxt = Context.objects.get()
+    if not ctxt.flame:
+        logging.debug("Not stopping flame, because its already stopped")
+        return
+
     pl_switch(
         settings.HEATER_PROTOCOL,
         settings.HEATER_DID,
@@ -110,12 +120,13 @@ def stop_flame():
     ctxt = Context.objects.get()
     ctxt.flame = False
     ctxt.save()
+
     logging.debug("Flame stopped")
     if settings.FLAME_STATS: 
         with open(settings.FLAME_STATS_PATH, "a") as stats:
             t = localtime()      
             st = strftime(settings.FLAME_STATS_DATE_FORMAT, t)
-            stats.write("OFF - %s - %d\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
+            stats.write("OFF - %s - %f\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
     #print "%s flame stopped" % strftime("%d.%m.%Y %H:%M:%S", localtime())
 
 
