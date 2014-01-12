@@ -18,3 +18,7 @@ HEATER_INCREMENT = 0.5
 LIST_THERMOMETERS_API = "http://raspberry/therm/temperature_api/thermometers?"
 TEMPERATURES_API = "http://raspberry/therm/temperature_api/thermometers"
 #THERMOMETER_API = "http://raspberry/therm/temperature_api/thermometer/"
+
+FLAME_STATS = True
+FLAME_STATS_PATH = "./flame_stats.log"
+FLAME_STATS_DATE_FORMAT = "%d.%m.%Y %H:%M:%S"

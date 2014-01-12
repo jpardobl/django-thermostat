@@ -3,7 +3,7 @@ from django_thermostat import settings
 from hautomation_restclient.cmds import pl_switch
 from django_thermostat.models import Context, Thermometer
 from django.core.urlresolvers import reverse
-from time import strftime, localtime
+from time import strftime, localtime, mktime, strptime
 import os, logging
 
 
@@ -91,12 +91,14 @@ def start_flame():
     ctxt.flame = True
     ctxt.save()
     logging.debug("Flame started")
-    #print "%s flame started" % strftime("%d.%m.%Y %H:%M:%S", localtime())
+    if settings.FLAME_STATS: 
+        with open(settings.FLAME_STATS_PATH, "a") as stats:
+            t = localtime()      
+            st = strftime(settings.FLAME_STATS_DATE_FORMAT, t)
+            stats.write("ON - %s - %d\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
 
 
 def stop_flame():
-    #print "stoping flame"
-
     pl_switch(
         settings.HEATER_PROTOCOL,
         settings.HEATER_DID,
@@ -109,6 +111,11 @@ def stop_flame():
     ctxt.flame = False
     ctxt.save()
     logging.debug("Flame stopped")
+    if settings.FLAME_STATS: 
+        with open(settings.FLAME_STATS_PATH, "a") as stats:
+            t = localtime()      
+            st = strftime(settings.FLAME_STATS_DATE_FORMAT, t)
+            stats.write("OFF - %s - %d\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
     #print "%s flame stopped" % strftime("%d.%m.%Y %H:%M:%S", localtime())
 
 
