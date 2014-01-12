@@ -53,11 +53,11 @@ def tune_to_economic(mo=None):
 
 
 def heater_manual(mo=None):
-    return 1 if Context.objects.get().manual else 0
+    return int(Context.objects.get().manual)
 
 
 def heater_on(mo=None):
-    return 1 if Context.objects.get().heat_on else 0
+    return int(Context.objects.get().heat_on)
 
 
 def set_heater_on(no=None):
