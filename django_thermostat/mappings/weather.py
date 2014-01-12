@@ -48,10 +48,10 @@ def tune_to_economic(mo=None):
     #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Tuning to economic"
     logging.debug("Tunning to economic")
     ctxt = Context.objects.get()
-    logging.debug("EStado antes de pasar a economic: %s" % ctxt.to_json())
+    
     ctxt.tuned_temperature = ctxt.economic_temperature
     ctxt.save()
-    logging.debug("EStado despues de pasar a economic: %s" % ctxt.to_json())
+    
 
 
 def heater_manual(mo=None):

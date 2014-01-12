@@ -12,7 +12,7 @@ class Command(BaseCommand):
         return [float(current - length * 60), float(current)]
 
     def handle(self, *args, **options):
-        logging.basicConfig(level=logging.DEBUG)
+#        logging.basicConfig(level=logging.DEBUG)
         
         if len(args) != 1:
             self.stderr.write("Please send argument of how many minutes")
