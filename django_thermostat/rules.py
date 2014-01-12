@@ -72,7 +72,7 @@ def evaluate():
         None)
     table1.addRule("if heater_on = 0 then deny")
     table1.addRule("if current_internal_temperature < tuned_temperature then accept")
-
+    logging.debug("thermostat table %s" % table1.dump())
     try:
         table1.evaluate(metaObj)
         try:
