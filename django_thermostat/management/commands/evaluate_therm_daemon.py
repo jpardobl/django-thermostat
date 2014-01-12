@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 thread = threading.Thread(target=evaluate)
                 thread.start()
                 thread.join()
-                logging.debug("Child thread finished, sleeping for the next %d seconds" % args[0])
+                logging.debug("Child thread finished, sleeping for the next %s seconds" % args[0])
                 sleep(float(args[0]))
 
         except Exception, ex:
