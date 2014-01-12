@@ -15,7 +15,7 @@ class Command(BaseCommand):
                 raise ValueError("Missing sleep_time")
             while(True):
                 logging.debug("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
-                thread = thread.Thread(target=evaluate)
+                thread = threading.Thread(target=evaluate)
                 thread.start()
                 thread.join()
                 logging.debug("Child thread finished, sleeping for the next %d seconds" % args[0])
