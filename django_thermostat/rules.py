@@ -4,7 +4,7 @@ from django_thermostat.mappings import get_mappings
 from django_thermostat.utils import gen_comparing_time
 from django_thermostat.models import Rule
 import logging
-
+from django.conf import settings
 
 def evaluate_non_themp():
     mappings = get_mappings()
@@ -54,7 +54,8 @@ def evaluate():
     for rule in Rule.objects.filter(active=True, thermostat=True).order_by("pk"):
         table.addRule(rule.to_pypelib())
 
-    logging.debug("thermostat table %s" % table.dump())
+    if settings.DEBUG:
+        table.dump()
 
     metaObj = {}
 
@@ -72,7 +73,9 @@ def evaluate():
         None)
     table1.addRule("if heater_on = 0 then deny")
     table1.addRule("if current_internal_temperature < tuned_temperature then accept")
-    logging.debug("decision table %s" % table1.dump())
+    if settings.DEBUG:
+        table1.dump()
+        
     try:
         table1.evaluate(metaObj)
         try:
