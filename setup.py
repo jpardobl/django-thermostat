@@ -8,14 +8,14 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name = 'django-thermostat',
-    version = '2.0.3-alpha',
+    version = '2.0.4',
     packages = [],
     include_package_data = True,
     license = 'BSD License',
     description = 'A Django app cronothermostat. It is a Python Home Automation component',
     long_description = README,
 #TODO set the project's home page
-    url = 'http://jpardobl.com',
+    url = 'http://blog.digitalhigh.es',
     author = 'Javier Pardo Blasco(jpardobl)',
     author_email = 'jpardo@digitalhigh.es',
     extras_require = {
@@ -30,12 +30,9 @@ setup(
       'hautomation_restclient',
       "requests",
       "astral",
-      "pytz",
+      "pytz",      
     ),
-    dependency_links = [
-        "https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient",
-        "https://github.com/jpardobl/django-thermometer.git#egg=django_thermometer",
-    ],
+    
   #  test_suite='test_project.tests.runtests',
    # tests_require=("selenium", "requests"),
     classifiers = [

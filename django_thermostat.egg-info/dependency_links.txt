@@ -1,2 +1,1 @@
-https://github.com/jpardobl/hautomation_restclient.git#egg=hautomation_restclient
-https://github.com/jpardobl/django-thermometer.git#egg=django_thermometer
+

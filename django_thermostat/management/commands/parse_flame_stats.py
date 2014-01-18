@@ -20,10 +20,10 @@ class Command(BaseCommand):
         with open(settings.FLAME_STATS_PATH) as f:
             contents = f.readlines()
         t_range = self._time_range(int(args[0]))
-        logging.debug("Time range %s" % t_range)
+#        logging.debug("Time range %s" % t_range)
         cont = 0
         
-        
+        last_start = None
         data = []
         for line in contents:
             cont = cont + 1
@@ -33,20 +33,25 @@ class Command(BaseCommand):
                 logging.warn("Format of line %d not correct, cannot find time from epoch at the end" % cont)
                 continue
             time = float(m.groups(0)[0])
-
-            if time < t_range[0] or time > t_range[1]:
-                logging.debug("Dejamos la linea %d fuera porque se sale del rango pedido" % cont)
-                continue
             
             m = re.search("^(ON|OFF)", line)
             if m is None:
                 logging.warn("Format of line %d not correct, cannot find ON|OFF action at the beginning" % cont)
-                
                 continue
             action = m.groups(0)[0]
+            
+            if time < t_range[0] or time > t_range[1]:
+                logging.debug("Dejamos la linea %d fuera porque se sale del rango pedido" % cont)
+                #initialize the last_start so we know it even if it occur before the time range 
+                #if the line is OFF we put last_start = None so the state of the flame is off
+                if action == "ON":
+                    last_start = time
+                else:
+                    last_start = None 
+                continue
+            
             data.append([action, time])
-
-        last_start = None
+         
         last_heating_period = None
         total_heating_period = 0
         for action, time in data:
@@ -59,13 +64,19 @@ class Command(BaseCommand):
                 last_start = None
                 
             total_heating_period = total_heating_period + (last_heating_period if last_heating_period is not None else 0)
+            """
             logging.debug("action: %s time: %d; %d %d %d" % (
                         action, 
                         time,
                         last_heating_period if last_heating_period is not None else 0,
                         last_start if last_start is not None else 0,
                         total_heating_period))
-        
+            """
+        #si there is no data (for example: every line was out of time range, we need to know
+        #the status of the flame. Therefore we use the last_start, which is set above, when the time range uis checked
+        if len(data) == 0 and last_start is not None:
+            total_heating_period = args[0] * 60
+         
         #if the first action in data is OFF, means the flame was on by the starting of the time range
         #it is needed to add this time
         if len(data) and data[0][0] == "OFF":
@@ -77,4 +88,4 @@ class Command(BaseCommand):
         if len(data) and data[len(data)-1][0] == "ON":
             total_heating_period = total_heating_period + (t_range[1] - data[0][1])
             
-        print "total_heating_period:%d " % total_heating_period
+        print "total_heating_period:%d" % total_heating_period

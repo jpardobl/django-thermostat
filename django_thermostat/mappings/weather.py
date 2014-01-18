@@ -78,6 +78,16 @@ def flame_on():
     return 1 if Context.objects.get().flame else 0
 
 
+def log_flame_stats(new_state):
+    if settings.FLAME_STATS: 
+        with open(settings.FLAME_STATS_PATH, "a") as stats:
+            t = localtime()      
+            st = strftime(settings.FLAME_STATS_DATE_FORMAT, t)
+            stats.write("%s - %s - %f\n" % (
+                "ON" if new_state else "OFF", 
+                st, 
+                mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
+            
 def start_flame():
     #print "Starting flame"
     
@@ -98,11 +108,7 @@ def start_flame():
     ctxt.save()
 
     logging.debug("Flame started")
-    if settings.FLAME_STATS: 
-        with open(settings.FLAME_STATS_PATH, "a") as stats:
-            t = localtime()      
-            st = strftime(settings.FLAME_STATS_DATE_FORMAT, t)
-            stats.write("ON - %s - %f\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
+    log_flame_stats(True)
 
 
 def stop_flame():
@@ -123,11 +129,7 @@ def stop_flame():
     ctxt.save()
 
     logging.debug("Flame stopped")
-    if settings.FLAME_STATS: 
-        with open(settings.FLAME_STATS_PATH, "a") as stats:
-            t = localtime()      
-            st = strftime(settings.FLAME_STATS_DATE_FORMAT, t)
-            stats.write("OFF - %s - %f\n" % (st, mktime(strptime(st, settings.FLAME_STATS_DATE_FORMAT))))
+    log_flame_stats(False)
     #print "%s flame stopped" % strftime("%d.%m.%Y %H:%M:%S", localtime())
 
 

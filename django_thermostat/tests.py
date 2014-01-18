@@ -1,6 +1,9 @@
 #This file mainly exists to allow python setup.py test to work.
-import unittest
+import unittest, os, subprocess
 from django_thermostat.models import *
+from django_thermostat.mappings.weather import log_flame_stats
+from django_thermostat import settings
+from time import sleep
 
 
 class TestMappings(unittest.TestCase):
@@ -9,6 +12,45 @@ class TestMappings(unittest.TestCase):
         self.assertTrue(is_at_night() == 1,
             "Not properly calculating is_at_night")
 
+
+class TestFlameStatsParser(unittest.TestCase):
+    
+    def setUp(self):
+        unittest.TestCase.setUp(self)
+
+    def test_regular(self):
+        os.remove(settings.FLAME_STATS_PATH)
+        log_flame_stats(True)
+        sleep(5)
+        log_flame_stats(False)
+        out = subprocess.check_output(["python", "manage.py", "parse_flame_stats", "1"])
+        #self.assertRegexpMatches(text, expected_regexp, msg)
+        self.assertRegexpMatches(
+            out,
+            "5\n$",
+            "not properly parsing regular example of flame stats: %s" % out)
+        
+    def test_without_final_off(self):
+        os.remove(settings.FLAME_STATS_PATH)
+        log_flame_stats(True)
+        sleep(5)
+        out = subprocess.check_output(["python", "manage.py", "parse_flame_stats", "1"])
+        self.assertRegexpMatches(
+            out,
+            "5\n$",
+            "not properly parsing without final_off: %s" % out)
+    
+    def test_starts_before_time_range(self):
+        os.remove(settings.FLAME_STATS_PATH)
+        log_flame_stats(True)
+        sleep(61)
+        out = subprocess.check_output(["python", "manage.py", "parse_flame_stats", "1"])
+        self.assertRegexpMatches(
+            out,
+            "60\n$",
+            "not properly parsing without final_off: %s" % out)
+        
+    
 
 class TestRules(unittest.TestCase):
     def setup(self, ):
@@ -70,8 +112,6 @@ class TestRules(unittest.TestCase):
             "if 1 = 1  then do confort_temperature",
             "Not properly trasnsforming to pypelib, got: %s" % r.to_pypelib()
         )
-
-
 
 
 
