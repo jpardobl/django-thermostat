@@ -23,7 +23,7 @@ setup(
         },
     install_requires = (
       "Django==1.5",
-      "simplejson",
+      "simplejson=2.6.2",
       "django-compressor==1.3",
       "pyparsing",
       'django_thermometer',

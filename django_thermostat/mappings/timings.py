@@ -1,8 +1,10 @@
 from time import strftime, localtime, mktime, strptime
 from astral import Location#, AstralGeocoder
-import datetime
-from django.conf import settings
-from pytz import timezone
+import datetime, logging
+from django.conf import settings as dsettings
+import django_thermostat.settings as settings
+import pytz
+from dateutil.parser import parse
 
 
 def current_day_of_week(mo=None):
@@ -45,17 +47,27 @@ def is_weekend(mo=None):
 
 def is_at_night(mo=None):
     a = Location()
-    a.timezone = settings.TIME_ZONE
-
-    #sunrise = mktime(strptime(a.sunrise(), "%Y-%m-%d %H:%M:%S")) #2013-12-13 22:57:02
-    sunset = mktime(strptime(a.sunset().strftime("%a %b %d %H:%M:%S %Y", )))
-    sunrise = mktime(strptime(a.sunrise().strftime("%a %b %d %H:%M:%S %Y", )))
-
-    lt = localtime()
-
-    if localtime() > sunset and localtime() < sunrise:
+    a.timezone = dsettings.TIME_ZONE
+    tz = pytz.timezone(a.timezone)
+    #Tue, 22 Jul 2008 08:17:41 +0200
+    #Sun, 26 Jan 2014 17:39:49 +01:00
+    a_sunset = a.sunset()
+    
+    a_sunrise = a.sunrise()
+      
+    n = datetime.datetime.now()
+    n = tz.localize(n)
+    logging.debug("NOW: %s; sunrise: %s; dif: %s"  % (n, a_sunrise, n - a_sunrise))
+    logging.debug("NOW: %s; sunset: %s; dif: %s" % (n, a_sunset, n - a_sunset))
+    passed_sunrise = (n - a_sunrise) > datetime.timedelta(minutes=settings.MINUTES_AFTER_SUNRISE_FOR_DAY)
+    logging.debug("Passed %s sunrise more than %s minutes" % (passed_sunrise, settings.MINUTES_AFTER_SUNRISE_FOR_DAY))
+    passed_sunset = (n - a_sunset) > datetime.timedelta(minutes=settings.MINUTES_AFTER_SUNSET_FOR_DAY)
+    logging.debug("Passed %s sunset more than %s minutes" % (passed_sunset, settings.MINUTES_AFTER_SUNSET_FOR_DAY))
+    if not passed_sunrise or passed_sunset:
         return True
-    return False
+    if passed_sunrise and not passed_sunset:
+        return False    
+    return True
 
 
 mappings = [

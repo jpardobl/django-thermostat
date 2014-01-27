@@ -12,6 +12,9 @@ HEATER_PASSWORD = "soportep"
 HEATER_MARGIN = 0.0
 HEATER_INCREMENT = 0.5
 
+MINUTES_AFTER_SUNRISE_FOR_DAY = 60
+MINUTES_AFTER_SUNSET_FOR_DAY = 90
+
 #INTERNAL_TEMPERATURE_URI = "http://raspberry/therm/temperature"
 #INTERNAL_TEMPERATURE_URI = "http://localhost:8000/therm/temperature"
 

@@ -1,7 +1,8 @@
 #This file mainly exists to allow python setup.py test to work.
-import unittest, os, subprocess
+import unittest, os, subprocess, logging
 from django_thermostat.models import *
 from django_thermostat.mappings.weather import log_flame_stats
+from django_thermostat.mappings.timings import is_at_night
 from django_thermostat import settings
 from time import sleep
 
@@ -19,6 +20,7 @@ class TestFlameStatsParser(unittest.TestCase):
         unittest.TestCase.setUp(self)
 
     def test_regular(self):
+        print "Testing regular, 5 seconds flaming..."
         os.remove(settings.FLAME_STATS_PATH)
         log_flame_stats(True)
         sleep(5)
@@ -31,6 +33,7 @@ class TestFlameStatsParser(unittest.TestCase):
             "not properly parsing regular example of flame stats: %s" % out)
         
     def test_without_final_off(self):
+        print "testing without final off plus and flame started 5 s before parsing..."
         os.remove(settings.FLAME_STATS_PATH)
         log_flame_stats(True)
         sleep(5)
@@ -41,6 +44,7 @@ class TestFlameStatsParser(unittest.TestCase):
             "not properly parsing without final_off: %s" % out)
     
     def test_starts_before_time_range(self):
+        print "Testing if flamings starts before time range, it takes 1 minute..."
         os.remove(settings.FLAME_STATS_PATH)
         log_flame_stats(True)
         sleep(61)
@@ -48,7 +52,18 @@ class TestFlameStatsParser(unittest.TestCase):
         self.assertRegexpMatches(
             out,
             "60\n$",
-            "not properly parsing without final_off: %s" % out)
+            "not properly parsing when flaming starts before time range: %s" % out)
+        
+    def test_first_data_is_an_off(self):
+        print "Testing when first data line included in time range is OFF"
+        os.remove(settings.FLAME_STATS_PATH)
+        log_flame_stats(False)
+        sleep(10)
+        out = subprocess.check_output(["python", "manage.py", "parse_flame_stats", "1"])
+        self.assertRegexpMatches(
+            out,
+            "49\n$",
+            "not properly parsing when flaming starts before time range: %s" % out)
         
     
 
@@ -113,7 +128,11 @@ class TestRules(unittest.TestCase):
             "Not properly trasnsforming to pypelib, got: %s" % r.to_pypelib()
         )
 
-
+class TestMappings(unittest.TestCase):
+    
+    def test_is_at_night(self):
+        logging.basicConfig(level=logging.DEBUG)
+        print ( "Is at nigh? it says: %s" % is_at_night())
 
 def main():
     unittest.main()

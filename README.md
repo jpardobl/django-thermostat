@@ -1,7 +1,7 @@
 django-thermostat
 =================
 
-Cronotherostat developed as a Django app. It belongs to the Python Home Automation Project
+Cronothermostat developed as a Django app. It belongs to the Python Home Automation Project
 
 
 Django Home Automation is a set of Django apps which provides a REST API meant to
