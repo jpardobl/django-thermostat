@@ -21,6 +21,7 @@ def evaluate_non_themp():
     table.dump()
     try:
         table.evaluate({})
+        print "Table evaluated True"
     except Exception, ex:
         print "ERROR: %s" % ex
         pass

@@ -102,20 +102,37 @@ TEMP_CHOICES = (
 )
 
 
+COND_CHOICES = (
+    ("is_at_night", "Is at night"),
+)
+
+class Conditional(models.Model):
+    statement = models.CharField(max_length=60,choices=COND_CHOICES)
+    ocurred = models.BooleanField(default=False)
+    
+    def __unicode__(self):
+        return u"%s" % self.statement
+    
+    def to_pypelib(self):
+        return u"(%s = 1)" % self.statement
+
+
 class Rule(models.Model):
 
     days = models.ManyToManyField(Day, null=True, blank=True)
     ranges = models.ManyToManyField(TimeRange, null=True, blank=True)
+    conditionals = models.ManyToManyField(Conditional, null=True, blank=True)
     action = models.CharField(max_length=25, choices=TEMP_CHOICES, default="economic_temperature")
     active = models.BooleanField(default=True)
     thermostat = models.BooleanField(default=False)
 
     def __unicode__(self, ):
-        return "[%s] therm: %s; days: %s; time ranges: %s; action: %s" % (
+        return "[%s] therm: %s; days: %s; time ranges: %s; conditionals: %s; action: %s" % (
             self.active,
             self.thermostat,
             self.days.all(),
             self.ranges.all(),
+            self.conditionals.all(),
             self.action,
         )
 
@@ -126,7 +143,8 @@ class Rule(models.Model):
             out = "if "
         days = self.days.all()
         ranges = self.ranges.all()
-
+        conds = self.conditionals.all()
+        
         if days.count():
             out = "%s (" % out
             for day in days:
@@ -135,11 +153,19 @@ class Rule(models.Model):
 
         if ranges.count():
             out = "%s (" % out
-            for trang in self.ranges.all():
+            for trang in ranges.all():
                 out = "%s %s || " % (out,  trang.to_pypelib())
 
-            out = re.sub("\|\|\s$", ") ", out)
-        if ranges.count() == 0 and days.count() == 0:
+            out = re.sub("\|\|\s$", ") &&", out)
+        
+        if conds.count():
+            out = "%s (" % out
+            for c in conds:
+                out = "%s %s || " % (out, c.to_pypelib())
+                
+            out = re.sub("\|\|\s$", ") &&", out)
+            
+        if ranges.count() == 0 and days.count() == 0 and conds.count() == 0:
             out = "%s 1 = 1 " % out
-
+        
         return "%s then accept do %s" % (out, self.action)

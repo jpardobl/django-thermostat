@@ -4,7 +4,6 @@ import datetime, logging
 from django.conf import settings as dsettings
 import django_thermostat.settings as settings
 import pytz
-from dateutil.parser import parse
 
 
 def current_day_of_week(mo=None):
@@ -46,6 +45,10 @@ def is_weekend(mo=None):
 
 
 def is_at_night(mo=None):
+    #logging.basicConfig(level=logging.DEBUG)
+    from django_thermostat.models import Conditional
+    cond = Conditional.objects.get(statement="is_at_night")
+
     a = Location()
     a.timezone = dsettings.TIME_ZONE
     tz = pytz.timezone(a.timezone)
@@ -63,11 +66,17 @@ def is_at_night(mo=None):
     logging.debug("Passed %s sunrise more than %s minutes" % (passed_sunrise, settings.MINUTES_AFTER_SUNRISE_FOR_DAY))
     passed_sunset = (n - a_sunset) > datetime.timedelta(minutes=settings.MINUTES_AFTER_SUNSET_FOR_DAY)
     logging.debug("Passed %s sunset more than %s minutes" % (passed_sunset, settings.MINUTES_AFTER_SUNSET_FOR_DAY))
+    
     if not passed_sunrise or passed_sunset:
-        return True
+        if cond.ocurred == True: return 0
+        cond.ocurred = True
+        cond.save()
+        return 1
     if passed_sunrise and not passed_sunset:
-        return False    
-    return True
+        cond.ocurred = False
+        cond.save()
+        return 0
+
 
 
 mappings = [

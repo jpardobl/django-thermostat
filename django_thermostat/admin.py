@@ -9,6 +9,9 @@ class RuleAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Rule, RuleAdmin)
 
+class ConditionalAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Conditional, ConditionalAdmin)
 
 class DayAdmin(admin.ModelAdmin):
     pass
