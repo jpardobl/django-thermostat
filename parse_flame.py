@@ -91,6 +91,10 @@ def handle(self, *args, **kwargs):
         total_heating_period = int(total_heating_period) + int(t_range[1] - data[0][1])
     
     try:
-        print "total_heating_period:%d" % int(total_heating_period)
+        #calculate the percent
+        total_seconds = int(args[1]) * 60
+         
+        print("absolute:%d percent:%.2f" % (total_heating_period, (100 * total_heating_period ) / total_seconds))
+        exit(0)
     except Exception, er:
         logging.error("Exception while trying to return the value: %s " % er)
