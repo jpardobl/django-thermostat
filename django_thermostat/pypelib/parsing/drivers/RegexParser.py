@@ -4,7 +4,7 @@ import time
 
 sys.path.append("../../") 
 import re
-from pyparsing import nestedExpr
+from django_thermostat.pypelib.pyparsing import nestedExpr
 
 '''
         @author: msune,cbermudo,omoya
@@ -13,8 +13,8 @@ from pyparsing import nestedExpr
 	RegexParser class
 '''
 
-from pypelib.Rule import *
-from pypelib.Condition import *
+from django_thermostat.pypelib.Rule import *
+from django_thermostat.pypelib.Condition import *
 
 
 

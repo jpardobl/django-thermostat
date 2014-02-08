@@ -8,8 +8,8 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name = 'django-thermostat',
-    version = '2.0.7',
-    packages = ["django_thermostat"],
+    version = '2.0.8',
+    packages = ["django_thermostat", ],
     include_package_data = True,
     license = 'BSD License',
     description = 'A Django app cronothermostat. It is a Python Home Automation component',
@@ -23,7 +23,7 @@ setup(
         },
     install_requires = (
       "Django==1.5",
-      "simplejson=2.6.2",
+      "simplejson==2.6.2",
       "django-compressor==1.3",
       "pyparsing",
       'django_thermometer',
