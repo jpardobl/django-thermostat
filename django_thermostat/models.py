@@ -164,7 +164,7 @@ class Rule(models.Model):
                 out = "%s %s || " % (out, c.to_pypelib())
                 
             out = re.sub("\|\|\s$", ") &&", out)
-            
+        out = re.sub("&&$", "", out)    
         if ranges.count() == 0 and days.count() == 0 and conds.count() == 0:
             out = "%s 1 = 1 " % out
         

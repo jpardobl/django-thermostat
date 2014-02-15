@@ -5,7 +5,7 @@ from django.conf.urls import patterns, include, url
 #admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^home$', "django_thermostat.views.home", name="home"),
+    
     url(r'^js/context.js$', "django_thermostat.views.context_js", name="context_js"),
     url(r'^read_heat_status$', "django_thermostat.views.read_heat_status", name="read_heat_status"),
     url(r'^toggle_heat_status$', "django_thermostat.views.toggle_heat_status", name="toggle_heat_status"),
@@ -14,5 +14,5 @@ urlpatterns = patterns('',
     url(r'^toggle_heat_manual', "django_thermostat.views.toggle_heat_manual", name="toggle_heat_manual"),
     url(r'^temperatures', "django_thermostat.views.temperatures", name="temperatures"),
     url(r'^set_internal_reference/([\s\d\w\-]+)?/?$', "django_thermostat.views.set_internal_reference", name="set_internal_reference"),
-
+    url(r'^$', "django_thermostat.views.home", name="home"),
 )
