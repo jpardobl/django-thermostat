@@ -5,7 +5,7 @@ from settings import HEATER_INCREMENT, LIST_THERMOMETERS_API
 from django.core.urlresolvers import reverse
 from django_thermostat.mappings import get_mappings
 from django_thermometer.temperature import read_temperatures
-import simplejson, logging
+import simplejson, logging, requests
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -41,11 +41,20 @@ def home(request):
 
     return render_to_response(
         "therm/home.html",
-        {"context": context, },
+        {"context": context,
+         },
     )
 
 
 def temperatures(request):
+    if not LIST_THERMOMETERS_API is None:
+        ret = requests.get(LIST_THERMOMETERS_API)
+        response = HttpResponse(
+            content=simplejson.dumps(ret.json()),
+            content_type="application/json")
+        response['Cache-Control'] = 'no-cache'
+        return response
+
     therms = read_temperatures()
     known_therms = {}
     for x in Thermometer.objects.all():
