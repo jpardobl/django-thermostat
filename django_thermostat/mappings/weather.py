@@ -7,10 +7,34 @@ from time import strftime, localtime, mktime, strptime
 import os, logging
 
 
+
+def current_external_temperature(mo=None):
+    try:
+        if not settings.LIST_THERMOMETERS_API is None:
+            ret = requests.get("%stemperatures=True" % reverse("temperatures"))
+            therms = ret.json()
+        else:
+            therms = read_temperatures()
+        for therm in therms:
+            if therm["is_external"]:
+                return float(therm["temp"]["celsius"])
+
+    except Exception as ex:
+        logging.error(ex)
+        return None
+
 def current_internal_temperature(mo=None):
     try:
-        return float(Thermometer.objects.get(is_internal_reference=True).read())
-    except Exception, ex:
+
+        if not settings.LIST_THERMOMETERS_API is None:
+            ret = requests.get("%stemperatures=True" % reverse("temperatures"))
+            therms = ret.json()
+        else:
+            therms = read_temperatures()
+        for therm in therms:
+            if therm["is_internal"]:
+                return float(therm["temp"]["celsius"])
+    except Exception as ex:
         logging.error(ex)
         return None
 

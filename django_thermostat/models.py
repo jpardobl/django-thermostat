@@ -104,17 +104,43 @@ TEMP_CHOICES = (
 
 COND_CHOICES = (
     ("is_at_night", "Is at night"),
+    ("current_external_temperature", "Current external temperature"),
+    ("current_internal_temperature", "Current internal temperature"),
 )
+
+
+OPERATOR_CHOICES = (
+    ("=", "="),
+    ("<", "<"),
+    (">", ">"),
+    (">=", ">="),
+    ("<=", "<="),
+
+)
+
 
 class Conditional(models.Model):
     statement = models.CharField(max_length=60,choices=COND_CHOICES)
+    operator = models.CharField(max_length=2,choices=OPERATOR_CHOICES)
+    statement2 = models.CharField(max_length=60, choices=COND_CHOICES, null=True, blank=True)
+    value = models.CharField(max_length=10, null=True, blank=True)
     ocurred = models.BooleanField(default=False)
-    
+
     def __unicode__(self):
-        return u"%s" % self.statement
-    
+        return self.to_pypelib()
+
     def to_pypelib(self):
-        return u"(%s = 1)" % self.statement
+        return u"(%s %s %s)" % (
+            self.statement,
+            self.operator,
+            self.value if self.statement2 is None else self.statement2)
+
+    def save(self):
+        print self.statement2
+        print self.value
+        if self.statement2 is None and self.value == "":
+            raise AttributeError("Either statment2 or value must not be none")
+        super(Conditional, self).save()
 
 
 class Rule(models.Model):
