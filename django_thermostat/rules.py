@@ -1,6 +1,5 @@
 from django_thermostat.mappings import get_mappings
 from pypelib.RuleTable import RuleTable
-from django_thermostat.mappings import get_mappings
 from django_thermostat.utils import gen_comparing_time
 from django_thermostat.models import Rule
 import logging

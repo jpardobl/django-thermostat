@@ -10,6 +10,29 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 
 
+def set_external_reference(request, tid):
+    try:
+        therm = Thermometer.objects.get(is_external_reference=True)
+        if therm.tid == tid or therm.caption == tid:
+            return HttpResponse("")
+        therm.is_external_reference = None
+        therm.save()
+    except ObjectDoesNotExist:
+        #no previously selected thermostat
+        pass
+    except Exception as err:
+        logging.error("set_external_reference: %s" % err)
+
+    try:
+        therm = Thermometer.objects.get(Q(tid=tid) | Q(caption=tid))
+        therm.is_external_reference = True
+        therm.save()
+        return HttpResponse("OK")
+    except ObjectDoesNotExist:
+        return HttpResponseBadRequest("Thermostats %s not found" % tid)
+    except Exception as ex:
+        logging.error("set_external_reference: %s" % ex)
+        return HttpResponseServerError(ex)
 
 def set_internal_reference(request, tid):
 
@@ -22,7 +45,7 @@ def set_internal_reference(request, tid):
     except ObjectDoesNotExist:
 	#no previously selected thermostat
 	pass
-    except Exception, err:
+    except Exception as err:
         logging.error("set_internal_reference: %s" % err)
 
     try:
@@ -32,7 +55,7 @@ def set_internal_reference(request, tid):
         return HttpResponse("OK")
     except ObjectDoesNotExist:
         return HttpResponseBadRequest("Thermostats %s not found" % tid)
-    except Exception, ex:
+    except Exception as ex:
         logging.error("set_internal_reference: %s" % ex)
         return HttpResponseServerError(ex)
 
@@ -49,21 +72,20 @@ def home(request):
 
 def temperatures(request):
     if not LIST_THERMOMETERS_API is None:
-        ret = requests.get(LIST_THERMOMETERS_API)
-        response = HttpResponse(
-            content=simplejson.dumps(ret.json()),
-            content_type="application/json")
-        response['Cache-Control'] = 'no-cache'
-        return response
-
-    therms = read_temperatures()
+        ret = requests.get("%stemperatures=True" % LIST_THERMOMETERS_API)
+        therms = ret.json()
+    else:
+        therms = read_temperatures()
     known_therms = {}
     for x in Thermometer.objects.all():
-        known_therms[x.tid] = [x.caption, x.is_internal_reference]
+        known_therms[x.tid] = [x.caption, x.is_internal_reference, x.is_external_reference]
     out = {}
     for tid, data in therms.items():
         try:
-            out[known_therms[tid][0]] = [data, known_therms[tid][1]]
+            out[known_therms[tid][0]] = {
+                    "temp": data, 
+                    "is_internal": known_therms[tid][1],
+                    "is_external": known_therms[tid][2]}
         except KeyError:
             out[tid] = [data, False]
 

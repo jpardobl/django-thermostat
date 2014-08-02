@@ -60,9 +60,15 @@ function read_heat_status() {
         data: "temperatures=True",
         success: function(data){
 		$("#temperatures").html("")
+                var cc;
 		$.each(data, function(key, val) {
-			$("#temperatures").append("<span onclick=\"set_int_ref('"+key+"')\" class='col-md-10 col-sm-10 col-lg-6 col-xs-9 label label-"+(val[1]? 'success':'default')+"'>" + key + "... " + val[0]['celsius'] +"º</span><br>")
+			//$("#temperatures").append("<span onclick=\"set_int_ref('"+key+"')\" class='col-md-10 col-sm-10 col-lg-6 col-xs-9 label label-"+(val[1]? 'success':'default')+"'>" + key + "... " + val[0]['celsius'] +"º</span><br>")
+                        cc = "default"
+			if(val["is_internal"]) cc = "success"
+			if(val["is_external"]) cc = "warning"			    
+			$("#temperatures").append("<span onclick=\"set_int_ref('"+key+"')\" class='col-md-10 col-sm-10 col-lg-6 col-xs-9 label label-"+cc+"'>" + key + "... " + val["temp"]['celsius'] +"º</span><br>")
   		});
+                delete cc;
         }})
 }
 

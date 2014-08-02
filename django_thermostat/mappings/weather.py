@@ -4,40 +4,48 @@ from hautomation_restclient.cmds import pl_switch
 from django_thermostat.models import Context, Thermometer
 from django.core.urlresolvers import reverse
 from time import strftime, localtime, mktime, strptime
-import os, logging
-
+import os, logging, simplejson
 
 
 def current_external_temperature(mo=None):
     try:
+        print "entering external"
+
         if not settings.LIST_THERMOMETERS_API is None:
-            ret = requests.get("%stemperatures=True" % reverse("temperatures"))
+            ret = requests.get("http://localhost%stemperatures=True" % reverse("temperatures"))
             therms = ret.json()
         else:
-            therms = read_temperatures()
+            therms = simplejson.loads(read_temperatures())
+        print "los termometros:%s" % therms
         for therm in therms:
-            if therm["is_external"]:
-                return float(therm["temp"]["celsius"])
+            data = therms[therm]
 
-    except Exception as ex:
-        logging.error(ex)
-        return None
+            if data["is_external"]:
+                print "external: %s" % float(data["temp"]["celsius"])
+                return float(data["temp"]["celsius"])
+    except Exception as et:
+        print "EXXXXXXXXXXXXXXXXXXXXXXXXXXXX:%s" % et
+
 
 def current_internal_temperature(mo=None):
     try:
+        print "entering internal"    
 
         if not settings.LIST_THERMOMETERS_API is None:
-            ret = requests.get("%stemperatures=True" % reverse("temperatures"))
+            ret = requests.get("http://localhost%stemperatures=True" % reverse("temperatures"))
             therms = ret.json()
         else:
-            therms = read_temperatures()
+            therms = simplejson.loads(read_temperatures())
+        print "los termometros:%s" % therms
         for therm in therms:
-            if therm["is_internal"]:
-                return float(therm["temp"]["celsius"])
-    except Exception as ex:
-        logging.error(ex)
-        return None
-
+            data = therms[therm]
+      
+            if data["is_internal"]:
+                print "internal: %s" % float(data["temp"]["celsius"])
+                return float(data["temp"]["celsius"])
+    except Exception as et:
+        print "EXXXXXXXXXXXXXXXXXXXXXXXXXXXX:%s" % et
+    
 
 def confort_temperature(mo=None):
     ctxt = Context.objects.get()
@@ -159,6 +167,7 @@ def stop_flame():
 
 mappings = [
     current_internal_temperature,
+    current_external_temperature,
     confort_temperature,
     economic_temperature,
     start_flame,

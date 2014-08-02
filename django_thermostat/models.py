@@ -4,14 +4,15 @@ from time import localtime, strftime
 import re
 from django_thermostat.utils import gen_comparing_time
 from django_thermometer.temperature import read_temperatures
-
+#from django_thermostat.mappings import get_mappings
 
 class Thermometer(models.Model):
 
     tid = models.CharField(max_length=30, unique=True)
     caption = models.CharField(max_length=30, null=True, blank=True, unique=True)
     is_internal_reference = models.NullBooleanField(unique=True)
-
+    is_external_reference = models.NullBooleanField(unique=True)
+    
     def __unicode__(self):
         return u"%s" % self.caption if self.caption is not None else self.tid
 
@@ -93,10 +94,12 @@ TEMP_CHOICES = (
     ("cuarto_oeste_off", "Bajar pasillo oeste"),
     ("cuarto_oeste_on", "Subir pasillo oeste"),
 
-    ("cuarto_este_off", "Bajar pasillo este"),
-    ("cuarto_este_on", "Bajar pasillo este"),
+    ("cuarto_este_off", "Bajar cuarto este"),
+    ("cuarto_este_on", "Bajar cuarto este"),
+
     ("a_lights_on", "Subir grupo A"),
     ("a_lights_off", "Bajar grupo A"),
+    
     ("set_heater_off", "Apagar caldera"),
     ("set_heater_on", "Encender caldera"),
 )
@@ -108,16 +111,14 @@ COND_CHOICES = (
     ("current_internal_temperature", "Current internal temperature"),
 )
 
-
 OPERATOR_CHOICES = (
     ("=", "="),
     ("<", "<"),
     (">", ">"),
     (">=", ">="),
     ("<=", "<="),
-
+    
 )
-
 
 class Conditional(models.Model):
     statement = models.CharField(max_length=60,choices=COND_CHOICES)
@@ -125,23 +126,27 @@ class Conditional(models.Model):
     statement2 = models.CharField(max_length=60, choices=COND_CHOICES, null=True, blank=True)
     value = models.CharField(max_length=10, null=True, blank=True)
     ocurred = models.BooleanField(default=False)
-
+    
+    
     def __unicode__(self):
         return self.to_pypelib()
-
+    
     def to_pypelib(self):
+#        from django_thermostat.mappings import get_mappings
+#        if not self.statement2 is None:
+#            self.value = get_mappings()[self.statement2]()
+        
         return u"(%s %s %s)" % (
-            self.statement,
+            self.statement, 
             self.operator,
             self.value if self.statement2 is None else self.statement2)
-
+        
     def save(self):
         print self.statement2
         print self.value
         if self.statement2 is None and self.value == "":
             raise AttributeError("Either statment2 or value must not be none")
         super(Conditional, self).save()
-
 
 class Rule(models.Model):
 

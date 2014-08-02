@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^toggle_heat_manual', "django_thermostat.views.toggle_heat_manual", name="toggle_heat_manual"),
     url(r'^temperatures', "django_thermostat.views.temperatures", name="temperatures"),
     url(r'^set_internal_reference/([\s\d\w\-]+)?/?$', "django_thermostat.views.set_internal_reference", name="set_internal_reference"),
+    url(r'^set_external_reference/([\s\d\w\-]+)?/?$', "django_thermostat.views.set_external_reference", name="set_external_reference"),
     url(r'^$', "django_thermostat.views.home", name="home"),
 )

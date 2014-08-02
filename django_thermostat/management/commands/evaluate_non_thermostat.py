@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django_thermostat.rules import evaluate_non_themp
-from time import localtime, strftime
+from time import localtime, strftime, sleep
 
 
 class Command(BaseCommand):
@@ -10,7 +10,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
-            evaluate_non_themp()
+            while True:
+                evaluate_non_themp()
+                self.stdout.write("Sleeping for 60secs")
+                sleep(60)
             self.stdout.write("Ended at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
         except Exception, ex:
             self.stderr.write("ERROR: %s" % ex)

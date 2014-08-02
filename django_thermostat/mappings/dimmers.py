@@ -101,7 +101,7 @@ def a_lights_off(mo=None):
 
 
 def a_lights_on(mo=None):
-    print "subimos todo"
+    print "dimmers.a_lights_on: subimos todo (%s: %s/%s)" % (settings.HEATER_API, settings.HEATER_USERNAME, settings.HEATER_PASSWORD)
     pl_all_lights_on(
         settings.HEATER_PROTOCOL,
         "A",
