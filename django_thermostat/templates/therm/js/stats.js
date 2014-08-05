@@ -1,11 +1,14 @@
 function load_stats(selector, grouping){
 
-
+    init_progress()
     var lines = []
     var series = []
     $.ajax({
         url: "{%url 'stats_temperature'%}" + grouping,
         dataType: "json",
+        beforeSend: function(){progress(30)},
+        complete: function(){$("[title!=undefined]").tooltip({"animation": "true"});progress(100)},
+        error: function(ob){show_msg(ob.responseText)}
         success: function(data){
             $.each(data, function(k, v){
                 series.push({label: k})
@@ -58,6 +61,6 @@ function load_stats(selector, grouping){
 
     })
     delete lines, series;
-
+    drop_progress();
 
 }
