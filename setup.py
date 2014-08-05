@@ -14,7 +14,6 @@ setup(
     license = 'BSD License',
     description = 'A Django app cronothermostat. It is a Python Home Automation component',
     long_description = README,
-#TODO set the project's home page
     url = 'http://blog.digitalhigh.es',
     author = 'Javier Pardo Blasco(jpardobl)',
     author_email = 'jpardo@digitalhigh.es',

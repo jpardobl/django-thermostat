@@ -51,7 +51,7 @@ function load_stats(){
     var lines = []
     var series = []
     $.ajax({
-        url: "{%url 'dumy_stats'%}",
+        url: "{%url 'stats_temperature'%}",
         dataType: "json",
         success: function(data){
             $.each(data, function(k, v){
@@ -70,7 +70,7 @@ function load_stats(){
                 })
 
             })
-            console.log(lines)
+            //console.log(lines)
             //console.log(series)
             $.jqplot("plot_div", lines, {
                   title:'Temperature evolution for last day',
@@ -106,7 +106,7 @@ function load_stats(){
                 })
 
         },
-        beforeSend: function (xhr){xhr.setRequestHeader('Authorization', make_base_auth("raton", "soportep"));},
+
     })
     delete lines, series;
 
