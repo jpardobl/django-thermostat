@@ -5,6 +5,7 @@ setup.py
 django_thermostat/__init__.py
 django_thermostat/admin.py
 django_thermostat/auth.py
+django_thermostat/aws.py
 django_thermostat/domotic.py
 django_thermostat/models.py
 django_thermostat/rules.py
@@ -254,6 +255,7 @@ django_thermostat/static/css/bootstrap.min.css
 django_thermostat/static/css/haweb.css
 django_thermostat/static/css/haweb.less
 django_thermostat/static/css/ie6.min.css
+django_thermostat/static/css/jquery.jqplot.min.css
 django_thermostat/static/fonts/glyphicons-halflings-regular.eot
 django_thermostat/static/fonts/glyphicons-halflings-regular.svg
 django_thermostat/static/fonts/glyphicons-halflings-regular.ttf
@@ -283,8 +285,10 @@ django_thermostat/static/jquery-ui-1.10.2/js/jquery-ui-1.10.2.js
 django_thermostat/static/jquery-ui-1.10.2/js/jquery-ui-1.10.2.min.js
 django_thermostat/static/js/bootstrap.js
 django_thermostat/static/js/bootstrap.min.js
+django_thermostat/static/js/excanvas.min.js
 django_thermostat/static/js/ie6.min.js
 django_thermostat/static/js/jquery-1.10.2.min.js
+django_thermostat/static/js/jquery.jqplot.min.js
 django_thermostat/static/js/jquery.validate.min.js
 django_thermostat/static/js/utils.js
 django_thermostat/templates/base.html
@@ -297,3 +301,5 @@ django_thermostat/templates/therm/context.js
 django_thermostat/templates/therm/context.json
 django_thermostat/templates/therm/header.html
 django_thermostat/templates/therm/home.html
+django_thermostat/templates/therm/stats.html
+django_thermostat/templates/therm/js/stats.js

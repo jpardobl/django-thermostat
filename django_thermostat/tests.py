@@ -7,6 +7,11 @@ from django_thermostat import settings
 from time import sleep
 
 
+class Testaws(unittest.TestCase):
+    def test_sns_msg(self):
+        from django_thermostat.aws import ses_send_email
+        print ses_send_email("subject", "arn:aws:sns:eu-west-1:837355510129:JavierPardo", "hola")
+        
 class TestMappings(unittest.TestCase):
     def test_is_at_night(self, ):
         from mappings.timings import is_at_night

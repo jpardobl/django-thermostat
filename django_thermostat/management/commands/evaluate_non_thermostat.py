@@ -8,12 +8,9 @@ class Command(BaseCommand):
     help = 'Evaluate rules realted to heater status. The result will start or stop the heater'
 
     def handle(self, *args, **options):
+        self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
         try:
-            self.stdout.write("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
-            while True:
-                evaluate_non_themp()
-                self.stdout.write("Sleeping for 60secs")
-                sleep(60)
-            self.stdout.write("Ended at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
-        except Exception, ex:
-            self.stderr.write("ERROR: %s" % ex)
+            evaluate_non_themp()
+        except Exception as ex2:
+            self.sdout.write("Error ocurred: %s" % ex2)
+            

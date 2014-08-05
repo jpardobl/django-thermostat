@@ -29,14 +29,17 @@ def salon_off(mo=None):
 
 
 def pasillo_off(mo=None):
-    pl_switch(
-        settings.HEATER_PROTOCOL,
-        settings.PASILLO_DID,
-        "off",
-        settings.HEATER_API,
-        settings.HEATER_USERNAME,
-        settings.HEATER_PASSWORD)
-
+    print "pasillo_off: %s" % settings.PASILLO_DID
+    try:
+        pl_switch(
+            settings.HEATER_PROTOCOL,
+            settings.PASILLO_DID,
+            "off",
+            settings.HEATER_API,
+            settings.HEATER_USERNAME,
+            settings.HEATER_PASSWORD)
+    except Exception as er:
+        print "pasillo_off, exception: %s" % er
 
 def pasillo_on(mo=None):
     pl_switch(
@@ -49,14 +52,17 @@ def pasillo_on(mo=None):
 
 
 def cuarto_oeste_off(mo=None):
-    pl_switch(
-        settings.HEATER_PROTOCOL,
-        settings.CUARTO_OESTE_DID,
-        "off",
-        settings.HEATER_API,
-        settings.HEATER_USERNAME,
-        settings.HEATER_PASSWORD)
-
+    print "cuarto_oeste_off: %s" % settings.CUARTO_OESTE_DID
+    try:
+        pl_switch(
+            settings.HEATER_PROTOCOL,
+            settings.CUARTO_OESTE_DID,
+            "off",
+            settings.HEATER_API,
+            settings.HEATER_USERNAME,
+            settings.HEATER_PASSWORD)
+    except Exception as ex: 
+        print "cuarto_oeste_off, excception: %s" % ex
 
 def cuarto_oeste_on(mo=None):
     pl_switch(
@@ -71,7 +77,7 @@ def cuarto_oeste_on(mo=None):
 def cuarto_este_off(mo=None):
     pl_switch(
         settings.HEATER_PROTOCOL,
-        settings.CUARTO_OESTE_DID,
+        settings.CUARTO_ESTE_DID,
         "off",
         settings.HEATER_API,
         settings.HEATER_USERNAME,

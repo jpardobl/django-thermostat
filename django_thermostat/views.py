@@ -1,5 +1,5 @@
-from django_thermostat.models import Context, Thermometer
-from django.shortcuts import render_to_response, redirect
+from django_thermostat.models import Context, Thermometer, ThermometerData
+from django.shortcuts import render_to_response, redirect, render
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from settings import HEATER_INCREMENT, LIST_THERMOMETERS_API
 from django.core.urlresolvers import reverse
@@ -8,7 +8,39 @@ from django_thermometer.temperature import read_temperatures
 import simplejson, logging, requests
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime, timedelta
 
+def dumy_stats(request):
+    return render_to_response(
+        "therm/dummy_stats.json",{})
+
+def temp_data_show(request):
+    return render_to_response(
+        "therm/stats.html",
+        {}
+    )
+
+def temp_data(request, fini=None, ffin=None):
+    
+        if ffin is None:
+            ffin = datetime.now()
+        if fini is None:
+            fini = ffin - timedelta(days=1)
+        data = {}
+        q = ThermometerData.objects.filter(timestamp__gt=fini, timestamp__lt=ffin)
+        print q.query
+        for d in q:
+            print "sacamos, %s, %s" % (d.thermometer, d.timestamp.toordinal())
+            if d.thermometer.caption not in data:
+                data[d.thermometer.caption] = {}
+            data[d.thermometer.caption][d.timestamp.strftime('%s')] = d.value
+        response = HttpResponse(
+            content=simplejson.dumps(data),
+            content_type="application/json")
+        response['Cache-Control'] = 'no-cache'
+        return response
+    #except Exception as et: 
+     #   return HttpResponseServerError("Error loading data: %s" % et)
 
 def set_external_reference(request, tid):
     try:

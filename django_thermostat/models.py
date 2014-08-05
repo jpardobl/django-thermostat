@@ -91,11 +91,11 @@ TEMP_CHOICES = (
     ("pasillo_off", "Bajar pasillo"),
     ("pasillo_on", "Subir pasillo"),
 
-    ("cuarto_oeste_off", "Bajar pasillo oeste"),
-    ("cuarto_oeste_on", "Subir pasillo oeste"),
+    ("cuarto_oeste_off", "Bajar cuarto oeste"),
+    ("cuarto_oeste_on", "Subir cuarto oeste"),
 
     ("cuarto_este_off", "Bajar cuarto este"),
-    ("cuarto_este_on", "Bajar cuarto este"),
+    ("cuarto_este_on", "Subir cuarto este"),
 
     ("a_lights_on", "Subir grupo A"),
     ("a_lights_off", "Bajar grupo A"),
@@ -199,4 +199,13 @@ class Rule(models.Model):
         if ranges.count() == 0 and days.count() == 0 and conds.count() == 0:
             out = "%s 1 = 1 " % out
         
-        return "%s then accept do %s" % (out, self.action)
+        return "%s then accept nonterminal do %s" % (out, self.action)
+
+
+class ThermometerData(models.Model):
+    thermometer = models.ForeignKey(Thermometer)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    value = models.DecimalField(max_digits=6, decimal_places=2)
+    
+    def __unicode__(self):
+        return u"%s, %s: %0.2f" % (self.thermometer, self.timestamp, self.value)    

@@ -46,8 +46,8 @@ def is_weekend(mo=None):
 
 def is_at_night(mo=None):
     #logging.basicConfig(level=logging.DEBUG)
-    from django_thermostat.models import Conditional
-    cond = Conditional.objects.get(statement="is_at_night")
+#    from django_thermostat.models import Conditional
+#    cond = Conditional.objects.get(statement="is_at_night")
 
     a = Location()
     a.timezone = dsettings.TIME_ZONE
@@ -68,13 +68,13 @@ def is_at_night(mo=None):
     logging.debug("Passed %s sunset more than %s minutes" % (passed_sunset, settings.MINUTES_AFTER_SUNSET_FOR_DAY))
     
     if not passed_sunrise or passed_sunset:
-        if cond.ocurred == True: return 0
-        cond.ocurred = True
-        cond.save()
+ #       if cond.ocurred == True: return 0
+  #      cond.ocurred = True
+  #      cond.save()
         return 1
     if passed_sunrise and not passed_sunset:
-        cond.ocurred = False
-        cond.save()
+  #      cond.ocurred = False
+   #     cond.save()
         return 0
 
 

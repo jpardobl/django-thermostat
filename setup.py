@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name = 'django-thermostat',
-    version = '2.3',
+    version = '2.4',
     packages = ["django_thermostat", ],
     include_package_data = True,
     license = 'BSD License',

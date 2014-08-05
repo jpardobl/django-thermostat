@@ -22,3 +22,7 @@ class TimeRangeAdmin(admin.ModelAdmin):
     pass
 admin.site.register(TimeRange, TimeRangeAdmin)
 
+class ThermometerDataAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(ThermometerData, ThermometerDataAdmin)
+

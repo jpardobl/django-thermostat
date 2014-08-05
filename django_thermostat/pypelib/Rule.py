@@ -87,6 +87,7 @@ class Rule():
 		self._description = description
 		self._errorMsg = errorMsg
 		self._uuid = uuid 
+                
 
 	def dump(self):
 		#Debug dump
@@ -103,7 +104,9 @@ class Rule():
 
 	#Resolver is passed at evaluation time to be able to dynamically redirect actions
 	def evaluate(self,metaObj,resolver):
+                
 		try:
+                        Rule.logger.setLevel(logging.DEBUG)
 			result = self._condition.evaluate(metaObj,resolver)
 			Rule.logger.debug('Result was: %s',str(result))
 		except Exception as e:
