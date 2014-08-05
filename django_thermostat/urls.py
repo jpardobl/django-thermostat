@@ -6,8 +6,8 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     url(r"^dummy_stats$", "django_thermostat.views.dumy_stats", name="dumy_stats"),
-    url(r"^stats/temperature/show/(week|month|day|year)?$", "django_thermostat.views.temp_data_show", name="stats_temperature_show"),
-    url(r"^stats/temperature/", "django_thermostat.views.temp_data", name="stats_temperature"),
+    url(r"^stats/temperature/show/?$", "django_thermostat.views.temp_data_show", name="stats_temperature_show"),
+    url(r"^stats/temperature/(week|month|day|year)?", "django_thermostat.views.temp_data", name="stats_temperature"),
     url(r'^js/context.js$', "django_thermostat.views.context_js", name="context_js"),
     url(r'^read_heat_status$', "django_thermostat.views.read_heat_status", name="read_heat_status"),
     url(r'^toggle_heat_status$', "django_thermostat.views.toggle_heat_status", name="toggle_heat_status"),

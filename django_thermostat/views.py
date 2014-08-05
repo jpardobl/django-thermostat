@@ -23,13 +23,13 @@ def temp_data_show(request):
 def temp_data(request, grouping=None):
 
     if grouping in (None, "day"):
-        data = Thermometer.objects.get_last_day()
+        data = ThermometerData.objects.get_last_day()
     if grouping == "week":
-        data = Thermometer.objects.get_last_week()
+        data = ThermometerData.objects.get_last_week()
     if grouping == "month":
-        data = Thermometer.objects.get_last_month()
+        data = ThermometerData.objects.get_last_month()
     if grouping == "year":
-        data = Thermometer.objects.get_last_year()
+        data = ThermometerData.objects.get_last_year()
 
     response = HttpResponse(
         content=simplejson.dumps(data),

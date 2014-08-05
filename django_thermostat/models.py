@@ -211,7 +211,7 @@ class ThermometerDataManager(models.Manager):
         """
         Method NOT returning QuerySet
         """
-        ffin = datetime.now()
+        ffin = datetime.utcnow()
         fini = ffin - timedelta(days=1)
         data = {}
 
@@ -223,20 +223,24 @@ class ThermometerDataManager(models.Manager):
 
     @staticmethod
     def get_last_week():
+        """
+        Method NOT returning QuerySet
+        """
         data = {}
         for i in reversed(range(7)):
-            ffin = datetime.now() - timedelta(days=i)
+            ffin = datetime.utcnow() - timedelta(days=i)
             fini = ffin - timedelta(days=1)
 
-
+            print("inteval: %s - %s" % (fini, ffin))
             for therm in Thermometer.objects.all():
                 if therm.caption not in data:
                     data[therm.caption] = {}
                 d = ThermometerData.objects.filter(
-                    thrrmometer=therm,
+                    thermometer=therm,
                     timestamp__gt=fini,
                     timestamp__lt=ffin).aggregate(Avg('value'))
-                data[therm.caption][fini] = d['value__avg']
+                data[therm.caption][fini.strftime('%s')] = d['value__avg']
+                print("thermomentro: %s, data: %s" % (therm.id, d['value__avg']))
         return data
 
     def get_last_month(self):
