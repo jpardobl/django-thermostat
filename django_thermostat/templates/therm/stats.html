@@ -5,7 +5,10 @@
 {% endblock %}
 
 {% block middle_col %}
-    <div id="plot_div"></div>
+    <div id="plot_div_day"></div>
+    <div id="plot_div_week"></div>
+    <div id="plot_div_month"></div>
+    <div id="plot_div_year"></div>
 {% endblock %}
 {% block include_script %}
     <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/statc/js/excanvas.js"></script><![endif]-->
@@ -24,5 +27,6 @@
 {%endblock%}
 
 {%block document_ready%}
-    load_stats()
+    load_stats('plot_div_day', 'day')
+    load_stats('plot_div_week', 'week')
 {%endblock%}

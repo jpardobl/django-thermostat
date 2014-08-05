@@ -45,13 +45,13 @@ function load_stats_old() {
         });
     });
 }
-function load_stats(){
+function load_stats(selector, grouping){
 
 
     var lines = []
     var series = []
     $.ajax({
-        url: "{%url 'stats_temperature'%}",
+        url: "{%url 'stats_temperature'%}" + grouping,
         dataType: "json",
         success: function(data){
             $.each(data, function(k, v){
@@ -72,7 +72,7 @@ function load_stats(){
             })
             //console.log(lines)
             //console.log(series)
-            $.jqplot("plot_div", lines, {
+            $.jqplot(selector, lines, {
                   title:'Temperature evolution for last day',
                   // Series options are specified as an array of objects, one object
                   // for each series.
