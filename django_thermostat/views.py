@@ -20,27 +20,25 @@ def temp_data_show(request):
         {}
     )
 
-def temp_data(request, fini=None, ffin=None):
-    
-        if ffin is None:
-            ffin = datetime.now()
-        if fini is None:
-            fini = ffin - timedelta(days=1)
-        data = {}
-        q = ThermometerData.objects.filter(timestamp__gt=fini, timestamp__lt=ffin)
-        print q.query
-        for d in q:
-            print "sacamos, %s, %s" % (d.thermometer, d.timestamp.toordinal())
-            if d.thermometer.caption not in data:
-                data[d.thermometer.caption] = {}
-            data[d.thermometer.caption][d.timestamp.strftime('%s')] = d.value
-        response = HttpResponse(
-            content=simplejson.dumps(data),
-            content_type="application/json")
-        response['Cache-Control'] = 'no-cache'
-        return response
-    #except Exception as et: 
-     #   return HttpResponseServerError("Error loading data: %s" % et)
+def temp_data(request, grouping=None):
+
+    if grouping in (None, "day"):
+        data = Thermometer.objects.get_last_day()
+    if grouping == "week":
+        data = Thermometer.objects.get_last_week()
+    if grouping == "month":
+        data = Thermometer.objects.get_last_month()
+    if grouping == "year":
+        data = Thermometer.objects.get_last_year()
+
+    response = HttpResponse(
+        content=simplejson.dumps(data),
+        content_type="application/json")
+
+    response['Cache-Control'] = 'no-cache'
+
+    return response
+
 
 def set_external_reference(request, tid):
     try:

@@ -1,10 +1,13 @@
 from django.db import models
 import simplejson
 from time import localtime, strftime
+from datetime import datetime, timedelta
 import re
 from django_thermostat.utils import gen_comparing_time
 from django_thermometer.temperature import read_temperatures
 #from django_thermostat.mappings import get_mappings
+from django.db.models import Avg
+
 
 class Thermometer(models.Model):
 
@@ -202,7 +205,48 @@ class Rule(models.Model):
         return "%s then accept nonterminal do %s" % (out, self.action)
 
 
+class ThermometerDataManager(models.Manager):
+    @staticmethod
+    def get_last_day():
+        """
+        Method NOT returning QuerySet
+        """
+        ffin = datetime.now()
+        fini = ffin - timedelta(days=1)
+        data = {}
+
+        for d in ThermometerData.objects.filter(timestamp__gt=fini, timestamp__lt=ffin):
+            if d.thermometer.caption not in data:
+                data[d.thermometer.caption] = {}
+            data[d.thermometer.caption][d.timestamp.strftime('%s')] = d.value
+        return data
+
+    @staticmethod
+    def get_last_week():
+        data = {}
+        for i in reversed(range(7)):
+            ffin = datetime.now() - timedelta(days=i)
+            fini = ffin - timedelta(days=1)
+
+
+            for therm in Thermometer.objects.all():
+                if therm.caption not in data:
+                    data[therm.caption] = {}
+                d = ThermometerData.objects.filter(
+                    thrrmometer=therm,
+                    timestamp__gt=fini,
+                    timestamp__lt=ffin).aggregate(Avg('value'))
+                data[therm.caption][fini] = d['value__avg']
+        return data
+
+    def get_last_month(self):
+        pass
+
+    def get_last_year(self):
+        pass
+
 class ThermometerData(models.Model):
+    objects = ThermometerDataManager()
     thermometer = models.ForeignKey(Thermometer)
     timestamp = models.DateTimeField(auto_now_add=True)
     value = models.DecimalField(max_digits=6, decimal_places=2)
