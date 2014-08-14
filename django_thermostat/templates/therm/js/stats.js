@@ -73,11 +73,11 @@ function load_stats(selector, grouping){
                     showTooltip: true,      // show a tooltip with data point values.
                     tooltipLocation: 'nw',  // location of tooltip: n, ne, e, se, s, sw, w, nw.
                     fadeTooltip: true,      // use fade effect to show/hide tooltip.
-                    tooltipFadeSpeed: "fast"// slow, def, fast, or a number of milliseconds.
+                    tooltipFadeSpeed: "fast",// slow, def, fast, or a number of milliseconds.
                     tooltipOffset: 2,       // pixel offset of tooltip from the highlight.
                     tooltipAxes: 'both',    // which axis values to display in the tooltip, x, y or both.
-                    tooltipSeparator: ', '  // separator between values in the tooltip.
-                    useAxesFormatters: true // use the same format string and formatters as used in the axes to
+                    tooltipSeparator: ', ',  // separator between values in the tooltip.
+                    useAxesFormatters: true, // use the same format string and formatters as used in the axes to
                                             // display values in the tooltip.
                     tooltipFormatString: '%.5P' // sprintf format string for the tooltip.  only used if
                                                 // useAxesFormatters is false.  Will use sprintf formatter with
