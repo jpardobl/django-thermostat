@@ -8,7 +8,7 @@ function load_stats(selector, grouping){
         dataType: "json",
         beforeSend: function(){progress(30)},
         complete: function(){$("[title!=undefined]").tooltip({"animation": "true"});progress(100)},
-        error: function(ob){show_msg(ob.responseText)}
+        error: function(ob){show_msg(ob.responseText)},
         success: function(data){
             $.each(data, function(k, v){
                 series.push({label: k})
@@ -44,6 +44,46 @@ function load_stats(selector, grouping){
                           placement: 'inside',
                         fontSize: '11px'
                     } ,
+                cursor: {
+                    style: 'crosshair',     // A CSS spec for the cursor type to change the
+                                            // cursor to when over plot.
+                    show: true,
+                    showTooltip: true,      // show a tooltip showing cursor position.
+                    followMouse: false,     // wether tooltip should follow the mouse or be stationary.
+                    tooltipLocation: 'se',  // location of the tooltip either relative to the mouse
+                                            // (followMouse=true) or relative to the plot.  One of
+                                            // the compass directions, n, ne, e, se, etc.
+                    tooltipOffset: 6,       // pixel offset of the tooltip from the mouse or the axes.
+                    showTooltipGridPosition: false,     // show the grid pixel coordinates of the mouse
+                                                        // in the tooltip.
+                    showTooltipUnitPosition: true,      // show the coordinates in data units of the mouse
+                                                        // in the tooltip.
+                    tooltipFormatString: '%.4P',    // sprintf style format string for tooltip values.
+                    useAxesFormatters: true        // wether to use the same formatter and formatStrings
+                                                    // as used by the axes, or to use the formatString
+                                                    // specified on the cursor with sprintf.
+                                                      // combinations with for the series in the plot are shown.
+
+                },
+
+                highlighter: {
+                    lineWidthAdjust: 2.5,   // pixels to add to the size line stroking the data point marker
+                                            // when showing highlight.  Only affects non filled data point markers.
+                    sizeAdjust: 5,          // pixels to add to the size of filled markers when drawing highlight.
+                    showTooltip: true,      // show a tooltip with data point values.
+                    tooltipLocation: 'nw',  // location of tooltip: n, ne, e, se, s, sw, w, nw.
+                    fadeTooltip: true,      // use fade effect to show/hide tooltip.
+                    tooltipFadeSpeed: "fast"// slow, def, fast, or a number of milliseconds.
+                    tooltipOffset: 2,       // pixel offset of tooltip from the highlight.
+                    tooltipAxes: 'both',    // which axis values to display in the tooltip, x, y or both.
+                    tooltipSeparator: ', '  // separator between values in the tooltip.
+                    useAxesFormatters: true // use the same format string and formatters as used in the axes to
+                                            // display values in the tooltip.
+                    tooltipFormatString: '%.5P' // sprintf format string for the tooltip.  only used if
+                                                // useAxesFormatters is false.  Will use sprintf formatter with
+                                                // this string, not the axes formatters.
+                },
+
 
                 axes: {
                     // options for each axis are specified in seperate option objects.
