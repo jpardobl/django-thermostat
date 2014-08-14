@@ -44,6 +44,28 @@ function load_stats(selector, grouping){
                           placement: 'inside',
                         fontSize: '11px'
                     } ,
+                cursor: {
+                    style: 'crosshair',     // A CSS spec for the cursor type to change the
+                                            // cursor to when over plot.
+                    show: true,
+                    showTooltip: true,      // show a tooltip showing cursor position.
+                    followMouse: false,     // wether tooltip should follow the mouse or be stationary.
+                    tooltipLocation: 'se',  // location of the tooltip either relative to the mouse
+                                            // (followMouse=true) or relative to the plot.  One of
+                                            // the compass directions, n, ne, e, se, etc.
+                    tooltipOffset: 6,       // pixel offset of the tooltip from the mouse or the axes.
+                    showTooltipGridPosition: false,     // show the grid pixel coordinates of the mouse
+                                                        // in the tooltip.
+                    showTooltipUnitPosition: true,      // show the coordinates in data units of the mouse
+                                                        // in the tooltip.
+                    tooltipFormatString: '%.4P',    // sprintf style format string for tooltip values.
+                    useAxesFormatters: true        // wether to use the same formatter and formatStrings
+                                                    // as used by the axes, or to use the formatString
+                                                    // specified on the cursor with sprintf.
+                                                      // combinations with for the series in the plot are shown.
+
+                },
+
                 highlighter: {
                     lineWidthAdjust: 2.5,   // pixels to add to the size line stroking the data point marker
                                             // when showing highlight.  Only affects non filled data point markers.
