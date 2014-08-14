@@ -224,12 +224,12 @@ class ThermometerDataManager(models.Manager):
         return data
 
     @staticmethod
-    def get_last_week():
+    def get_last_n_week(n):
         """
         Method NOT returning QuerySet
         """
         data = {}
-        for i in reversed(range(7)):
+        for i in reversed(range(7*n)):
             ffin = datetime.utcnow() - timedelta(days=i)
             fini = ffin - timedelta(days=1)
 
