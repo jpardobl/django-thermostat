@@ -27,7 +27,7 @@ def temp_data(request, grouping=None):
     if grouping == "week":
         data = ThermometerData.objects.get_last_n_weeks(2)
     if grouping == "month":
-        data = ThermometerData.objects.get_last_month()
+        data = ThermometerData.objects.get_last_n_months()
     if grouping == "year":
         data = ThermometerData.objects.get_last_year()
 

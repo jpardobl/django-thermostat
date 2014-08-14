@@ -213,7 +213,7 @@ class ThermometerDataManager(models.Manager):
         """
         Method NOT returning QuerySet
         """
-        ffin = datetime.utcnow()
+        ffin = datetime.utcnow().replace(minute=0, second=0)
         fini = ffin - timedelta(days=n)
         data = {}
 
@@ -230,7 +230,7 @@ class ThermometerDataManager(models.Manager):
         """
         data = {}
         for i in reversed(range(7*n)):
-            ffin = datetime.utcnow() - timedelta(days=i)
+            ffin = datetime.utcnow().replace(hour=0, minute=0, second=0) - timedelta(days=i)
             fini = ffin - timedelta(days=1)
 
             print("inteval: %s - %s" % (fini, ffin))
@@ -245,7 +245,8 @@ class ThermometerDataManager(models.Manager):
                 print("thermomentro: %s, data: %s" % (therm.id, d['value__avg']))
         return data
 
-    def get_last_month(self):
+    @staticmethod
+    def get_last_n_months(n):
         pass
 
     def get_last_year(self):
