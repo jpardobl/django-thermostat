@@ -224,7 +224,7 @@ class ThermometerDataManager(models.Manager):
         return data
 
     @staticmethod
-    def get_last_n_week(n):
+    def get_last_n_weeks(n):
         """
         Method NOT returning QuerySet
         """
