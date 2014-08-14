@@ -38,7 +38,7 @@ function load_stats(selector, grouping){
                       markerOptions: { show: false }
                   },
                   series: series,
-                        legend: {
+                  legend: {
                           show: true,
                           location: 'nw',
                           placement: 'inside',
@@ -97,7 +97,7 @@ function load_stats(selector, grouping){
                   }
                 })
 
-        },
+        }
 
     })
     delete lines, series;
