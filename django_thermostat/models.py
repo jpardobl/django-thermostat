@@ -206,13 +206,15 @@ class Rule(models.Model):
 
 
 class ThermometerDataManager(models.Manager):
+
+
     @staticmethod
-    def get_last_day():
+    def get_last_n_days(n):
         """
         Method NOT returning QuerySet
         """
         ffin = datetime.utcnow()
-        fini = ffin - timedelta(days=1)
+        fini = ffin - timedelta(days=n)
         data = {}
 
         for d in ThermometerData.objects.filter(timestamp__gt=fini, timestamp__lt=ffin):
