@@ -3,6 +3,10 @@ function load_stats(selector, grouping){
     init_progress()
     var lines = []
     var series = []
+    switch(grouping){
+        case "day": var fstring = "%d-%m %H:%M"
+        case "week": var fstring = "%A"
+    }
     $.ajax({
         url: "{%url 'stats_temperature'%}" + grouping,
         dataType: "json",
@@ -36,6 +40,10 @@ function load_stats(selector, grouping){
                       shadowAlpha: 0.2,
                       lineWidth:2,
                       markerOptions: { show: false }
+                  },
+                  axesDefault:{
+                      show: true,
+                      formatString: fstring
                   },
                   series: series,
                   legend: {
@@ -89,10 +97,10 @@ function load_stats(selector, grouping){
                     // options for each axis are specified in seperate option objects.
                     xaxis: {
                       label: "Date",
-                      renderer:$.jqplot.DateAxisRenderer,
+                      renderer:$.jqplot.DateAxisRenderer
                     },
                     yaxis: {
-                      label: "Temperature(celsius)"
+                      label: "&#186;C"
                     }
                   }
                 })
