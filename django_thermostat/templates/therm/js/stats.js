@@ -42,8 +42,10 @@ function load_stats(selector, grouping){
                       markerOptions: { show: false }
                   },
                   axesDefault:{
-                      show: true,
-                      formatString: fstring
+                      tickOptions: {
+                          show: true,
+                          formatString: fstring
+                      }
                   },
                   series: series,
                   legend: {
