@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django_thermostat.models import ThermometerData, Thermometer
-from django_thermostat import settings
+#from django_thermostat import settings
 import requests
 from time import strftime, localtime
 from django.core.urlresolvers import reverse
@@ -28,11 +28,10 @@ class Command(BaseCommand):
 
             for therm in therms:
                 try:
-                    ThermometerData(
-                        thermometer=Thermometer.objects.get(caption=therm),
-                        value=therms[therm]["temp"]["celsius"]
-                    ).save()
-
+                    therm = Thermometer.objects.get(caption=therm)
+                    value = therms[therm]["temp"]["celsius"]
+                    logger.debug("Thermometer: %s; value: %s" % (therm, value))
+                    ThermometerData(thermometer=therm, value=value).save()
                 except Exception as ex:
                     logger.error("Error gathering %s data: %s" % (therm, ex))
                     continue
