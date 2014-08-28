@@ -10,7 +10,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, timedelta
 
-logger = logging.getLogger("thermostat")
+logger = logging.getLogger("thermostat.web")
 logger.setLevel(settings.LOG_LEVEL)
 
 
@@ -81,7 +81,7 @@ def set_internal_reference(request, tid):
 	    #no previously selected thermostat
 	    pass
     except Exception as err:
-        logging.error("set_internal_reference: %s" % err)
+        logger.error("set_internal_reference: %s" % err)
 
     try:
         therm = Thermometer.objects.get(Q(tid=tid) | Q(caption=tid))

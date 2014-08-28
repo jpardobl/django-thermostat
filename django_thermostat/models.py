@@ -10,7 +10,7 @@ from django.db.models import Avg
 import logging
 from django.conf import settings
 
-logger = logging.getLogger("thermostat")
+logger = logging.getLogger("thermostat.models")
 logger.setLevel(settings.LOG_LEVEL)
 
 

@@ -8,7 +8,7 @@ from hautomation_restclient.cmds import (
 
 from django.conf import settings
 
-logger = logging.getLogger("thermostat")
+logger = logging.getLogger("thermostat.rules.mappings")
 logger.setLevel(settings.LOG_LEVEL)
 
 

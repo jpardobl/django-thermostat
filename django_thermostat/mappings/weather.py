@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from time import strftime, localtime, mktime, strptime
 import os, logging, simplejson
 
-logger = logging.getLogger("thermostat")
+logger = logging.getLogger("thermostat.rules.mappings")
 logger.setLevel(settings.LOG_LEVEL)
 
 

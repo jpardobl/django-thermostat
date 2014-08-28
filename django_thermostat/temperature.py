@@ -46,5 +46,5 @@ if __name__ == "__main__":
         help='The thermometer to read from, possible values: in|out')
     args = parser.parse_args()
 
-    print float(read_temp(args.thermometer)[0])
+    print(float(read_temp(args.thermometer)[0]))
     exit(0)

@@ -5,7 +5,7 @@ from django.conf import settings as settings
 import pytz
 
 
-logger = logging.getLogger("thermostat")
+logger = logging.getLogger("thermostat.rules.mappings")
 logger.setLevel(settings.LOG_LEVEL)
 
 
