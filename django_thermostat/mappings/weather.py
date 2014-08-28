@@ -80,7 +80,7 @@ def tuned_temperature(mo=None):
         ctxt = Context.objects.get()
 
         t = float(ctxt.tuned_temperature) + settings.HEATER_MARGIN \
-            if ctxt.flame elsectxt.tuned_temperature
+            if ctxt.flame else ctxt.tuned_temperature
         logger.debug("Tunned temp: %s" % t)
         return t
     except Exception as et:
