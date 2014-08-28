@@ -27,7 +27,7 @@ def read_temp(thermometer):
     elif thermometer in ("external", "EXTERNAL", "OUT", "out"):
 	filee = out_file
     else:
-	raise ValueError("Thermometer missing [out|in]")
+	    raise ValueError("Thermometer missing [out|in]")
 
     lines = read_temp_raw(filee)
     while lines[0].strip()[-3:] != 'YES':

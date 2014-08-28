@@ -5,6 +5,10 @@ from django_thermostat.models import Rule
 import logging
 from django.conf import settings
 
+logger = logging.getLogger("thermostat")
+logger.setLevel(settings.LOG_LEVEL)
+
+
 def evaluate_non_themp():
     mappings = get_mappings()
     table = RuleTable(
@@ -17,14 +21,13 @@ def evaluate_non_themp():
     table.setPolicy(False)
     for rule in Rule.objects.filter(active=True, thermostat=False).order_by("pk"):
         table.addRule(rule.to_pypelib())
-    table.dump()
+    if settings.DEBUG:
+        table.dump()
     try:
         table.evaluate({})
-        print "Table evaluated True"
-    except Exception, ex:
-        print "ERROR: %s" % ex
-        pass
-
+        logger.debug("Table NONTHERM evaluated True")
+    except Exception as ex:
+        logger.debug("Table NONTHERM evaluated False")
 
 
 def evaluate():
@@ -38,14 +41,14 @@ def evaluate():
         "RAWFile",
         None)
 
-    logging.debug("current time: %s " % mappings["current_time"]())
-    logging.debug("current day of week: %s" % mappings["current_day_of_week"]())
-    logging.debug("current temp %s" % mappings["current_internal_temperature"]())
-    logging.debug("economic %s" % mappings["economic_temperature"]())
-    logging.debug("confort %s" % mappings["confort_temperature"]())
-    logging.debug("tuned %s" % mappings["tuned_temperature"]())
-    logging.debug("flame %s" % mappings["flame_on"]())
-    logging.debug("heat on %s" % mappings["heater_on"]())
+    logger.debug("current time: %s " % mappings["current_time"]())
+    logger.debug("current day of week: %s" % mappings["current_day_of_week"]())
+    logger.debug("current temp %s" % mappings["current_internal_temperature"]())
+    logger.debug("economic %s" % mappings["economic_temperature"]())
+    logger.debug("confort %s" % mappings["confort_temperature"]())
+    logger.debug("tuned %s" % mappings["tuned_temperature"]())
+    logger.debug("flame %s" % mappings["flame_on"]())
+    logger.debug("heat on %s" % mappings["heater_on"]())
 
     table.setPolicy(False)
 
@@ -61,7 +64,9 @@ def evaluate():
 
     try:
         table.evaluate(metaObj)
+        logger.debug("Table THERM1 evaluated True")
     except Exception:
+        logger.debug("Table THERM1 evaluated False")
         mappings["tune_to_economic"]()
 
     table1 = RuleTable(
@@ -78,13 +83,15 @@ def evaluate():
         
     try:
         table1.evaluate(metaObj)
+        logger.debug("Table THERM2 evaluated True")
         try:
             mappings["start_flame"]()
-        except Exception, ex:
-            logging.error("ERROR: Cant start flame: %s" % ex)
+        except Exception as ex:
+            logger.critical("ERROR: Cant start flame: %s" % ex)
     except Exception as e:
+        logger.debug("Table THERM2 evaluated False")
         try:
             mappings["stop_flame"]()
-        except Exception, ex:
-            logging.error("ERROR: Cant stop flame: %s" % ex)
+        except Exception as ex:
+            logger.critical("ERROR: Cant stop flame: %s" % ex)
 

@@ -1,7 +1,15 @@
 import requests, logging, re
-from django_thermostat import settings
+
 from django.core.management.base import BaseCommand, CommandError
 from time import localtime, time, mktime
+
+import logging
+from django.conf import settings
+
+
+logger = logging.getLogger("thermostat")
+logger.setLevel(settings.LOG_LEVEL)
+
 
 class Command(BaseCommand):
     args = ''
@@ -96,6 +104,6 @@ class Command(BaseCommand):
         try:
             total_seconds = int(args[0]) * 60
             print("absolute:%d percent:%.2f" % (total_heating_period, (100 * total_heating_period ) / total_seconds))
-        except Exception, er:
-            logging.error("Exception while trying to return the value: %s " % er)
+        except Exception as er:
+            logger.error("Exception while trying to return the value: %s " % er)
             

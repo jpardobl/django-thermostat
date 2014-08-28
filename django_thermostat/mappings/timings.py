@@ -1,83 +1,109 @@
 from time import strftime, localtime, mktime, strptime
 from astral import Location#, AstralGeocoder
 import datetime, logging
-from django.conf import settings as dsettings
-import django_thermostat.settings as settings
+from django.conf import settings as settings
 import pytz
 
 
-def current_day_of_week(mo=None):
+logger = logging.getLogger("thermostat")
+logger.setLevel(settings.LOG_LEVEL)
 
-    return strftime("%a", localtime())
+
+def current_day_of_week(mo=None):
+    try:
+        d = strftime("%a", localtime())
+        logger.debug("Current day of week: %s" % d)
+        return d
+    except Exception as ex:
+        logger.error(ex)
 
 
 def current_month(mo=None):
-    return strftime("%m", localtime())
+    try:
+        m = strftime("%m", localtime())
+        logger.debug("Current month: %s" % m)
+        return m
+    except Exception as ex:
+        logger.error(ex)
 
 
 def current_year(mo=None):
-    return strftime("%Y", localtime())
+    try:
+        y = strftime("%Y", localtime())
+        logger.debug("Current year: %s" % y)
+        return y
+    except Exception as ex:
+        logger.error(ex)
 
 
 def current_day_of_month(mo=None):
-    return strftime("%d", localtime())
+    try:
+        d = strftime("%d", localtime())
+        logger.debug("Current day of month: %s" % d)
+        return d
+    except Exception as ex:
+        logger.error(ex)
 
 
 def current_time(mo=None):
-    lt = localtime()
-    st = "%s %s %s %s:%s:%s" %(
-        strftime("%d", lt),
-        strftime("%m", lt),
-        strftime("%Y", lt),
-        strftime("%H", lt),
-        strftime("%M", lt),
-        strftime("%S", lt))
-    t = strptime(st, "%d %m %Y %H:%M:%S")
-    return mktime(t)
+    try:
+        lt = localtime()
+        st = "%s %s %s %s:%s:%s" %(
+            strftime("%d", lt),
+            strftime("%m", lt),
+            strftime("%Y", lt),
+            strftime("%H", lt),
+            strftime("%M", lt),
+            strftime("%S", lt))
+        t = strptime(st, "%d %m %Y %H:%M:%S")
+        t = mktime(t)
+        logger.debug("Current time: %s" % t)
+        return t
+    except Exception as ex:
+        logger.error(ex)
 
 
 
 def is_weekend(mo=None):
-    today = current_day_of_week()
-    if today == "Sat" or today == "Sun":
-        return 1
-    return 0
+    try:
+        today = current_day_of_week()
+        if today == "Sat" or today == "Sun":
+            logger.debug("Is not weekend")
+            return 1
+        logger.debug("Is weekend")
+        return 0
+    except Exception as ex:
+        logger.error(ex)
 
 
 def is_at_night(mo=None):
-    #logging.basicConfig(level=logging.DEBUG)
-#    from django_thermostat.models import Conditional
-#    cond = Conditional.objects.get(statement="is_at_night")
+    try:
+        a = Location()
+        a.timezone = dsettings.TIME_ZONE
+        tz = pytz.timezone(a.timezone)
+        #Tue, 22 Jul 2008 08:17:41 +0200
+        #Sun, 26 Jan 2014 17:39:49 +01:00
+        a_sunset = a.sunset()
 
-    a = Location()
-    a.timezone = dsettings.TIME_ZONE
-    tz = pytz.timezone(a.timezone)
-    #Tue, 22 Jul 2008 08:17:41 +0200
-    #Sun, 26 Jan 2014 17:39:49 +01:00
-    a_sunset = a.sunset()
-    
-    a_sunrise = a.sunrise()
-      
-    n = datetime.datetime.now()
-    n = tz.localize(n)
-    logging.debug("NOW: %s; sunrise: %s; dif: %s"  % (n, a_sunrise, n - a_sunrise))
-    logging.debug("NOW: %s; sunset: %s; dif: %s" % (n, a_sunset, n - a_sunset))
-    passed_sunrise = (n - a_sunrise) > datetime.timedelta(minutes=settings.MINUTES_AFTER_SUNRISE_FOR_DAY)
-    logging.debug("Passed %s sunrise more than %s minutes" % (passed_sunrise, settings.MINUTES_AFTER_SUNRISE_FOR_DAY))
-    passed_sunset = (n - a_sunset) > datetime.timedelta(minutes=settings.MINUTES_AFTER_SUNSET_FOR_DAY)
-    logging.debug("Passed %s sunset more than %s minutes" % (passed_sunset, settings.MINUTES_AFTER_SUNSET_FOR_DAY))
-    
-    if not passed_sunrise or passed_sunset:
- #       if cond.ocurred == True: return 0
-  #      cond.ocurred = True
-  #      cond.save()
-        return 1
-    if passed_sunrise and not passed_sunset:
-  #      cond.ocurred = False
-   #     cond.save()
-        return 0
+        a_sunrise = a.sunrise()
 
+        n = datetime.datetime.now()
+        n = tz.localize(n)
+        logger.debug("NOW: %s; sunrise: %s; dif: %s"  % (n, a_sunrise, n - a_sunrise))
+        logger.debug("NOW: %s; sunset: %s; dif: %s" % (n, a_sunset, n - a_sunset))
+        passed_sunrise = (n - a_sunrise) > datetime.timedelta(minutes=settings.MINUTES_AFTER_SUNRISE_FOR_DAY)
+        logger.debug("Passed %s sunrise more than %s minutes" % (passed_sunrise, settings.MINUTES_AFTER_SUNRISE_FOR_DAY))
+        passed_sunset = (n - a_sunset) > datetime.timedelta(minutes=settings.MINUTES_AFTER_SUNSET_FOR_DAY)
+        logger.debug("Passed %s sunset more than %s minutes" % (passed_sunset, settings.MINUTES_AFTER_SUNSET_FOR_DAY))
 
+        if not passed_sunrise or passed_sunset:
+            logger.debug("Is not at night")
+            return 1
+        if passed_sunrise and not passed_sunset:
+            logger.debug("Is at night")
+            return 0
+    except Exception as ex:
+        logger.error(ex)
 
 mappings = [
     current_day_of_week,

@@ -1,7 +1,7 @@
 from django_thermostat.models import Context, Thermometer, ThermometerData
 from django.shortcuts import render_to_response, redirect, render
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
-from settings import HEATER_INCREMENT, LIST_THERMOMETERS_API
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django_thermostat.mappings import get_mappings
 from django_thermometer.temperature import read_temperatures
@@ -9,6 +9,10 @@ import simplejson, logging, requests
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, timedelta
+
+logger = logging.getLogger("thermostat")
+logger.setLevel(settings.LOG_LEVEL)
+
 
 def dumy_stats(request):
     return render_to_response(
@@ -51,7 +55,7 @@ def set_external_reference(request, tid):
         #no previously selected thermostat
         pass
     except Exception as err:
-        logging.error("set_external_reference: %s" % err)
+        logger.error("set_external_reference: %s" % err)
 
     try:
         therm = Thermometer.objects.get(Q(tid=tid) | Q(caption=tid))
@@ -61,8 +65,9 @@ def set_external_reference(request, tid):
     except ObjectDoesNotExist:
         return HttpResponseBadRequest("Thermostats %s not found" % tid)
     except Exception as ex:
-        logging.error("set_external_reference: %s" % ex)
+        logger.error("set_external_reference: %s" % ex)
         return HttpResponseServerError(ex)
+
 
 def set_internal_reference(request, tid):
 
@@ -73,8 +78,8 @@ def set_internal_reference(request, tid):
         therm.is_internal_reference = None
         therm.save()
     except ObjectDoesNotExist:
-	#no previously selected thermostat
-	pass
+	    #no previously selected thermostat
+	    pass
     except Exception as err:
         logging.error("set_internal_reference: %s" % err)
 
@@ -86,7 +91,7 @@ def set_internal_reference(request, tid):
     except ObjectDoesNotExist:
         return HttpResponseBadRequest("Thermostats %s not found" % tid)
     except Exception as ex:
-        logging.error("set_internal_reference: %s" % ex)
+        logger.error("set_internal_reference: %s" % ex)
         return HttpResponseServerError(ex)
 
 
@@ -101,8 +106,8 @@ def home(request):
 
 
 def temperatures(request):
-    if not LIST_THERMOMETERS_API is None:
-        ret = requests.get("%stemperatures=True" % LIST_THERMOMETERS_API)
+    if not settings.LIST_THERMOMETERS_API is None:
+        ret = requests.get("%stemperatures=True" % settings.LIST_THERMOMETERS_API)
         therms = ret.json()
     else:
         therms = read_temperatures()
@@ -129,9 +134,9 @@ def temperatures(request):
 def dim_temp(request, temp):
     context = Context.objects.get()
     if temp == "confort":
-        context.confort_temperature = float(context.confort_temperature) - float(HEATER_INCREMENT)
+        context.confort_temperature = float(context.confort_temperature) - float(settings.HEATER_INCREMENT)
     if temp == "economic":
-        context.economic_temperature = float(context.economic_temperature) - float(HEATER_INCREMENT)
+        context.economic_temperature = float(context.economic_temperature) - float(settings.HEATER_INCREMENT)
     context.save()
     return redirect(reverse("read_heat_status"))
 
@@ -139,9 +144,9 @@ def dim_temp(request, temp):
 def bri_temp(request, temp):
     context = Context.objects.get()
     if temp == "confort":
-        context.confort_temperature = float(context.confort_temperature) + float(HEATER_INCREMENT)
+        context.confort_temperature = float(context.confort_temperature) + float(settings.HEATER_INCREMENT)
     if temp == "economic":
-        context.economic_temperature = float(context.economic_temperature) + float(HEATER_INCREMENT)
+        context.economic_temperature = float(context.economic_temperature) + float(settings.HEATER_INCREMENT)
     context.save()
     return redirect(reverse("read_heat_status"))
 
@@ -174,5 +179,5 @@ def read_heat_status(request):
 def context_js(request):
     return render_to_response(
         "context.js",
-        {"temperatures_uri": LIST_THERMOMETERS_API, },
+        {"temperatures_uri": settings.LIST_THERMOMETERS_API, },
         content_type="application/javascript")

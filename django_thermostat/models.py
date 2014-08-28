@@ -7,6 +7,11 @@ from django_thermostat.utils import gen_comparing_time
 from django_thermometer.temperature import read_temperatures
 #from django_thermostat.mappings import get_mappings
 from django.db.models import Avg
+import logging
+from django.conf import settings
+
+logger = logging.getLogger("thermostat")
+logger.setLevel(settings.LOG_LEVEL)
 
 
 class Thermometer(models.Model):
@@ -145,11 +150,10 @@ class Conditional(models.Model):
             self.value if self.statement2 is None else self.statement2)
         
     def save(self):
-        print self.statement2
-        print self.value
         if self.statement2 is None and self.value == "":
             raise AttributeError("Either statment2 or value must not be none")
         super(Conditional, self).save()
+
 
 class Rule(models.Model):
 
@@ -233,7 +237,7 @@ class ThermometerDataManager(models.Manager):
             ffin = datetime.utcnow().replace(hour=0, minute=0, second=0) - timedelta(days=i)
             fini = ffin - timedelta(days=1)
 
-            print("inteval: %s - %s" % (fini, ffin))
+            logger.debug("inteval: %s - %s" % (fini, ffin))
             for therm in Thermometer.objects.all():
                 if therm.caption not in data:
                     data[therm.caption] = {}
@@ -242,15 +246,16 @@ class ThermometerDataManager(models.Manager):
                     timestamp__gt=fini,
                     timestamp__lt=ffin).aggregate(Avg('value'))
                 data[therm.caption][fini.strftime('%s')] = d['value__avg']
-                print("thermomentro: %s, data: %s" % (therm.id, d['value__avg']))
+                logger.debug("thermomentro: %s, data: %s" % (therm.id, d['value__avg']))
         return data
 
     @staticmethod
     def get_last_n_months(n):
         pass
-
+    @staticmethod
     def get_last_year(self):
         pass
+
 
 class ThermometerData(models.Model):
     objects = ThermometerDataManager()
