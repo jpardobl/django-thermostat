@@ -79,7 +79,7 @@ def is_weekend(mo=None):
 def is_at_night(mo=None):
     try:
         a = Location()
-        a.timezone = dsettings.TIME_ZONE
+        a.timezone = pytz.timezone(settings.TIME_ZONE)
         tz = pytz.timezone(a.timezone)
         #Tue, 22 Jul 2008 08:17:41 +0200
         #Sun, 26 Jan 2014 17:39:49 +01:00
