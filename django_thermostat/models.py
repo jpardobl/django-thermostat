@@ -90,6 +90,8 @@ class TimeRange(models.Model):
 
 
 TEMP_CHOICES = (
+    ("luz_pasillo_off", "Apagar luz del pasillo"),
+    ("luz_pasillo_on", "Encender luz del pasillo"),
     ("tune_to_confort", "Confort"),
     ("tune_to_economic", "Economic"),
 

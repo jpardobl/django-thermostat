@@ -12,6 +12,33 @@ logger = logging.getLogger("thermostat.rules.mappings")
 logger.setLevel(settings.LOG_LEVEL)
 
 
+def luz_pasillo_off(mo=None):
+    try:
+        pl_switch(
+            settings.HEATER_PROTOCOL,
+            settings.LUZ_PASILLO_DID,
+            "off",
+            settings.HEATER_API,
+            settings.HEATER_USERNAME,
+            settings.HEATER_PASSWORD)
+        logger.debug("Luz del pasillo apagada")
+    except Exception as ex:
+        logger.error(ex)
+
+
+def luz_pasillo_on(mo=None):
+    try:
+        pl_switch(
+            settings.HEATER_PROTOCOL,
+            settings.LUZ_PASILLO_DID,
+            "on",
+            settings.HEATER_API,
+            settings.HEATER_USERNAME,
+            settings.HEATER_PASSWORD)
+        logger.debug("Luz del pasillo encendida")
+    except Exception as ex:
+        logger.error(ex)
+
 def salon_on(mo=None):
     try:
         pl_switch(
@@ -161,4 +188,6 @@ mappings = [
     pasillo_off,
     a_lights_off,
     a_lights_on,
+    luz_pasillo_off,
+    luz_pasillo_on,
     ]
