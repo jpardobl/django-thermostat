@@ -97,10 +97,10 @@ def is_at_night(mo=None):
         logger.debug("Passed %s sunset more than %s minutes" % (passed_sunset, settings.MINUTES_AFTER_SUNSET_FOR_DAY))
 
         if not passed_sunrise or passed_sunset:
-            logger.debug("Is not at night")
+            logger.debug("Is at night")
             return 1
         if passed_sunrise and not passed_sunset:
-            logger.debug("Is at night")
+            logger.debug("Is not at night")
             return 0
     except Exception as ex:
         logger.error(ex)
