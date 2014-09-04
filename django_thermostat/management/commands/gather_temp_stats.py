@@ -26,7 +26,7 @@ class Command(BaseCommand):
             else:
                 therms = simplejson.loads(read_temperatures())
 
-            for name, therm in therms:
+            for therm in therms:
                 try:
                     thermometro = Thermometer.objects.get(caption=therm)
                     value = therms[therm]["temp"]["celsius"]
