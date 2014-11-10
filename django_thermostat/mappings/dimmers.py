@@ -15,7 +15,7 @@ logger.setLevel(settings.LOG_LEVEL)
 def luz_pasillo_off(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.LUZ_PASILLO_DID,
             "off",
             settings.HEATER_API,
@@ -29,7 +29,7 @@ def luz_pasillo_off(mo=None):
 def luz_pasillo_on(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.LUZ_PASILLO_DID,
             "on",
             settings.HEATER_API,
@@ -42,7 +42,7 @@ def luz_pasillo_on(mo=None):
 def salon_on(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.SALON_DID,
             "on",
             settings.HEATER_API,
@@ -56,7 +56,7 @@ def salon_on(mo=None):
 def salon_off(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.SALON_DID,
             "off",
             settings.HEATER_API,
@@ -84,7 +84,7 @@ def pasillo_off(mo=None):
 def pasillo_on(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.PASILLO_DID,
             "on",
             settings.HEATER_API,
@@ -99,7 +99,7 @@ def cuarto_oeste_off(mo=None):
 
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.CUARTO_OESTE_DID,
             "off",
             settings.HEATER_API,
@@ -113,7 +113,7 @@ def cuarto_oeste_off(mo=None):
 def cuarto_oeste_on(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.CUARTO_OESTE_DID,
             "on",
             settings.HEATER_API,
@@ -127,7 +127,7 @@ def cuarto_oeste_on(mo=None):
 def cuarto_este_off(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.CUARTO_ESTE_DID,
             "off",
             settings.HEATER_API,
@@ -140,7 +140,7 @@ def cuarto_este_off(mo=None):
 def cuarto_este_on(mo=None):
     try:
         pl_switch(
-            settings.HEATER_PROTOCOL,
+            "X10",
             settings.CUARTO_ESTE_DID,
             "on",
             settings.HEATER_API,
@@ -154,7 +154,7 @@ def cuarto_este_on(mo=None):
 def a_lights_off(mo=None):
     try:
         pl_all_lights_off(
-            settings.HEATER_PROTOCOL,
+            "X10",
             "A",
             settings.HEATER_API,
             settings.HEATER_USERNAME,
@@ -167,7 +167,7 @@ def a_lights_off(mo=None):
 def a_lights_on(mo=None):
     try:
         pl_all_lights_on(
-            settings.HEATER_PROTOCOL,
+            "X10",
             "A",
             settings.HEATER_API,
             settings.HEATER_USERNAME,
