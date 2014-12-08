@@ -198,7 +198,6 @@ class RuleTable():
 				i+=1
 
 		out += "Default policy: "+str(self._policy)
-
         if not logger is None:
             logger.debug(out)
             return
