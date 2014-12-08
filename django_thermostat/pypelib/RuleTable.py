@@ -194,7 +194,7 @@ class RuleTable():
 		with self._mutex:
 			i=0
 			for it in self._ruleSet:
-				out += "[%s]:"%i +it.rule.dump()+ " Enabled: "+str(it.enabled)
+				out += "[%s]:"%i +it.rule.dump()+ " Enabled: "+str(it.enabled)+ "\n"
 				i+=1
 
 		out += "Default policy: "+str(self._policy)

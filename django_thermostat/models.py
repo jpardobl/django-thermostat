@@ -90,6 +90,7 @@ class TimeRange(models.Model):
 
 
 TEMP_CHOICES = (
+    ("None", "No hacer nada"),
     ("luz_pasillo_off", "Apagar luz del pasillo"),
     ("luz_pasillo_on", "Encender luz del pasillo"),
     ("tune_to_confort", "Confort"),
@@ -162,7 +163,7 @@ class Rule(models.Model):
     days = models.ManyToManyField(Day, null=True, blank=True)
     ranges = models.ManyToManyField(TimeRange, null=True, blank=True)
     conditionals = models.ManyToManyField(Conditional, null=True, blank=True)
-    action = models.CharField(max_length=25, choices=TEMP_CHOICES, default="economic_temperature")
+    action = models.CharField(max_length=25, choices=TEMP_CHOICES, null=True, blank=True)
     active = models.BooleanField(default=True)
     thermostat = models.BooleanField(default=False)
 
