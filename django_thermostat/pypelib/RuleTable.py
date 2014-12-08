@@ -189,16 +189,21 @@ class RuleTable():
 			if self._persist:
 				self.save()
 
-	def dump(self):
-		print "Table: "+self.name+" UUID: "+str(self.uuid)
-		print "NUmber of rules: "+str(len(self._ruleSet))
+	def dump(self, logger=None):
+		out = "Table: "+self.name+" UUID: "+str(self.uuid)+ "NUmber of rules: "+str(len(self._ruleSet))
 		with self._mutex:
 			i=0
 			for it in self._ruleSet:
-				print "[%s]:"%i +it.rule.dump()+ " Enabled: "+str(it.enabled)
+				out += "[%s]:"%i +it.rule.dump()+ " Enabled: "+str(it.enabled)
 				i+=1
 
-		print "Default policy: "+str(self._policy)
+		out += "Default policy: "+str(self._policy)
+
+        if not logger is None:
+            logger.debug(out)
+            return
+        print out
+
 
 	#Go through the table
 	def evaluate(self,metaObj):

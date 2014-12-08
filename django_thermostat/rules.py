@@ -22,7 +22,7 @@ def evaluate_non_themp():
     for rule in Rule.objects.filter(active=True, thermostat=False).order_by("pk"):
         table.addRule(rule.to_pypelib())
     if settings.DEBUG:
-        table.dump()
+        table.dump(logger)
     try:
         table.evaluate({})
         logger.debug("Table NONTHERM evaluated True")
@@ -79,7 +79,7 @@ def evaluate():
     table1.addRule("if heater_on = 0 then deny")
     table1.addRule("if current_internal_temperature < tuned_temperature then accept")
     if settings.DEBUG:
-        table1.dump()
+        table1.dump(logger)
         
     try:
         table1.evaluate(metaObj)
