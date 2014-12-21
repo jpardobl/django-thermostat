@@ -113,6 +113,9 @@ TEMP_CHOICES = (
     
     ("set_heater_off", "Apagar caldera"),
     ("set_heater_on", "Encender caldera"),
+    ("tune_economic_to_19", "Economica a 19"),
+    ("tune_economic_to_18", "Economica a 18"),
+
 )
 
 

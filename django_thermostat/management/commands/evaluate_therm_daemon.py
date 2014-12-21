@@ -24,8 +24,11 @@ class Command(BaseCommand):
             while(True):
                 logger.info("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
                 thread = threading.Thread(target=evaluate)
+                logger.debug("Calling thread rutine")
                 thread.start()
+                logger.debug("Thread rutine exited")
                 thread.join()
+                logger.debug("Thread rutine joined")
                 logging.info("Child thread finished, sleeping for the next %s seconds" % args[0])
                 sleep(float(args[0]))
 
