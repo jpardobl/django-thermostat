@@ -106,9 +106,13 @@ class Rule():
 	def evaluate(self,metaObj,resolver):
                 
 		try:
-                        Rule.logger.setLevel(logging.DEBUG)
+            Rule.logger.setLevel(logging.DEBUG)
 			result = self._condition.evaluate(metaObj,resolver)
+<<<<<<< HEAD
                         Rule.logger.debug('Result was: %s rule: [%s]' % (str(result), self.dump()))
+=======
+			Rule.logger.debug('Result was: %s rule: [%s]' % (str(result), self.dump()))
+>>>>>>> b194ec93cc3738816bb6e10a3a10141126d4a31b
 		except Exception as e:
 			Rule.logger.error('Error on rule: %s',self.dump())
 			Rule.logger.error('Exception: %s', str(e))
