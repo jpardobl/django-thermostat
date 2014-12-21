@@ -52,19 +52,20 @@ def evaluate():
 
     table.setPolicy(False)
 
-    table.addRule("if heater_manual = 1  then accept do tune_to_confort")
+    table.addRule("if heater_manual = 1  then ACCEPT")
 
     for rule in Rule.objects.filter(active=True, thermostat=True).order_by("pk"):
         table.addRule(rule.to_pypelib())
 
     if settings.DEBUG:
-        table.dump()
+        table.dump(logger)
 
     metaObj = {}
 
     try:
         table.evaluate(metaObj)
         logger.debug("Table THERM1 evaluated True")
+        mappings["tune_to_confort"]()
     except Exception:
         logger.debug("Table THERM1 evaluated False")
         mappings["tune_to_economic"]()
