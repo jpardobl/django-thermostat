@@ -86,6 +86,25 @@ def tuned_temperature(mo=None):
     except Exception as et:
         logger.error(et)
 
+
+def tune_economic_to_18(mo=None):
+    try:
+        ctxt = Context.objects.get()
+        ctxt.economic_temperature = 18
+        ctxt.save()
+    except Exception as et:
+        logger.error(et)
+
+
+def tune_economic_to_19(mo=None):
+    try:
+        ctxt = Context.objects.get()
+        ctxt.economic_temperature = 19
+        ctxt.save()
+    except Exception as et:
+        logger.error(et)
+
+
 def tune_to_confort(mo=None):
     try:
         ctxt = Context.objects.get()
@@ -217,6 +236,8 @@ def stop_flame():
         logger.error(et)
 
 mappings = [
+    tune_economic_to_19,
+    tune_economic_to_18,
     current_internal_temperature,
     current_external_temperature,
     confort_temperature,
