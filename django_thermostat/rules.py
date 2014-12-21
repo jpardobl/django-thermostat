@@ -41,6 +41,7 @@ def evaluate():
         "RAWFile",
         None)
 
+
     logger.debug("current time: %s " % mappings["current_time"]())
     logger.debug("current day of week: %s" % mappings["current_day_of_week"]())
     logger.debug("current temp %s" % mappings["current_internal_temperature"]())
