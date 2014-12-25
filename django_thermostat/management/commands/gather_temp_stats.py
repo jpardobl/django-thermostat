@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 import simplejson
 import logging
 from django.conf import settings
+import multiprocessing
 
 
 logger = logging.getLogger("thermostat.stats")
@@ -15,6 +16,10 @@ logger.setLevel(settings.LOG_LEVEL)
 class Command(BaseCommand):
     args = ''
     help = 'retrieve temperature stats'
+
+    def __init__(self):
+	p = multiprocessing.current_process()
+        p.name = "temp_stats"
 
     def handle(self, *args, **options):
         try:
