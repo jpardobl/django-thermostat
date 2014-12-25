@@ -53,11 +53,7 @@ def evaluate():
 
     table.setPolicy(False)
 
-<<<<<<< HEAD
-    table.addRule("if heater_manual = 1  then ACCEPT")
-=======
     table.addRule("if heater_manual = 1 then ACCEPT")
->>>>>>> b194ec93cc3738816bb6e10a3a10141126d4a31b
 
     for rule in Rule.objects.filter(active=True, thermostat=True).order_by("pk"):
         table.addRule(rule.to_pypelib())
