@@ -151,6 +151,20 @@ def bri_temp(request, temp):
     return redirect(reverse("read_heat_status"))
 
 
+def put_heat_manual(request):
+    context = Context.objects.get()
+    context.manual = True
+    context.save()
+    return redirect(reverse("read_heat_status"))
+
+
+def put_heat_program(request):
+    context = Context.objects.get()
+    context.manual = False
+    context.save()
+    return redirect(reverse("read_heat_status"))
+
+
 def toggle_heat_manual(request):
     context = Context.objects.get()
     context.manual = not context.manual
