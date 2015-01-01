@@ -93,6 +93,9 @@ TEMP_CHOICES = (
     ("None", "No hacer nada"),
     ("luz_pasillo_off", "Apagar luz del pasillo"),
     ("luz_pasillo_on", "Encender luz del pasillo"),
+    ("luz_descansillo_off", "Apagar luz del descansillo"),
+    ("luz_descansillo_on", "Encender luz del descansillo"),
+
     ("tune_to_confort", "Confort"),
     ("tune_to_economic", "Economic"),
 
