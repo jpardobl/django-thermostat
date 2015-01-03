@@ -5,6 +5,9 @@ from django_thermostat.models import Context, Thermometer
 from django.core.urlresolvers import reverse
 from time import strftime, localtime, mktime, strptime
 import os, logging, simplejson
+import datetime
+
+
 
 logger = logging.getLogger("thermostat.rules.mappings")
 logger.setLevel(settings.LOG_LEVEL)
@@ -187,9 +190,42 @@ def log_flame_stats(new_state):
         logger.error(et)
 
 
+def anotate_gradient_start():
+    #settings.GRADIENT_REDIS_HOST
+    import redis, tz
+    r = redis.Redis(settings.GRADIENT_REDIS_HOST)
+
+    sec = r.incr("gradient_sec")
+
+    t = datetime.datetime.now(tz=tz.timezone(settings.TIME_ZONE))
+    r.sadd("apunte_%s:time" % sec, t)
+    r.sadd("apunte_%s:init_internal_temp" % sec, current_internal_temperature())
+    r.sadd("apunte_%s:init_external_temp" % sec, current_external_temperature())
+    r.sadd("apunte_%s:init_tunned_temp" % sec, tuned_temperature())
+
+
+def anotate_gradient_end():
+    import redis, pytz
+    r = redis.Redis(settings.GRADIENT_REDIS_HOST)
+    sec = r.get("gradient_sec")
+    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    r.sadd("apunte_%s:time" % sec, t)
+    r.sadd("apunte_%s:finish_internal_temp" % sec, current_internal_temperature())
+    r.sadd("apunte_%s:finish_external_temp" % sec, current_external_temperature())
+    r.sadd("apunte_%s:finish_tunned_temp" % sec, tuned_temperature())
+
+    init_time = pytz.timezone("Europe/Madrid").\
+        localize(datetime.datetime.fromtimestamp(int(float(list(r.smembers("apunte_%s:time" % sec))[0]))))
+
+    delta = t - init_time
+    r.sadd("apunte_%s:delta" % sec, delta.total_seconds())
+
+
+
 def start_flame():
 
     try:
+        anotate_gradient_start()
         ctxt = Context.objects.get()
         if ctxt.flame:
             logger.debug("Not starting flame, because its already started")
@@ -213,6 +249,7 @@ def start_flame():
 
 def stop_flame():
     try:
+        anotate_gradient_end()
         ctxt = Context.objects.get()
         if not ctxt.flame:
             logger.debug("Not stopping flame, because its already stopped")

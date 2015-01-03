@@ -29,7 +29,8 @@ setup(
       'hautomation_restclient',
       "requests",
       "astral",
-      "pytz",      
+      "pytz",
+      "redis",
     ),
     
   #  test_suite='test_project.tests.runtests',
