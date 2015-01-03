@@ -192,7 +192,7 @@ def log_flame_stats(new_state):
 
 def anotate_gradient_start():
     #settings.GRADIENT_REDIS_HOST
-    import redis
+    import redis, pytz
     r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
     sec = r.incr("gradient_sec")
