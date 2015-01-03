@@ -211,14 +211,14 @@ def anotate_gradient_end():
     import redis, pytz
     r = redis.Redis(settings.GRADIENT_REDIS_HOST)
     sec = r.get("gradient_sec")
-    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).toordinal()
+    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
     cit = current_internal_temperature()
     cet = current_external_temperature()
     tt = float(tuned_temperature())
     init_time = pytz.timezone("Europe/Madrid").\
         localize(datetime.datetime.fromtimestamp(int(float(list(r.smembers("apunte_%s:init" % sec))[0]))))
     delta = t - init_time
-    r.sadd("apunte_%s:end" % sec, t)
+    r.sadd("apunte_%s:end" % sec, t.toordinal())
     r.sadd("apunte_%s:end" % sec, cit)
     r.sadd("apunte_%s:end" % sec, cet)
     r.sadd("apunte_%s:end" % sec, tt)
