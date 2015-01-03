@@ -192,12 +192,12 @@ def log_flame_stats(new_state):
 
 def anotate_gradient_start():
     #settings.GRADIENT_REDIS_HOST
-    import redis, tz
+    import redis, pytz
     r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
     sec = r.incr("gradient_sec")
 
-    t = datetime.datetime.now(tz=tz.timezone(settings.TIME_ZONE))
+    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
     r.sadd("apunte_%s:time" % sec, t)
     r.sadd("apunte_%s:init_internal_temp" % sec, current_internal_temperature())
     r.sadd("apunte_%s:init_external_temp" % sec, current_external_temperature())
