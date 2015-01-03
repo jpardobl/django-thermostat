@@ -221,7 +221,7 @@ def anotate_gradient_end():
     cet = current_external_temperature()
     tt = float(tuned_temperature())
     init_time = pytz.timezone("Europe/Madrid").\
-        localize(datetime.datetime.fromtimestamp(int(float(list(r.smembers("grad_%s:init" % sec))[0]))))
+        localize(datetime.datetime.fromtimestamp(int(float(list(r.smembers("g_%s:i" % sec))[0]))))
 
     t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
 
