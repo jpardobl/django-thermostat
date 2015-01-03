@@ -201,7 +201,7 @@ def anotate_gradient_start():
     r.set("apunte_%s:time" % sec, t)
     r.set("apunte_%s:init_internal_temp" % sec, current_internal_temperature())
     r.set("apunte_%s:init_external_temp" % sec, current_external_temperature())
-    r.v("apunte_%s:init_tunned_temp" % sec, tuned_temperature())
+    r.set("apunte_%s:init_tunned_temp" % sec, tuned_temperature())
 
 
 def anotate_gradient_end():
