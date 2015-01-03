@@ -226,7 +226,7 @@ def anotate_gradient_end():
     t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
 
     delta = t - init_time
-
+    print("Delta: %s" % delta)
     r.rpush("g_%s:e" % sec, (t - pytz.timezone("Europe/Madrid").\
         localize(datetime.datetime(1970, 1, 1))).total_seconds())
     r.rpush("g_%s:e" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
