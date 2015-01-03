@@ -233,8 +233,8 @@ def anotate_gradient_end():
     r.rpush("g_%s:e" % sec, delta)
     r.rpush("g_%s:e" % sec, init_ext - cet)
 
-    print(r.lrange("g_%s:e" % sec, 0, 5))
-    logger.debug("gradient[%s]:end -> %s" % (sec, r.lrange("g_%s:e" % sec, 0, 5)))
+    print(r.lrange("g_%s:e" % sec, 0, 6))
+    logger.debug("gradient[%s]:end -> %s" % (sec, r.lrange("g_%s:e" % sec, 0, 6)))
 
 def start_flame():
 
