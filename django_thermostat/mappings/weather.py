@@ -224,13 +224,12 @@ def anotate_gradient_end():
     print("current time: %s" % t)
     delta = t - init_time
     print("Delta: %s" % delta)
-    r.rpush("g_%s:e" % sec, (t - datetime.datetime(1970, 1, 1)).total_seconds())
-    r.rpush("g_%s:e" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
+    r.rpush("g_%s:i" % sec, t.isoformat())
     r.rpush("g_%s:e" % sec, cit)
     r.rpush("g_%s:e" % sec, cet)
     r.rpush("g_%s:e" % sec, tt)
     r.rpush("g_%s:e" % sec, delta.total_seconds())
-    #r.rpush("g_%s:e" % sec, delta.strftime("%H:%M:%S"))
+    r.rpush("g_%s:e" % sec, delta)
 
     print(r.lrange("g_%s:e" % sec, 0, 5))
     logger.debug("gradient[%s]:end -> %s" % (sec, r.lrange("g_%s:e" % sec, 0, 5)))

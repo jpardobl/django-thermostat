@@ -31,6 +31,7 @@ setup(
       "astral",
       "pytz",
       "redis",
+      "python-dateutil",
     ),
     
   #  test_suite='test_project.tests.runtests',
