@@ -202,15 +202,15 @@ def anotate_gradient_start():
     cit = current_internal_temperature()
     cet = current_external_temperature()
     tt = float(tuned_temperature())
-    r.sadd("g_%s:i" % sec, (t - pytz.timezone("Europe/Madrid").\
+    r.rpush("g_%s:i" % sec, (t - pytz.timezone("Europe/Madrid").\
         localize(datetime.datetime(1970, 1, 1))).total_seconds())
-    r.sadd("g_%s:i" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
-    r.sadd("g_%s:i" % sec, cit)
-    r.sadd("g_%s:i" % sec, cet)
-    r.sadd("g_%s:i" % sec, tt)
+    r.rpush("g_%s:i" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
+    r.rpush("g_%s:i" % sec, cit)
+    r.rpush("g_%s:i" % sec, cet)
+    r.rpush("g_%s:i" % sec, tt)
 
-    logger.debug("gradient[%s]:i -> %s" % (sec, r.smembers("g_%s:i" % sec)))
-    print(r.smembers("g_%s:i" % sec))
+    logger.debug("gradient[%s]:i -> %s" % (sec, r.lrange("g_%s:i" % sec, 0, 4)))
+    print(r.lrange("g_%s:i" % sec, 0, 4))
 
 def anotate_gradient_end():
     import redis, pytz
@@ -221,22 +221,23 @@ def anotate_gradient_end():
     cet = current_external_temperature()
     tt = float(tuned_temperature())
     init_time = pytz.timezone("Europe/Madrid").\
-        localize(datetime.datetime.fromtimestamp(int(float(list(r.smembers("g_%s:i" % sec))[0]))))
+        localize(datetime.datetime.fromtimestamp(int(float(list(r.lrange("g_%s:i" % sec, 0, 0))[0]))))
 
     t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
 
     delta = t - init_time
 
-    r.sadd("g_%s:e" % sec, (t - pytz.timezone("Europe/Madrid").\
+    r.rpush("g_%s:e" % sec, (t - pytz.timezone("Europe/Madrid").\
         localize(datetime.datetime(1970, 1, 1))).total_seconds())
-    r.sadd("g_%s:e" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
-    r.sadd("g_%s:e" % sec, cit)
-    r.sadd("g_%s:e" % sec, cet)
-    r.sadd("g_%s:e" % sec, tt)
-    r.sadd("g_%s:e" % sec, delta.total_seconds())
+    r.rlpush("g_%s:e" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
+    r.rpush("g_%s:e" % sec, cit)
+    r.rpush("g_%s:e" % sec, cet)
+    r.rpush("g_%s:e" % sec, tt)
+    r.rpush("g_%s:e" % sec, delta.total_seconds())
+    r.rpush("g_%s:e" % sec, delta.strftime("%H:%M:%S"))
 
-    print(r.smembers("g_%s:e" % sec))
-    logger.debug("gradient[%s]:end -> %s" % (sec, r.smembers("g_%s:e" % sec)))
+    print(r.lrange("g_%s:e" % sec, 0, 6))
+    logger.debug("gradient[%s]:end -> %s" % (sec, r.lrange("g_%s:e" % sec, 0, 6)))
 
 def start_flame():
 
