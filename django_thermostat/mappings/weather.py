@@ -197,25 +197,25 @@ def anotate_gradient_start():
 
     sec = r.incr("gradient_sec")
 
-    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).toordinal()
     cit = current_internal_temperature()
     cet = current_external_temperature()
-    tt = tuned_temperature()
-    r.sadd("apunte_%s:init" % sec, t, cit, cet, tt)
+    tt = float(tuned_temperature())
+    r.sadd("apunte_%s:init" % sec, [t, cit, cet, tt])
 
 
 def anotate_gradient_end():
     import redis, pytz
     r = redis.Redis(settings.GRADIENT_REDIS_HOST)
     sec = r.get("gradient_sec")
-    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).toordinal()
     cit = current_internal_temperature()
     cet = current_external_temperature()
-    tt = tuned_temperature()
+    tt = float(tuned_temperature())
     init_time = pytz.timezone("Europe/Madrid").\
         localize(datetime.datetime.fromtimestamp(int(float(list(r.smembers("apunte_%s:init" % sec))[0]))))
     delta = t - init_time
-    r.sadd("apunte_%s:end" % sec, t, cit, cet, tt, delta.total_seconds())
+    r.sadd("apunte_%s:end" % sec, [t, cit, cet, tt, delta.total_seconds()])
 
 
 def start_flame():
