@@ -215,7 +215,7 @@ def anotate_gradient_end():
     r.add("apunte_%s:finish_tunned_temp" % sec, tuned_temperature())
 
     init_time = pytz.timezone("Europe/Madrid").\
-        localize(datetime.datetime.fromtimestamp(int(float(list(r.get("apunte_%s:time" % sec))[0]))))
+        localize(datetime.datetime.fromtimestamp(int(float(r.get("apunte_%s:time" % sec)))))
 
     delta = t - init_time
     r.add("apunte_%s:delta" % sec, delta.total_seconds())
