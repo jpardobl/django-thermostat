@@ -192,17 +192,17 @@ def log_flame_stats(new_state):
 
 def anotate_gradient_start():
     #settings.GRADIENT_REDIS_HOST
-    import redis, pytz
+    import redis
     r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
     sec = r.incr("gradient_sec")
 
-    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    t = datetime.datetime.utcnow()
 
     cit = current_internal_temperature()
     cet = current_external_temperature()
     tt = float(tuned_temperature())
-    r.rpush("g_%s:i" % sec, (t - pytz.timezone("Europe/Madrid").\
+    r.rpush("g_%s:i" % sec, (t - pytz.timezone("UTC").\
         localize(datetime.datetime(1970, 1, 1))).total_seconds())
     r.rpush("g_%s:i" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
     r.rpush("g_%s:i" % sec, cit)
@@ -220,14 +220,14 @@ def anotate_gradient_end():
     cit = current_internal_temperature()
     cet = current_external_temperature()
     tt = float(tuned_temperature())
-    init_time = pytz.timezone("Europe/Madrid").\
+    init_time = pytz.timezone("UTC").\
         localize(datetime.datetime.fromtimestamp(int(float(list(r.lrange("g_%s:i" % sec, 0, 0))[0]))))
     print("init_time: %s - %s" % (init_time, init_time.strftime("%d.%m.%Y %H:%M:%S")))
-    t = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    t = datetime.datetime.utcnow()
     print("current time: %s" % t)
     delta = t - init_time
     print("Delta: %s" % delta)
-    r.rpush("g_%s:e" % sec, (t - pytz.timezone("Europe/Madrid").\
+    r.rpush("g_%s:e" % sec, (t - pytz.timezone("UTC").\
         localize(datetime.datetime(1970, 1, 1))).total_seconds())
     r.rpush("g_%s:e" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
     r.rpush("g_%s:e" % sec, cit)
