@@ -224,7 +224,7 @@ def anotate_gradient_end():
     print("current time: %s" % t)
     delta = t - init_time
     print("Delta: %s" % delta)
-    r.rpush("g_%s:i" % sec, t.isoformat())
+    r.rpush("g_%s:e" % sec, t.isoformat())
     r.rpush("g_%s:e" % sec, cit)
     r.rpush("g_%s:e" % sec, cet)
     r.rpush("g_%s:e" % sec, tt)
