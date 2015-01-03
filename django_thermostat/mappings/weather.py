@@ -201,7 +201,10 @@ def anotate_gradient_start():
     cit = current_internal_temperature()
     cet = current_external_temperature()
     tt = float(tuned_temperature())
-    r.sadd("apunte_%s:init" % sec, [t, cit, cet, tt])
+    r.sadd("apunte_%s:init" % sec, t)
+    r.sadd("apunte_%s:init" % sec, cit)
+    r.sadd("apunte_%s:init" % sec, cet)
+    r.sadd("apunte_%s:init" % sec, tt)
 
 
 def anotate_gradient_end():
@@ -215,7 +218,11 @@ def anotate_gradient_end():
     init_time = pytz.timezone("Europe/Madrid").\
         localize(datetime.datetime.fromtimestamp(int(float(list(r.smembers("apunte_%s:init" % sec))[0]))))
     delta = t - init_time
-    r.sadd("apunte_%s:end" % sec, [t, cit, cet, tt, delta.total_seconds()])
+    r.sadd("apunte_%s:end" % sec, t)
+    r.sadd("apunte_%s:end" % sec, cit)
+    r.sadd("apunte_%s:end" % sec, cet)
+    r.sadd("apunte_%s:end" % sec, tt)
+    r.sadd("apunte_%s:end" % sec, delta.total_seconds())
 
 
 def start_flame():
