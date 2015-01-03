@@ -240,7 +240,7 @@ def anotate_gradient_end():
 def start_flame():
 
     try:
-        #anotate_gradient_start()
+        anotate_gradient_start()
         ctxt = Context.objects.get()
         if ctxt.flame:
             logger.debug("Not starting flame, because its already started")
@@ -264,7 +264,7 @@ def start_flame():
 
 def stop_flame():
     try:
-        #anotate_gradient_end()
+        anotate_gradient_end()
         ctxt = Context.objects.get()
         if not ctxt.flame:
             logger.debug("Not stopping flame, because its already stopped")
