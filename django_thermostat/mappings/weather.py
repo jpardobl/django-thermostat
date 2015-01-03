@@ -202,7 +202,7 @@ def anotate_gradient_start():
     cit = current_internal_temperature()
     cet = current_external_temperature()
     tt = float(tuned_temperature())
-    r.sadd("g_%s:i" % sec, (t - datetime(1970, 1, 1)).total_seconds())
+    r.sadd("g_%s:i" % sec, (t - datetime.datetime(1970, 1, 1)).total_seconds())
     r.sadd("g_%s:i" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
     r.sadd("g_%s:i" % sec, cit)
     r.sadd("g_%s:i" % sec, cet)
@@ -226,7 +226,7 @@ def anotate_gradient_end():
 
     delta = t - init_time
 
-    r.sadd("g_%s:e" % sec, (t - datetime(1970, 1, 1)).total_seconds())
+    r.sadd("g_%s:e" % sec, (t - datetime.datetime(1970, 1, 1)).total_seconds())
     r.sadd("g_%s:e" % sec, t.strftime("%d.%m.%Y %H:%M:%S"))
     r.sadd("g_%s:e" % sec, cit)
     r.sadd("g_%s:e" % sec, cet)
