@@ -219,7 +219,7 @@ def anotate_gradient_end():
     cet = current_external_temperature()
     tt = float(tuned_temperature())
     init_time = dateutil.parser.parse(list(r.lrange("g_%s:i" % sec, 0, 0))[0])
-    init_ext = float(r.lrange("g_%s:i" % sec, 2, 2))
+    init_ext = float(r.lrange("g_%s:i" % sec, 2, 2)[0])
     #logger.debug("init_time: %s - %s" % (init_time, init_time.strftime("%d.%m.%Y %H:%M:%S")))
     t = datetime.datetime.utcnow()
     #logger("current time: %s" % t)
