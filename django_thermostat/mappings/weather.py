@@ -202,6 +202,7 @@ def anotate_gradient_start():
     cet = current_external_temperature()
     tt = float(tuned_temperature())
     r.sadd("apunte_%s:init" % sec, t)
+    r.sadd("apunte_%s:init" % sec, t)
     r.sadd("apunte_%s:init" % sec, cit)
     r.sadd("apunte_%s:init" % sec, cet)
     r.sadd("apunte_%s:init" % sec, tt)
@@ -228,7 +229,7 @@ def anotate_gradient_end():
 def start_flame():
 
     try:
-        anotate_gradient_start()
+        #anotate_gradient_start()
         ctxt = Context.objects.get()
         if ctxt.flame:
             logger.debug("Not starting flame, because its already started")
@@ -252,7 +253,7 @@ def start_flame():
 
 def stop_flame():
     try:
-        anotate_gradient_end()
+        #anotate_gradient_end()
         ctxt = Context.objects.get()
         if not ctxt.flame:
             logger.debug("Not stopping flame, because its already stopped")
