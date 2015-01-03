@@ -220,6 +220,7 @@ def anotate_gradient_end():
     tt = float(tuned_temperature())
     init_time = dateutil.parser.parse(list(r.lrange("g_%s:i" % sec, 0, 0))[0])
     init_ext = float(r.lrange("g_%s:i" % sec, 2, 2)[0])
+    logger.debug("External temperature at flame on: %s" % init_ext)
     #logger.debug("init_time: %s - %s" % (init_time, init_time.strftime("%d.%m.%Y %H:%M:%S")))
     t = datetime.datetime.utcnow()
     #logger("current time: %s" % t)
