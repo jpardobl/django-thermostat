@@ -207,7 +207,10 @@ def gradient(request):
 
     data = []
     for i in range(0, max):
-        data.append(r.lrange("g_%s:e" % i, 0, 6))
+        d = r.lrange("g_%s:e" % i, 0, 6)
+        if len(d) == 0:
+            continue
+        data.append()
 
     response = render_to_response(
         "therm/gradient.html",
