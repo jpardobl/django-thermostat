@@ -199,24 +199,28 @@ def context_js(request):
 
 def gradient(request):
 
-    import redis
+    try:
+        import redis
 
-    r = redis.Redis(settings.GRADIENT_REDIS_HOST)
+        r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
-    max = int(r.get("gradient_sec"))
+        max = int(r.get("gradient_sec"))
 
-    data = []
-    for i in range(0, max):
-        d = r.lrange("g_%s:e" % i, 0, 6)
-        if len(d) == 0:
-            continue
-        di = r.lrange("g_%s:i" % i, 0, 4)
-        data.append(di + d)
+        data = []
+        for i in range(0, max):
+            d = r.lrange("g_%s:e" % i, 0, 6)
+            if len(d) == 0:
+                continue
+            di = r.lrange("g_%s:i" % i, 0, 4)
+            data.append(di + d)
 
-    response = render_to_response(
-        "therm/gradient.html",
-        {"data": data}
-    )
-    response['Cache-Control'] = 'no-cache'
-    return response
+        response = render_to_response(
+            "therm/gradient.html",
+            {"data": data}
+        )
+        response['Cache-Control'] = 'no-cache'
+        return response
+    except Exception as ex:
+        logger.error(ex)
+        return HttpResponseServerError(ex)
 
