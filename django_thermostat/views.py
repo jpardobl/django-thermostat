@@ -214,7 +214,7 @@ def gradient(request):
             di = r.lrange("g_%s:i" % i, 0, 4)
             data.append(di + d)
 
-        if "format" in requeqst.GET and request.GET["format"] == "json":
+        if "format" in request.GET and request.GET["format"] == "json":
             response = render_to_response(
                 "therm/context.json",
                 {"data": data}
