@@ -204,10 +204,10 @@ def gradient(request):
 
         r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
-        max = int(r.get("gradient_sec"))
-
+        mx = int(r.get("gradient_sec"))
+        logger.debug("gradient_sec: %s" % mx)
         data = []
-        for i in range(0, max):
+        for i in range(0, mx):
             d = r.lrange("g_%s:e" % i, 0, 6)
             if len(d) == 0:
                 continue
