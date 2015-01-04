@@ -212,6 +212,7 @@ def gradient(request):
             if len(d) == 0:
                 continue
             di = r.lrange("g_%s:i" % i, 0, 4)
+            logger.debug(di + d)
             data.append(di + d)
 
         if "format" in request.GET and request.GET["format"] == "json":
