@@ -5,7 +5,8 @@ from django.conf.urls import patterns, include, url
 #admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r"^dummy_stats$", "django_thermostat.views.dumy_stats", name="dumy_stats"),
+    #url(r"^dummy_stats$", "django_thermostat.views.dumy_stats", name="dumy_stats"),
+    url(r"^gradient$", "django_thermostat.views.gradient", name="gradient"),
     url(r"^stats/temperature/show/?$", "django_thermostat.views.temp_data_show", name="stats_temperature_show"),
     url(r"^stats/temperature/(week|month|day|year)?", "django_thermostat.views.temp_data", name="stats_temperature"),
     url(r'^js/context.js$', "django_thermostat.views.context_js", name="context_js"),
