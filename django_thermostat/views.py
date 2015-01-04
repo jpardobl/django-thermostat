@@ -207,7 +207,7 @@ def gradient(request):
         mx = int(r.get("gradient_sec"))
         logger.debug("gradient_sec: %s" % mx)
         data = []
-        for i in range(0, mx):
+        for i in range(0, mx + 1):
             d = r.lrange("g_%s:e" % i, 0, 6)
             if len(d) == 0:
                 continue
