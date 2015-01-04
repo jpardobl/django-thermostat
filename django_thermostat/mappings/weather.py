@@ -268,15 +268,16 @@ def start_flame():
 
 def stop_flame():
     try:
+
+        ctxt = Context.objects.get()
+        if not ctxt.flame:
+            logger.debug("Not stopping flame, because its already stopped")
+            return
         try:
             anotate_gradient_end()
         except Exception as eee:
             logger.error("Cannot anotate gradient end, error: %s" % eee)
             pass
-        ctxt = Context.objects.get()
-        if not ctxt.flame:
-            logger.debug("Not stopping flame, because its already stopped")
-            return
 
         pl_switch(
             settings.HEATER_PROTOCOL,
