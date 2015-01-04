@@ -203,7 +203,7 @@ def gradient(request):
 
     r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
-    max = r.get("gradient_sec")
+    max = int(r.get("gradient_sec"))
 
     data = []
     for i in range(0, max):
