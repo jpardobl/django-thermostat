@@ -195,3 +195,24 @@ def context_js(request):
         "context.js",
         {"temperatures_uri": settings.LIST_THERMOMETERS_API, },
         content_type="application/javascript")
+
+
+def gradient(request):
+
+    import redis
+
+    r = redis.Redis(settings.GRADIENT_REDIS_HOST)
+
+    max = r.get("gradient_sec")
+
+    data = []
+    for i in range(0, max):
+        data.append(r.lrange("g_%s:e" % i, 0, 6))
+
+    response = render_to_response(
+        "therm/gradient.html",
+        {"data": data}
+    )
+    response['Cache-Control'] = 'no-cache'
+    return response
+
