@@ -227,10 +227,17 @@ def gradient(request):
                 "e_eg": d[6],
             })
 
+        if "format" in request.GET and request.GET["format"] == "html":
+            response = render_to_response(
+                "therm/gradient.html",
+                {"data": data},
+                content_type="text/html"
+            )
         if "format" in request.GET and request.GET["format"] == "json":
             response = render_to_response(
                 "therm/context.json",
-                {"data": data}
+                {"data": simplejson.dumps(data)},
+                content_type="application/json"
             )
         response['Cache-Control'] = 'no-cache'
         return response
