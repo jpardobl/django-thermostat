@@ -232,7 +232,7 @@ def anotate_gradient_end():
     r.rpush("g_%s:e" % sec, tt)
     r.rpush("g_%s:e" % sec, delta.total_seconds())
     r.rpush("g_%s:e" % sec, delta)
-    r.rpush("g_%s:e" % sec, init_ext - cet)
+    r.rpush("g_%s:e" % sec, cet - init_ext)
 
     print(r.lrange("g_%s:e" % sec, 0, 6))
     logger.debug("gradient[%s]:end -> %s" % (sec, r.lrange("g_%s:e" % sec, 0, 6)))
