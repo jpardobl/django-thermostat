@@ -200,7 +200,7 @@ def context_js(request):
 def gradient(request):
 
     try:
-        import redis
+        import redis, dateutil
 
         r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
@@ -214,11 +214,11 @@ def gradient(request):
             di = r.lrange("g_%s:i" % i, 0, 4)
 
             data.append({
-                "i_t": di[0],
+                "i_t": dateutil.parser.parse(di[0]).strftime("%d.%m%Y %H:%M:%S"),
                 "i_cit": di[1],
                 "i_cet": di[2],
                 "i_tt": di[3],
-                "e_t": d[0],
+                "e_t": dateutil.parser.parse(d[0]).strftime("%d.%m%Y %H:%M:%S"),
                 "e_cit": d[1],
                 "e_cet": d[2],
                 "e_tt": d[3],
