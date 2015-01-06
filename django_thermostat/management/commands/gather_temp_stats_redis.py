@@ -40,7 +40,7 @@ class Command(BaseCommand):
                     thermometro = Thermometer.objects.get(caption=therm)
                     value = therms[therm]["temp"]["celsius"]
                     logger.debug("Thermometer: %s; value: %s" % (therm, value))
-                    r.set("%s-%s" % (thermometro.tid, sec), value)
+                    r.set("temp_%s-%s" % (thermometro.tid, sec), value)
                     #ThermometerData(thermometer=thermometro, value=value).save()
                 except Exception as ex:
                     logger.error("Error gathering %s data: %s" % (therm, ex))

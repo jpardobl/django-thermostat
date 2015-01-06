@@ -203,10 +203,19 @@ def gradient(request):
         import redis, dateutil.parser
 
         r = redis.Redis(settings.GRADIENT_REDIS_HOST)
+        data = []
+        maps = {}
+        for t in Thermometer.objects.all():
+            maps[t.id] = t.caption
+
+        for t in r.keys("temp_*"):
+            termo, fecha = t.split("-")
+            termo = termo.sub("temp_", "")
+            data.append({"termo": maps[termo], "i_t": fecha, "ct": r.get(t)})
 
         mx = int(r.get("gradient_sec"))
         logger.debug("gradient_sec: %s" % mx)
-        data = []
+
         for i in range(0, mx + 1):
             d = r.lrange("g_%s:e" % i, 0, 6)
             if len(d) == 0:
