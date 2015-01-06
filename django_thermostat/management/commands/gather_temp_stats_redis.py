@@ -18,7 +18,8 @@ class Command(BaseCommand):
     help = 'retrieve temperature stats and store into redis'
 
     def __init__(self):
-	p = multiprocessing.current_process()
+        super(Command, self).__init__()
+	    p = multiprocessing.current_process()
         p.name = "temp_stats_redis"
 
     def handle(self, *args, **options):

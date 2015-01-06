@@ -18,7 +18,8 @@ class Command(BaseCommand):
     help = 'retrieve temperature stats'
 
     def __init__(self):
-	p = multiprocessing.current_process()
+        super(Command, self).__init__()
+	    p = multiprocessing.current_process()
         p.name = "temp_stats"
 
     def handle(self, *args, **options):
