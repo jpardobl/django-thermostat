@@ -200,7 +200,7 @@ def context_js(request):
 def gradient(request):
 
     try:
-        import redis, dateutil
+        import redis, dateutil.parser
 
         r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
