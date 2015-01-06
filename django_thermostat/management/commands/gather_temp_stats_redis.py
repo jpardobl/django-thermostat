@@ -25,7 +25,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             logger.info("Starting at %s" % strftime("%d.%m.%Y %H:%M:%S", localtime()))
-            r = redis.Redis(settings.REDIS_GRADIENT_HOST)
+            r = redis.Redis(settings.GRADIENT_REDIS_HOST)
 
             sec = strftime("%d.%m.%Y %H:%M", localtime())
 
@@ -40,7 +40,7 @@ class Command(BaseCommand):
                     thermometro = Thermometer.objects.get(caption=therm)
                     value = therms[therm]["temp"]["celsius"]
                     logger.debug("Thermometer: %s; value: %s" % (therm, value))
-                    r.set("%s-%s" % (thermometro.caption, sec), value)
+                    r.set("%s-%s" % (thermometro.tid, sec), value)
                     #ThermometerData(thermometer=thermometro, value=value).save()
                 except Exception as ex:
                     logger.error("Error gathering %s data: %s" % (therm, ex))
