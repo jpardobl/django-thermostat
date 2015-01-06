@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def __init__(self):
         super(Command, self).__init__()
-	    p = multiprocessing.current_process()
+        p = multiprocessing.current_process()
         p.name = "temp_stats"
 
     def handle(self, *args, **options):
