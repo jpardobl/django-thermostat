@@ -210,7 +210,7 @@ def gradient(request):
 
         for t in r.keys("temp_*"):
             pref, termo, fecha = t.split("-")
-            termo = termo.sub("temp_", "")
+            termo = "28-%s" % termo
             data.append({"termo": maps[termo], "i_t": fecha, "ct": r.get(t)})
 
         mx = int(r.get("gradient_sec"))
