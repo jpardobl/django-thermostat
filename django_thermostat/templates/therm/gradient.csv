@@ -1,0 +1,5 @@
+termo,ct,d.i_t,d.i_cit,d.i_cet,d.i_tt,d.e_t,d.e_cit,d.e_cet,d.e_tt,d.e_ds,d.e_d,d.e_eg }}</td>
+{%  for d in data %}
+    {{d.termo}},{{d.ct}},{{ d.i_t }},{{ d.i_cit }},{{ d.i_cet }},{{ d.i_tt }},{{ d.e_t }},{{ d.e_cit }},{{ d.e_cet }},{{ d.e_tt }},{{ d.e_ds }},{{ d.e_d }},{{ d.e_eg }}
+{% endfor %}
+
