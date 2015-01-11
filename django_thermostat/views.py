@@ -209,7 +209,7 @@ def gradient(request):
             maps[t.tid] = t.caption
 
         for t in r.keys("temp_*"):
-            termo, fecha = t.split("-")
+            pref, termo, fecha = t.split("-")
             termo = termo.sub("temp_", "")
             data.append({"termo": maps[termo], "i_t": fecha, "ct": r.get(t)})
 

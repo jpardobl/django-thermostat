@@ -1,5 +1,5 @@
 termo,ct,d.i_t,d.i_cit,d.i_cet,d.i_tt,d.e_t,d.e_cit,d.e_cet,d.e_tt,d.e_ds,d.e_d,d.e_eg }}</td>
 {%  for d in data %}
-    {{d.termo}},{{d.ct}},{{ d.i_t }},{{ d.i_cit }},{{ d.i_cet }},{{ d.i_tt }},{{ d.e_t }},{{ d.e_cit }},{{ d.e_cet }},{{ d.e_tt }},{{ d.e_ds }},{{ d.e_d }},{{ d.e_eg }}
+    {{d.termo|default_if_none:""}},{{d.ct|default_if_none:""}},{{ d.i_t|default_if_none:"" }},{{ d.i_cit|default_if_none:"" }},{{ d.i_cet|default_if_none:"" }},{{ d.i_tt|default_if_none:"" }},{{ d.e_t|default_if_none:"" }},{{ d.e_cit|default_if_none:"" }},{{ d.e_cet|default_if_none:"" }},{{ d.e_tt|default_if_none:"" }},{{ d.e_ds|default_if_none:"" }},{{ d.e_d|default_if_none:"" }},{{ d.e_eg|default_if_none:"" }}
 {% endfor %}
 
