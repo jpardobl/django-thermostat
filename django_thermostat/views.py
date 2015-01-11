@@ -206,11 +206,11 @@ def gradient(request):
         data = []
         maps = {}
         for t in Thermometer.objects.all():
-            maps[t.id] = t.caption
+            maps[t.tid] = t.caption
 
         for t in r.keys("temp_*"):
-            prefijo, termo, fecha = t.split("-")
-            termo = "28-%s" % termo
+            termo, fecha = t.split("-")
+            termo = termo.sub("temp_", "")
             data.append({"termo": maps[termo], "i_t": fecha, "ct": r.get(t)})
 
         mx = int(r.get("gradient_sec"))
