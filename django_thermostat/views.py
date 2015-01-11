@@ -209,8 +209,8 @@ def gradient(request):
             maps[t.id] = t.caption
 
         for t in r.keys("temp_*"):
-            termo, fecha = t.split("-")
-            termo = termo.sub("temp_", "")
+            prefijo, termo, fecha = t.split("-")
+            termo = "28-%s" % termo
             data.append({"termo": maps[termo], "i_t": fecha, "ct": r.get(t)})
 
         mx = int(r.get("gradient_sec"))
@@ -247,6 +247,12 @@ def gradient(request):
                 "therm/context.json",
                 {"data": simplejson.dumps(data)},
                 content_type="application/json"
+            )
+        if "format" in request.GET and request.GET["format"] == "csv":
+            response = render_to_response(
+                "therm/gradient.csv",
+                {"data": simplejson.dumps(data)},
+                content_type="text/csv"
             )
         response['Cache-Control'] = 'no-cache'
         return response
